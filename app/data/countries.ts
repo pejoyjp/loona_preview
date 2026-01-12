@@ -45,26 +45,17 @@ export function getCountries(rootDomain: string): Record<string, Locale> {
       label: "South Korea (KRW ₩)",
       host: "kr.keyirobot.com",
     },
+    "en-ca": {
+      language: "EN",
+      country: "CA",
+      label: "Canada - English (CAD $)",
+      host: "ca.keyirobot.com",
+    },
+    "fr-ca": {
+      language: "FR",
+      country: "CA",
+      label: "Canada - Français (CAD $)",
+      host: "ca.keyirobot.com",
+    },
   };
 }
-
-export const countries: Record<string, Locale> = {
-  default: {
-    language: "EN",
-    country: "US",
-    label: "United States (USD $)",
-    host: "hydrogen.shop",
-  },
-  "en-ca": {
-    language: "EN",
-    country: "CA",
-    label: "Canada (CAD $)",
-    host: "ca.hydrogen.shop",
-  },
-  "en-au": {
-    language: "EN",
-    country: "AU",
-    label: "Australia (AUD $)",
-    host: "au.hydrogen.shop",
-  },
-};

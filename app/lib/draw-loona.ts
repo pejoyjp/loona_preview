@@ -1,6 +1,4 @@
-// app/lib/draw-loona.ts
 export function drawLoona() {
-  // 只在客户端执行
   if (typeof window === "undefined") return;
 
   console.log(`

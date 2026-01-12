@@ -8,6 +8,7 @@ import { useMobileMenuDrawerStore } from "~/hooks/store/use-mobile-menu-store";
 import { MobileMenuDrawer } from "../drawer/mobile-menu-drawer";
 import { CountrySelector } from "./menu/country-selector";
 import { HeaderMenu } from "./menu/menu";
+import { CountrySelectorModal } from "../modal/country-selector-modal";
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -39,7 +40,7 @@ export function Header({ header, isLoggedIn, publicStoreDomain }: HeaderProps) {
 
         <ShoppingBagIcon onClick={() => setCartOpen(true)} />
         <MenuIcon onClick={() => setMobileMenuOpen(true)} className="block lg:hidden" />
-        <CountrySelector />
+        <CountrySelectorModal />
       </header>
 
       {/* <MobileMenu
