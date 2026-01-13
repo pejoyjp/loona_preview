@@ -9,8 +9,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
+import { Separator } from "~/components/ui/separator";
 import { CountrySelector } from "../layout/menu/country-selector";
-import { Separator } from "~/components/ui/separator"
 
 export function CountrySelectorModal() {
   return (
@@ -23,12 +23,11 @@ export function CountrySelectorModal() {
           <DialogContent className="lg:max-w-4xl">
             <DialogHeader className="">
               <DialogTitle>Country Selector</DialogTitle>
-              <Separator className="my-4"/>
+              <DialogDescription>Select your country and language preferences</DialogDescription>
+              <Separator className="my-4" />
             </DialogHeader>
 
             <CountrySelector />
-
-            
           </DialogContent>
         </form>
       </Dialog>

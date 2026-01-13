@@ -18,11 +18,7 @@ export function CartSummary({ cart }: CartSummaryProps) {
       <dl className="flex justify-between items-center mb-4">
         <dt className="text-gray-600">Subtotal</dt>
         <dd>
-          {cart?.cost?.subtotalAmount?.amount ? (
-            <Money data={cart?.cost?.subtotalAmount} />
-          ) : (
-            "-"
-          )}
+          {cart?.cost?.subtotalAmount?.amount ? <Money data={cart?.cost?.subtotalAmount} /> : "-"}
         </dd>
       </dl>
       <CartDiscounts discountCodes={cart?.discountCodes} />
@@ -54,9 +50,7 @@ function CartDiscounts({
   discountCodes?: CartApiQueryFragment["discountCodes"];
 }) {
   const codes: string[] =
-    discountCodes
-      ?.filter((discount) => discount.applicable)
-      ?.map(({ code }) => code) || [];
+    discountCodes?.filter((discount) => discount.applicable)?.map(({ code }) => code) || [];
 
   return (
     <div className="mb-4">

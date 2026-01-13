@@ -1,3 +1,4 @@
+import { getOkendoProviderData, OkendoProvider } from "@okendo/shopify-hydrogen";
 import { Analytics, getShopAnalytics, useNonce } from "@shopify/hydrogen";
 import {
   isRouteErrorResponse,
@@ -20,7 +21,6 @@ import { FOOTER_QUERY, HEADER_QUERY } from "./graphql/fragments";
 import { TranslationProvider } from "./lib/i18n/translation-context";
 import { getLocaleFromRequest } from "./lib/locale-from-request";
 import tailwindCss from "./styles/tailwind.css?url";
-import { OkendoProvider, getOkendoProviderData } from "@okendo/shopify-hydrogen";
 
 export type RootLoader = typeof loader;
 

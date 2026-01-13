@@ -63,15 +63,14 @@ export default function Article() {
   const { article } = useLoaderData<typeof loader>();
   const { title, image, contentHtml, author } = article;
 
-
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
       <h1 className="text-3xl font-bold mb-4">{title}</h1>
       <div className="flex items-center justify-between text-sm text-gray-500 mb-6">
-        {new Intl.DateTimeFormat('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
+        {new Intl.DateTimeFormat("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
         }).format(new Date(article.publishedAt))}
         <p className="font-medium text-indigo-600">{author?.name}</p>
       </div>
@@ -86,7 +85,7 @@ export default function Article() {
 
       <div
         className="prose prose-slate max-w-none leading-relaxed"
-        dangerouslySetInnerHTML={{__html: contentHtml}}
+        dangerouslySetInnerHTML={{ __html: contentHtml }}
       />
     </div>
   );

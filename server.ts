@@ -43,6 +43,10 @@ export default {
 
       return response;
     } catch (error) {
+      if (error instanceof Response) {
+        return error;
+      }
+
       console.error(error);
       return new Response("An unexpected error occurred", { status: 500 });
     }

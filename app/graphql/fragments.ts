@@ -452,7 +452,6 @@ export const PRODUCT_ITEM_FRAGMENT = `#graphql
   }
 ` as const;
 
-
 export const OKENDO_PRODUCT_STAR_RATING_FRAGMENT = `#graphql
   fragment OkendoStarRatingSnippet on Product {
     okendoStarRatingSnippet: metafield(

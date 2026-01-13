@@ -36,7 +36,6 @@ const DialogOverlay = React.forwardRef<
 ));
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
 
-
 function DialogContent({
   className,
   children,

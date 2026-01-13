@@ -9,13 +9,7 @@ import type {
 import type { BreadcrumbList, CollectionPage, Offer } from "schema-dts";
 import type { ProductQuery, ShopFragment } from "../../storefrontapi.generated";
 
-function root({
-  shop,
-  url,
-}: {
-  shop: ShopFragment;
-  url: Request["url"];
-}): SeoConfig {
+function root({ shop, url }: { shop: ShopFragment; url: Request["url"] }): SeoConfig {
   return {
     title: shop?.name,
     titleTemplate: "%s | Weaverse Hydrogen Demo Store",
@@ -70,15 +64,11 @@ function productJsonLd({
   url,
 }: {
   product: ProductQuery["product"];
-  selectedVariant: NonNullable<
-    ProductQuery["product"]
-  >["selectedOrFirstAvailableVariant"];
+  selectedVariant: NonNullable<ProductQuery["product"]>["selectedOrFirstAvailableVariant"];
   url: Request["url"];
 }): SeoConfig["jsonLd"] {
   const origin = new URL(url).origin;
-  const description = truncate(
-    productData?.seo?.description ?? productData?.description ?? ""
-  );
+  const description = truncate(productData?.seo?.description ?? productData?.description ?? "");
 
   // Create offers array from adjacent variants
   const offers: Offer[] = [];
@@ -161,9 +151,7 @@ function product({
   product: NonNullable<ProductQuery["product"]>;
   url: Request["url"];
 }): SeoConfig {
-  const description = truncate(
-    productData.seo?.description ?? productData.description ?? ""
-  );
+  const description = truncate(productData.seo?.description ?? productData.description ?? "");
   const selectedVariant = productData.selectedOrFirstAvailableVariant;
   return {
     title: productData.seo?.title ?? productData.title,
@@ -199,14 +187,15 @@ function collectionJsonLd({
   collection: CollectionRequiredFields;
 }): SeoConfig["jsonLd"] {
   const siteUrl = new URL(url);
-  const itemListElement: CollectionPage["mainEntity"] =
-    collectionData.products.nodes.map((prod, index) => {
+  const itemListElement: CollectionPage["mainEntity"] = collectionData.products.nodes.map(
+    (prod, index) => {
       return {
         "@type": "ListItem",
         position: index + 1,
         url: `/products/${prod.handle}`,
       };
-    });
+    }
+  );
 
   return [
     {
@@ -230,9 +219,7 @@ function collectionJsonLd({
       "@context": "https://schema.org",
       "@type": "CollectionPage",
       name: collectionData?.seo?.title ?? collectionData?.title ?? "",
-      description: truncate(
-        collectionData?.seo?.description ?? collectionData?.description ?? ""
-      ),
+      description: truncate(collectionData?.seo?.description ?? collectionData?.description ?? ""),
       image: collectionData?.image?.url,
       url: `/collections/${collectionData.handle}`,
       mainEntity: {
@@ -252,9 +239,7 @@ function collection({
 }): SeoConfig {
   return {
     title: collectionData?.seo?.title,
-    description: truncate(
-      collectionData?.seo?.description ?? collectionData?.description ?? ""
-    ),
+    description: truncate(collectionData?.seo?.description ?? collectionData?.description ?? ""),
     titleTemplate: "%s | Collection",
     url,
     media: {
@@ -320,14 +305,8 @@ function article({
   article: articleData,
   url,
 }: {
-  article: Pick<
-    Article,
-    "title" | "contentHtml" | "seo" | "publishedAt" | "excerpt"
-  > & {
-    image?: null | Pick<
-      NonNullable<Article["image"]>,
-      "url" | "height" | "width" | "altText"
-    >;
+  article: Pick<Article, "title" | "contentHtml" | "seo" | "publishedAt" | "excerpt"> & {
+    image?: null | Pick<NonNullable<Article["image"]>, "url" | "height" | "width" | "altText">;
   };
   url: Request["url"];
 }): SeoConfig {
@@ -349,9 +328,7 @@ function article({
       alternativeHeadline: articleData.title,
       articleBody: articleData.contentHtml,
       datePublished: articleData?.publishedAt,
-      description: truncate(
-        articleData?.seo?.description || articleData?.excerpt || ""
-      ),
+      description: truncate(articleData?.seo?.description || articleData?.excerpt || ""),
       headline: articleData?.seo?.title || "",
       image: articleData?.image?.url,
       url,

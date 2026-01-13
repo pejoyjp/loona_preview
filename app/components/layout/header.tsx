@@ -6,9 +6,8 @@ import type { HeaderQuery } from "storefrontapi.generated";
 import { useCartStore } from "~/hooks/store/use-cart-store";
 import { useMobileMenuDrawerStore } from "~/hooks/store/use-mobile-menu-store";
 import { MobileMenuDrawer } from "../drawer/mobile-menu-drawer";
-import { CountrySelector } from "./menu/country-selector";
-import { HeaderMenu } from "./menu/menu";
 import { CountrySelectorModal } from "../modal/country-selector-modal";
+import { HeaderMenu } from "./menu/menu";
 
 interface HeaderProps {
   header: HeaderQuery;

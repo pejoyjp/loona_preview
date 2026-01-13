@@ -1,3 +1,4 @@
+import { OkendoReviews, OkendoStarRating } from "@okendo/shopify-hydrogen";
 import {
   Analytics,
   getAdjacentAndFirstAvailableVariants,
@@ -7,18 +8,15 @@ import {
   useSelectedOptionInUrlParam,
 } from "@shopify/hydrogen";
 import { type LoaderFunctionArgs, type MetaFunction, redirect, useLoaderData } from "react-router";
+import type { ProductFragment } from "storefrontapi.generated";
 import { ProductForm } from "~/components/product/product-form";
 import { ProductImage } from "~/components/product/product-image";
 import { ProductPrice } from "~/components/product/product-price";
-import { redirectIfHandleIsLocalized } from "~/lib/redirect";
-
 import {
-  OKENDO_PRODUCT_STAR_RATING_FRAGMENT,
   OKENDO_PRODUCT_REVIEWS_FRAGMENT,
+  OKENDO_PRODUCT_STAR_RATING_FRAGMENT,
 } from "~/graphql/fragments";
-
-import { OkendoStarRating, OkendoReviews } from "@okendo/shopify-hydrogen";
-import type { ProductFragment } from "storefrontapi.generated";
+import { redirectIfHandleIsLocalized } from "~/lib/redirect";
 
 export const meta: MetaFunction = ({ params }) => {
   return [
