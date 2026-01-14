@@ -1,4 +1,3 @@
-import { Button } from "~/components/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -11,14 +10,15 @@ import {
 } from "~/components/ui/dialog";
 import { Separator } from "~/components/ui/separator";
 import { CountrySelector } from "../layout/menu/country-selector";
+import { Earth } from "@icon-park/react";
 
 export function CountrySelectorModal() {
   return (
     <div className="">
       <Dialog>
         <form>
-          <DialogTrigger asChild>
-            <Button variant="ghost">Country Selector</Button>
+          <DialogTrigger>
+            <Earth size="24" theme="outline" />
           </DialogTrigger>
           <DialogContent className="lg:max-w-4xl">
             <DialogHeader className="">

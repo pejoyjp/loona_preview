@@ -1,5 +1,5 @@
 import { useAnalytics, useOptimisticCart } from "@shopify/hydrogen";
-import { MenuIcon, ShoppingBagIcon } from "lucide-react";
+import { Shopping,HamburgerButton } from "@icon-park/react";
 import { Suspense, useState } from "react";
 import { Await, NavLink, useAsyncValue } from "react-router";
 import type { HeaderQuery } from "storefrontapi.generated";
@@ -37,8 +37,8 @@ export function Header({ header, isLoggedIn, publicStoreDomain }: HeaderProps) {
           publicStoreDomain={publicStoreDomain}
         />
 
-        <ShoppingBagIcon onClick={() => setCartOpen(true)} />
-        <MenuIcon onClick={() => setMobileMenuOpen(true)} className="block lg:hidden" />
+        <Shopping onClick={() => setCartOpen(true)} />
+        <HamburgerButton onClick={() => setMobileMenuOpen(true)} className="block lg:hidden" />
         <CountrySelectorModal />
       </header>
 

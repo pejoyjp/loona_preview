@@ -66,12 +66,19 @@ export function links() {
   ];
 }
 
+const SUPPORTED_LOCALES = ["en", "fr"] as const;
 export async function loader(args: Route.LoaderArgs) {
+
+  const {locale} = args.params;
+  if (locale && !SUPPORTED_LOCALES.includes(locale as any)) {
+    throw new Response("Not Found", { status: 404 });
+  }
+
   // Start fetching non-critical data without blocking time to first byte
   const deferredData = loadDeferredData(args);
-
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
+
 
   const { storefront, env } = args.context;
 
@@ -98,7 +105,7 @@ export async function loader(args: Route.LoaderArgs) {
  * Load data necessary for rendering content above the fold. This is the critical data
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  */
-async function loadCriticalData({ context }: Route.LoaderArgs) {
+async function loadCriticalData({ context }: LoaderFunctionArgs) {
   const { storefront } = context;
 
   const [header] = await Promise.all([

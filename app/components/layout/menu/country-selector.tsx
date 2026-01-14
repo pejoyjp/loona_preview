@@ -1,19 +1,12 @@
 import { CartForm } from "@shopify/hydrogen";
 import { DynamicFlag } from "@sankyu/react-circle-flags";
 import { Form, useLocation, useRouteLoaderData } from "react-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { addLocaleToPath, type Locale } from "~/data/countries";
 import type { RootLoader } from "~/root";
 import { LanguageDropdown } from "./language-dropdown";
 import { Down } from "@icon-park/react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu"
+
 
 
 export function CountrySelector() {
@@ -22,6 +15,9 @@ export function CountrySelector() {
   const countries = root?.countries || {};
   const { pathname, search } = useLocation();
   const [expandedCountry, setExpandedCountry] = useState<string | null>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const actionInputRef = useRef<HTMLInputElement>(null);
+  const redirectInputRef = useRef<HTMLInputElement>(null);
 
   if (!selectedLocale || Object.keys(countries).length === 0) {
     return null;
@@ -35,8 +31,32 @@ export function CountrySelector() {
     return acc;
   }, {});
 
+  const handleSubmit = (countryCode: string, redirectTo: string) => {
+    if (!formRef.current || !actionInputRef.current || !redirectInputRef.current) return;
+
+    actionInputRef.current.value = JSON.stringify({
+      action: CartForm.ACTIONS.BuyerIdentityUpdate,
+      inputs: {
+        buyerIdentity: {
+          countryCode,
+        },
+      },
+    });
+
+    redirectInputRef.current.value = redirectTo;
+    formRef.current.requestSubmit();
+  };
+
   return (
-    <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-5">
+    <Form
+      ref={formRef}
+      method="post"
+      action="/cart"
+      className="w-full grid grid-cols-1 lg:grid-cols-2 gap-5"
+    >
+      <input ref={actionInputRef} type="hidden" name={CartForm.INPUT_NAME} />
+      <input ref={redirectInputRef} type="hidden" name="redirectTo" />
+
       {Object.entries(localesByCountry).map(([country, locales]) => {
         const representative = locales[0];
         const isSelected = country === selectedLocale.country;
@@ -47,50 +67,32 @@ export function CountrySelector() {
         const redirectTo = `https://${representative.host}${redirectPath}${search}`;
 
         return (
-          <div key={country} className="flex flex-col">
-            <Form
-              method="post"
-              action="/cart"
-              className="bg-muted h-12 px-4 flex items-center hover:bg-muted/80 group cursor-pointer overflow-x-hidden"
-              onSubmit={(e) => {
+          <div key={country} className="flex flex-col bg-muted hover:bg-muted/80">
+            <button
+              type="button"
+              className="h-12 px-4 flex focus-visible:outline-none items-center group cursor-pointer overflow-x-hidden disabled:opacity-60 disabled:cursor-not-allowed"
+              onClick={() => {
                 if (isMultipleLanguages) {
-                  e.preventDefault();
                   setExpandedCountry(isExpanded ? null : country);
+                  return;
+                }
+
+                if (!isSelected) {
+                  handleSubmit(country, redirectTo);
                 }
               }}
+              disabled={!isMultipleLanguages && isSelected}
             >
-              <input
-                type="hidden"
-                name={CartForm.INPUT_NAME}
-                value={JSON.stringify({
-                  action: CartForm.ACTIONS.BuyerIdentityUpdate,
-                  inputs: {
-                    buyerIdentity: {
-                      countryCode: country,
-                    },
-                  },
-                })}
-              />
-
-              <input type="hidden" name="redirectTo" value={redirectTo} />
-
               <div className="w-6 overflow-hidden h-6 rounded-full flex justify-center items-center mr-2">
                 <DynamicFlag code={country} />
               </div>
 
-              <button type="submit" disabled={isSelected} className="flex-1 text-left">
-                {representative.label}
-              </button>
+              <span className="flex-1 text-left">{representative.label}</span>
 
-              <button
+              <span
                 className={`flex items-center gap-4 transition-transform duration-300 ${
                   isMultipleLanguages && "translate-x-10  group-hover:translate-x-0"
                 }`}
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setExpandedCountry(isExpanded ? null : country);
-                }}
               >
                 <p>{representative.language}</p>
                 {isMultipleLanguages && (
@@ -103,15 +105,14 @@ export function CountrySelector() {
                     `}
                   />
                 )}
-              </button>
-            </Form>
+              </span>
+            </button>
 
-        
-
-            {isMultipleLanguages && isExpanded && (
+            {isMultipleLanguages && (
               <div className="bg-background rounded-md relative">
                 <LanguageDropdown
                   locales={locales}
+                  isExpanded={isExpanded}
                   currentLanguage={
                     selectedLocale.country === country ? selectedLocale.language : undefined
                   }
@@ -123,6 +124,6 @@ export function CountrySelector() {
           </div>
         );
       })}
-    </div>
+    </Form>
   );
 }

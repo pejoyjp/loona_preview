@@ -1,4 +1,4 @@
-import { ShoppingCart } from "lucide-react";
+
 import { Suspense } from "react";
 import { Await } from "react-router";
 import type { CartApiQueryFragment } from "storefrontapi.generated";
@@ -11,7 +11,6 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
 } from "~/components/ui/drawer";
 import { useCartStore } from "~/hooks/store/use-cart-store";
 import { CartMain } from "../cart/cart-main";

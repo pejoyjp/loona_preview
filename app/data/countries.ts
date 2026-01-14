@@ -23,7 +23,7 @@ export function getRootDomain(host: string): string {
   return port ? `${rootDomain}:${port}` : rootDomain;
 }
 
-export function getCountries(rootDomain: string): Record<string, Locale> {
+export function getCountries(rootDomain?: string): Record<string, Locale> {
   const domain = rootDomain || "keyirobot.com";
   const hostFor = (subdomain?: string) => (subdomain ? `${subdomain}.${domain}` : domain);
 
@@ -73,6 +73,7 @@ export function getCountries(rootDomain: string): Record<string, Locale> {
     },
   };
 }
+
 
 export function stripLocaleFromPath(pathname: string, locales: Locale[]): string {
   const segments = pathname.split("/").filter(Boolean);
