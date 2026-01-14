@@ -109,9 +109,14 @@ export function CountrySelector() {
         ))}
       </div>
 
-      <div className="md:hidden w-full ">
-        <Tabs defaultValue={continentEntries[0]?.[0] ?? continentOrder[0]} className="max-w-full gap-4 ">
-          <TabsList className="flex pb-2 bg-amber-100 ">
+      <div className="md:hidden w-full">
+        <Tabs defaultValue={continentEntries[0]?.[0] ?? continentOrder[0]} className="max-w-full bg-amber-600 gap-4 ">
+          <TabsList className="w-full
+    overflow-x-auto
+    whitespace-nowrap
+    flex-nowrap
+    shrink-0
+    no-scrollbar">
             {continentEntries.map(([continent]) => (
               <TabsTrigger key={continent} value={continent} className="">
                 {continent}
