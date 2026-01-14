@@ -1,5 +1,6 @@
 module.exports = {
   extends: ["@commitlint/config-conventional"],
+  ignores: [(commit) => commit.startsWith("Merge")],
   parserPreset: {
     parserOpts: {
       // 允许中文 subject
