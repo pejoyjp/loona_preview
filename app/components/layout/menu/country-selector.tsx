@@ -1,15 +1,10 @@
 import { DynamicFlag } from "@sankyu/react-circle-flags";
-import { ChevronDownIcon } from "lucide-react";
 import { Form, useLocation, useRouteLoaderData } from "react-router";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import type { Locale } from "~/data/countries";
 import { countries as countriesData } from "~/data/countries";
 import type { RootLoader } from "~/root";
+import { LanguageDropDown } from "./language-drop-down";
 
 export function CountrySelector() {
   const root = useRouteLoaderData<RootLoader>("root");
@@ -19,114 +14,119 @@ export function CountrySelector() {
   if (!selectedLocale) return null;
   const countries = countriesData;
 
-  const localesByCountry = Object.values(countries).reduce(
-    (acc, locale) => {
-      if (!acc[locale.country]) acc[locale.country] = [];
-      acc[locale.country].push(locale);
-      return acc;
-    },
-    {} as Record<string, Locale[]>
-  );
-
   const strippedPathname = pathname.replace(selectedLocale.pathPrefix || "", "");
   const pathWithSearch = `${strippedPathname}${search}`;
 
+  const localesByContinent = Object.values(countries).reduce(
+    (acc, locale) => {
+      const continent = locale.continent || "Other";
+      if (!acc[continent]) acc[continent] = {};
+      if (!acc[continent][locale.country]) acc[continent][locale.country] = [];
+      acc[continent][locale.country].push(locale);
+      return acc;
+    },
+    {} as Record<string, Record<string, Locale[]>>
+  );
+
+  const continentOrder = [
+    "North America",
+    "Europe",
+    "Asia",
+    "Oceania",
+    "South America",
+    "Africa",
+    "Other",
+  ];
+
+  const continentEntries = Object.entries(localesByContinent).sort(
+    (a, b) => continentOrder.indexOf(a[0]) - continentOrder.indexOf(b[0])
+  );
+
+  if (continentEntries.length === 0) return null;
+
+  const renderCountryCard = (locales: Locale[]) => {
+    const isMultiLanguage = locales.length > 1;
+    const activeLocale =
+      locales.find(
+        (locale) =>
+          locale.language === selectedLocale.language && locale.country === selectedLocale.country
+      ) ?? locales[0];
+
+    if (!isMultiLanguage) {
+      const isActive =
+        activeLocale.language === selectedLocale.language &&
+        activeLocale.country === selectedLocale.country;
+      return (
+        <Form
+          method="post"
+          action="/locale"
+          key={`${activeLocale.language}-${activeLocale.country}`}
+          className="flex flex-col bg-muted hover:bg-muted/80 w-full"
+        >
+          <input type="hidden" name="language" value={activeLocale.language} />
+          <input type="hidden" name="country" value={activeLocale.country} />
+          <input type="hidden" name="path" value={pathWithSearch} />
+          <button
+            type="submit"
+            disabled={isActive}
+            className={isActive ? "opacity-50 cursor-not-allowed" : ""}
+          >
+            <div className="flex justify-between items-center">
+              <div className="flex items-center gap-3">
+                <DynamicFlag code={activeLocale.country} height={24} width={24} />
+                <p>{activeLocale.label}</p>
+              </div>
+              <p>{activeLocale.language}</p>
+            </div>
+          </button>
+        </Form>
+      );
+    }
+
+    return (
+      <LanguageDropDown
+        key={`${locales[0].country}-dropdown`}
+        locales={locales}
+        selectedLocale={selectedLocale}
+        pathWithSearch={pathWithSearch}
+        className="w-full"
+      />
+    );
+  };
+
   return (
-    <div className="flex flex-wrap justify-between gap-5 ">
-      {Object.entries(localesByCountry).map(([countryCode, locales]) => {
-        const isMultiLanguage = locales.length > 1;
-        const activeLocale =
-          locales.find(
-            (locale) =>
-              locale.language === selectedLocale.language &&
-              locale.country === selectedLocale.country
-          ) ?? locales[0];
+    <div className="flex w-full gap-8 ">
+      <div className="hidden lg:flex flex-col gap-8  w-full">
+        {continentEntries.map(([continent, countriesByCode]) => (
+          <div key={continent} className="flex flex-col gap-4 w-full">
+            <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+              {continent}
+            </p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 ">
+              {Object.values(countriesByCode).map((locales) => renderCountryCard(locales))}
+            </div>
+          </div>
+        ))}
+      </div>
 
-        if (!isMultiLanguage) {
-          const isActive =
-            activeLocale.language === selectedLocale.language &&
-            activeLocale.country === selectedLocale.country;
-          return (
-            <Form
-              method="post"
-              action="/locale"
-              key={`${activeLocale.language}-${activeLocale.country}`}
-              className="flex flex-col bg-muted hover:bg-muted/80 w-72"
-            >
-              <input type="hidden" name="language" value={activeLocale.language} />
-              <input type="hidden" name="country" value={activeLocale.country} />
-              <input type="hidden" name="path" value={pathWithSearch} />
-              <button
-                type="submit"
-                disabled={isActive}
-                className={isActive ? "opacity-50 cursor-not-allowed" : ""}
-              >
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-3">
-                    <DynamicFlag code={activeLocale.country} height={24} width={24} />
-                    <p>{activeLocale.label}</p>
-                  </div>
-                  <p>{activeLocale.language}</p>
-                </div>
-              </button>
-            </Form>
-          );
-        }
-
-        return (
-          <DropdownMenu key={countryCode}>
-            <DropdownMenuTrigger asChild className="w-72">
-              <button
-                type="button"
-                className="flex flex-col bg-muted hover:bg-muted/80 overflow-hidden group relative"
-                aria-label={`${activeLocale.country} locale options`}
-              >
-                <div className="flex ">
-                  <div className="flex items-center gap-3">
-                    <DynamicFlag code={activeLocale.country} height={24} width={24} />
-                    <p>{activeLocale.label}</p>
-                  </div>
-                  <div className="flex items-center gap-4 transition-transform duration-300 absolute -right-8 group-hover:-translate-x-8 group-data-[state=open]:-translate-x-8">
-                    <p>{activeLocale.language}</p>
-                    <ChevronDownIcon className="size-4" />
-                  </div>
-                </div>
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-72">
-              {locales.map((locale) => {
-                const localeKey = `${locale.language}-${locale.country}`;
-                const isActive =
-                  locale.language === selectedLocale.language &&
-                  locale.country === selectedLocale.country;
-
-                return (
-                  <Form method="post" action="/locale" key={localeKey}>
-                    <input type="hidden" name="language" value={locale.language} />
-                    <input type="hidden" name="country" value={locale.country} />
-                    <input type="hidden" name="path" value={pathWithSearch} />
-                    <DropdownMenuItem asChild disabled={isActive}>
-                      <button
-                        type="submit"
-                        className={`flex w-full items-center justify-between ${
-                          isActive ? "opacity-50 cursor-not-allowed" : ""
-                        }`}
-                        disabled={isActive}
-                      >
-                        <span className="flex items-center gap-3">
-                          <DynamicFlag code={locale.country} height={20} width={20} />
-                          <span className="text-left">{locale.label}</span>
-                        </span>
-                        <span className="text-muted-foreground">{locale.language}</span>
-                      </button>
-                    </DropdownMenuItem>
-                  </Form>
-                );
-              })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        );
-      })}
+      <div className="md:hidden w-full ">
+        <Tabs defaultValue={continentEntries[0]?.[0] ?? continentOrder[0]} className="max-w-full gap-4 ">
+          <TabsList className="flex pb-2 bg-amber-100 ">
+            {continentEntries.map(([continent]) => (
+              <TabsTrigger key={continent} value={continent} className="">
+                {continent}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          {continentEntries.map(([continent, countriesByCode]) => (
+            <TabsContent key={continent} value={continent} className="pt-4 bg-red-200">
+              <div className="flex flex-col gap-4">
+                {Object.values(countriesByCode).map((locales) => renderCountryCard(locales))}
+              </div>
+            </TabsContent>
+          ))}
+        </Tabs>
+      </div>
     </div>
   );
 }
