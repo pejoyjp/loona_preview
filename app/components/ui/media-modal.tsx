@@ -1,7 +1,6 @@
+import { Close } from "@icon-park/react";
 import { Image } from "@shopify/hydrogen";
 import type { Image as ImageType } from "@shopify/hydrogen/storefront-api-types";
-
-import { Close } from "@icon-park/react";
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
 import { useEffect, useId, useState } from "react";
 import { cn } from "~/lib/utils";

@@ -1,5 +1,5 @@
+import { HamburgerButton, Shopping } from "@icon-park/react";
 import { useAnalytics, useOptimisticCart } from "@shopify/hydrogen";
-import { Shopping,HamburgerButton } from "@icon-park/react";
 import { Suspense, useState } from "react";
 import { Await, NavLink, useAsyncValue } from "react-router";
 import type { HeaderQuery } from "storefrontapi.generated";

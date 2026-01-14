@@ -26,7 +26,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     return { term: "", result: null, error: error.message };
   });
 
-  console.log(JSON.stringify((await searchPromise).result))
+  console.log(JSON.stringify((await searchPromise).result));
 
   return await searchPromise;
 }
@@ -70,10 +70,7 @@ export default function SearchPage() {
           )}
         </SearchResults>
       )}
-      <div>
-        {JSON.stringify(result)}
-
-      </div>
+      <div>{JSON.stringify(result)}</div>
       <Analytics.SearchView data={{ searchTerm: term, searchResults: result }} />
     </div>
   );

@@ -17,8 +17,6 @@ export function HeaderMenu({
   primaryDomainUrl: HeaderQuery["shop"]["primaryDomain"]["url"];
   publicStoreDomain: HeaderProps["publicStoreDomain"];
 }) {
-
-
   const FALLBACK_HEADER_MENU = {
     id: "gid://shopify/Menu/199655587896",
     items: [
@@ -73,13 +71,7 @@ export function HeaderMenu({
             ? new URL(item.url).pathname
             : item.url;
         return (
-          <NavLink
-            className="header-menu-item"
-            end
-            key={item.id}
-            prefetch="intent"
-            to={url}
-          >
+          <NavLink className="header-menu-item" end key={item.id} prefetch="intent" to={url}>
             {item.title}
           </NavLink>
         );

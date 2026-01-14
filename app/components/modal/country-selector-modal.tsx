@@ -1,3 +1,4 @@
+import { Earth } from "@icon-park/react";
 import {
   Dialog,
   DialogClose,
@@ -10,7 +11,6 @@ import {
 } from "~/components/ui/dialog";
 import { Separator } from "~/components/ui/separator";
 import { CountrySelector } from "../layout/menu/country-selector";
-import { Earth } from "@icon-park/react";
 
 export function CountrySelectorModal() {
   return (
@@ -20,7 +20,7 @@ export function CountrySelectorModal() {
           <DialogTrigger>
             <Earth size="24" theme="outline" />
           </DialogTrigger>
-          <DialogContent className="lg:max-w-4xl">
+          <DialogContent className="lg:max-w-2xl">
             <DialogHeader className="">
               <DialogTitle>Country Selector</DialogTitle>
               <DialogDescription>Select your country and language preferences</DialogDescription>

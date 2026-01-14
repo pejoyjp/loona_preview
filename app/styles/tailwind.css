@@ -13,35 +13,35 @@
  * ======================================================= */
 @theme inline {
   /* 圆角系统（统一尺度，便于整体调整） */
-  --radius-sm: calc(var(--radius) - 4px);   /* 小组件 */
-  --radius-md: calc(var(--radius) - 2px);   /* 表单 / 次级组件 */
-  --radius-lg: var(--radius);               /* 默认 */
-  --radius-xl: calc(var(--radius) + 4px);   /* 卡片 */
-  --radius-2xl: calc(var(--radius) + 8px);  /* 弹层 */
+  --radius-sm: calc(var(--radius) - 4px); /* 小组件 */
+  --radius-md: calc(var(--radius) - 2px); /* 表单 / 次级组件 */
+  --radius-lg: var(--radius); /* 默认 */
+  --radius-xl: calc(var(--radius) + 4px); /* 卡片 */
+  --radius-2xl: calc(var(--radius) + 8px); /* 弹层 */
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
 
   /* 页面级 */
-  --color-background: var(--background);          /* 页面背景 */
-  --color-foreground: var(--foreground);          /* 主文字 */
+  --color-background: var(--background); /* 页面背景 */
+  --color-foreground: var(--foreground); /* 主文字 */
 
   /* 卡片 / 容器 */
-  --color-card: var(--card);                      /* 卡片背景 */
-  --color-card-foreground: var(--card-foreground);/* 卡片文字 */
+  --color-card: var(--card); /* 卡片背景 */
+  --color-card-foreground: var(--card-foreground); /* 卡片文字 */
 
   /* 浮层 */
-  --color-popover: var(--popover);                /* 弹层背景 */
+  --color-popover: var(--popover); /* 弹层背景 */
   --color-popover-foreground: var(--popover-foreground);
 
   /* 操作语义 */
-  --color-primary: var(--primary);                /* 主操作 */
+  --color-primary: var(--primary); /* 主操作 */
   --color-primary-foreground: var(--primary-foreground);
 
-  --color-secondary: var(--secondary);            /* 次级操作 */
+  --color-secondary: var(--secondary); /* 次级操作 */
   --color-secondary-foreground: var(--secondary-foreground);
 
   /* 弱语义 */
-  --color-muted: var(--muted);                    /* 弱背景 */
+  --color-muted: var(--muted); /* 弱背景 */
   --color-muted-foreground: var(--muted-foreground); /* 次要文字 */
 
   /* 强调 / 选中 */
@@ -52,9 +52,9 @@
   --color-destructive: var(--destructive);
 
   /* 边界 / 交互反馈 */
-  --color-border: var(--border);                  /* 边框 / 分割线 */
-  --color-input: var(--input);                    /* 输入框 */
-  --color-ring: var(--ring);                      /* focus ring */
+  --color-border: var(--border); /* 边框 / 分割线 */
+  --color-input: var(--input); /* 输入框 */
+  --color-ring: var(--ring); /* focus ring */
 
   /* 图表（无语义，仅区分颜色） */
   --color-chart-1: var(--chart-1);
@@ -82,8 +82,8 @@
   --radius: 0.625rem; /* 全局圆角基准 */
 
   /* 页面基础 */
-  --background: oklch(1 0 0);            /* 页面背景（白） */
-  --foreground: #262626;                 /* 主体文字 */
+  --background: oklch(1 0 0); /* 页面背景（白） */
+  --foreground: #262626; /* 主体文字 */
 
   /* 卡片 */
   --card: oklch(1 0 0);
@@ -94,15 +94,15 @@
   --popover-foreground: oklch(0.145 0 0);
 
   /* 主 / 次操作 */
-  --primary: oklch(0.205 0 0);            /* 主按钮背景 */
+  --primary: oklch(0.205 0 0); /* 主按钮背景 */
   --primary-foreground: oklch(0.985 0 0); /* 主按钮文字 */
 
-  --secondary: #EEECFF;                 /* 次级按钮背景 */
+  --secondary: #eeecff; /* 次级按钮背景 */
   --secondary-foreground: oklch(0.205 0 0);
 
   /* 弱语义 */
-  --muted: #f5f5f5;                       /* 弱背景区 */
-  --muted-foreground: #262626;           /* 注释 / 次要说明 */
+  --muted: #f5f5f5; /* 弱背景区 */
+  --muted-foreground: #262626; /* 注释 / 次要说明 */
 
   /* 强调 */
   --accent: oklch(0.97 0 0);
@@ -112,9 +112,9 @@
   --destructive: oklch(0.577 0.245 27.325);
 
   /* 边界 & 输入 */
-  --border: oklch(0.922 0 0);             /* 分割线 */
-  --input: oklch(0.922 0 0);              /* 输入框 */
-  --ring: oklch(0.708 0 0);               /* focus 高亮 */
+  --border: oklch(0.922 0 0); /* 分割线 */
+  --input: oklch(0.922 0 0); /* 输入框 */
+  --ring: oklch(0.708 0 0); /* focus 高亮 */
 
   /* 图表 */
   --chart-1: oklch(0.646 0.222 41.116);
@@ -139,8 +139,8 @@
  * 只覆盖颜色，不改语义
  * ======================================================= */
 .dark {
-  --background: oklch(0.145 0 0);          /* 页面背景 */
-  --foreground: oklch(0.985 0 0);          /* 主文字 */
+  --background: oklch(0.145 0 0); /* 页面背景 */
+  --foreground: oklch(0.985 0 0); /* 主文字 */
 
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
