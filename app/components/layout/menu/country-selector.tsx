@@ -1,6 +1,6 @@
 import { DynamicFlag } from "@sankyu/react-circle-flags";
 import { Form, useLocation, useRouteLoaderData } from "react-router";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { TabsBtn, TabsContent, TabsProvider } from "~/components/ui/tab";
 import type { Locale } from "~/data/countries";
 import { countries as countriesData } from "~/data/countries";
 import type { RootLoader } from "~/root";
@@ -95,29 +95,30 @@ export function CountrySelector() {
   };
 
   return (
-    <div className="flex w-full gap-8 ">
+    <div className="flex max-w-full gap-8 overflow-hidden no-scrollbar h-64 max-h-64 lg:h-auto lg:max-h-full">
+
       <div className="hidden lg:flex flex-col gap-8  w-full">
         {continentEntries.map(([continent, countriesByCode]) => (
           <div key={continent} className="flex flex-col gap-4 w-full">
             <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
               {continent}
             </p>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 ">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {Object.values(countriesByCode).map((locales) => renderCountryCard(locales))}
             </div>
           </div>
         ))}
       </div>
 
-      <div className="md:hidden w-full">
-        <Tabs defaultValue={continentEntries[0]?.[0] ?? continentOrder[0]} className="max-w-full  gap-4 ">
-          <TabsList className="">
+      <div className="md:hidden w-full ">
+        <TabsProvider defaultValue={continentEntries[0]?.[0] ?? continentOrder[0]}>
+          <div className="flex w-full overflow-x-auto whitespace-nowrap scrollbar-hide">
             {continentEntries.map(([continent]) => (
-              <TabsTrigger key={continent} value={continent} className="">
+              <TabsBtn key={continent} value={continent} className="">
                 {continent}
-              </TabsTrigger>
+              </TabsBtn>
             ))}
-          </TabsList>
+          </div>
           {continentEntries.map(([continent, countriesByCode]) => (
             <TabsContent key={continent} value={continent} className="pt-4 ">
               <div className="flex flex-col gap-4">
@@ -125,7 +126,7 @@ export function CountrySelector() {
               </div>
             </TabsContent>
           ))}
-        </Tabs>
+        </TabsProvider>
       </div>
     </div>
   );

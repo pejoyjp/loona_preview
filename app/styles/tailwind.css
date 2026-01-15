@@ -202,3 +202,14 @@
     font-family: var(--font-display);
   }
 }
+
+/* 隐藏 scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE / Edge */
+  scrollbar-width: none; /* Firefox */
+  scrollbar-color: transparent transparent;
+}
