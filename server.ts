@@ -20,6 +20,7 @@ export default {
         build: await import("virtual:react-router/server-build"),
         mode: process.env.NODE_ENV,
         getLoadContext: () => hydrogenContext,
+        
       });
 
       const response = await handleRequest(request);
