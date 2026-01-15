@@ -17,7 +17,7 @@ export function ProductModal() {
         <DialogTrigger asChild>
           <Button variant="outline">Open Dialog</Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[460px]">
+        <DialogContent className="max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Edit profile</DialogTitle>
             <DialogDescription>

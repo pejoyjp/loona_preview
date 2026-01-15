@@ -110,13 +110,8 @@ export function CountrySelector() {
       </div>
 
       <div className="md:hidden w-full">
-        <Tabs defaultValue={continentEntries[0]?.[0] ?? continentOrder[0]} className="max-w-full bg-amber-600 gap-4 ">
-          <TabsList className="w-full
-    overflow-x-auto
-    whitespace-nowrap
-    flex-nowrap
-    shrink-0
-    no-scrollbar">
+        <Tabs defaultValue={continentEntries[0]?.[0] ?? continentOrder[0]} className="max-w-full  gap-4 ">
+          <TabsList className="">
             {continentEntries.map(([continent]) => (
               <TabsTrigger key={continent} value={continent} className="">
                 {continent}
@@ -124,7 +119,7 @@ export function CountrySelector() {
             ))}
           </TabsList>
           {continentEntries.map(([continent, countriesByCode]) => (
-            <TabsContent key={continent} value={continent} className="pt-4 bg-red-200">
+            <TabsContent key={continent} value={continent} className="pt-4 ">
               <div className="flex flex-col gap-4">
                 {Object.values(countriesByCode).map((locales) => renderCountryCard(locales))}
               </div>
