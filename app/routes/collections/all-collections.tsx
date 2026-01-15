@@ -1,5 +1,9 @@
 import { getPaginationVariables, Image, Money } from "@shopify/hydrogen";
-import { type LoaderFunctionArgs, type MetaFunction, useLoaderData } from "react-router";
+import {
+  type LoaderFunctionArgs,
+  type MetaFunction,
+  useLoaderData,
+} from "react-router";
 import type { CollectionItemFragment } from "storefrontapi.generated";
 import { PaginatedResourceSection } from "~/components/layout/paginated-resource-section";
 import { ProductItem } from "~/components/product/product-item";

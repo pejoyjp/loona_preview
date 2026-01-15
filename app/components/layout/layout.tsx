@@ -1,7 +1,14 @@
 import { Suspense, useId } from "react";
 import { Await, Link } from "react-router";
-import type { CartApiQueryFragment, FooterQuery, HeaderQuery } from "storefrontapi.generated";
-import { SEARCH_ENDPOINT, SearchFormPredictive } from "~/components/search/search-form-predictive";
+import type {
+  CartApiQueryFragment,
+  FooterQuery,
+  HeaderQuery,
+} from "storefrontapi.generated";
+import {
+  SEARCH_ENDPOINT,
+  SearchFormPredictive,
+} from "~/components/search/search-form-predictive";
 import { SearchResultsPredictive } from "~/components/search/search-results-predictive";
 import { CartDrawer } from "../drawer/cart-drawer";
 import { Footer } from "./footer";
@@ -27,11 +34,19 @@ export function PageLayout({
   return (
     <>
       {header && (
-        <Header header={header} isLoggedIn={isLoggedIn} publicStoreDomain={publicStoreDomain} />
+        <Header
+          header={header}
+          isLoggedIn={isLoggedIn}
+          publicStoreDomain={publicStoreDomain}
+        />
       )}
       <CartDrawer cart={cart} />
       <main>{children}</main>
-      <Footer footer={footer} header={header} publicStoreDomain={publicStoreDomain} />
+      <Footer
+        footer={footer}
+        header={header}
+        publicStoreDomain={publicStoreDomain}
+      />
     </>
   );
 }
@@ -87,14 +102,21 @@ function SearchAside() {
                 closeSearch={closeSearch}
                 term={term}
               />
-              <SearchResultsPredictive.Pages pages={pages} closeSearch={closeSearch} term={term} />
+              <SearchResultsPredictive.Pages
+                pages={pages}
+                closeSearch={closeSearch}
+                term={term}
+              />
               <SearchResultsPredictive.Articles
                 articles={articles}
                 closeSearch={closeSearch}
                 term={term}
               />
               {term.current && total ? (
-                <Link onClick={closeSearch} to={`${SEARCH_ENDPOINT}?q=${term.current}`}>
+                <Link
+                  onClick={closeSearch}
+                  to={`${SEARCH_ENDPOINT}?q=${term.current}`}
+                >
                   <p>
                     View all results for <q>{term.current}</q>
                     &nbsp; →

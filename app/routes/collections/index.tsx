@@ -85,7 +85,7 @@ function CollectionItem({
           data={collection.image}
           loading={index < 3 ? "eager" : undefined}
           sizes="(min-width: 45em) 400px, 100vw"
-          className="max-w-lg w-full mx-auto rounded-sm"
+          className="w-20! sm:w-[calc(100%-2rem)]! lg:w-full! mx-auto rounded-sm"
         />
       )}
       <h5>{collection.title}</h5>

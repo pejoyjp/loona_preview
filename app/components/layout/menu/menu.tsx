@@ -1,5 +1,8 @@
 import { NavLink } from "react-router";
-import type { CartApiQueryFragment, HeaderQuery } from "storefrontapi.generated";
+import type {
+  CartApiQueryFragment,
+  HeaderQuery,
+} from "storefrontapi.generated";
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -17,8 +20,6 @@ export function HeaderMenu({
   primaryDomainUrl: HeaderQuery["shop"]["primaryDomain"]["url"];
   publicStoreDomain: HeaderProps["publicStoreDomain"];
 }) {
-
-
   const FALLBACK_HEADER_MENU = {
     id: "gid://shopify/Menu/199655587896",
     items: [
@@ -62,7 +63,7 @@ export function HeaderMenu({
   };
 
   return (
-    <nav className="hidden items-center gap-20  lg:flex">
+    <nav className="hidden items-center gap-10  sm:flex sm:flex-1 justify-center mx-6 min-w-0">
       {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
         if (!item.url) return null;
 

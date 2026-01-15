@@ -1,5 +1,5 @@
 import { useAnalytics, useOptimisticCart } from "@shopify/hydrogen";
-import { MenuIcon, ShoppingBagIcon } from "lucide-react";
+import { MenuIcon, ShoppingBagIcon, Menu } from "lucide-react";
 import { Suspense, useState } from "react";
 import { Await, NavLink, useAsyncValue } from "react-router";
 import type { HeaderQuery } from "storefrontapi.generated";
@@ -8,6 +8,7 @@ import { useMobileMenuDrawerStore } from "~/hooks/store/use-mobile-menu-store";
 import { MobileMenuDrawer } from "../drawer/mobile-menu-drawer";
 import { CountrySelectorModal } from "../modal/country-selector-modal";
 import { HeaderMenu } from "./menu/menu";
+import { HamburgerButton, Me, Search } from "@icon-park/react";
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -22,24 +23,43 @@ export function Header({ header, isLoggedIn, publicStoreDomain }: HeaderProps) {
 
   return (
     <>
-      <header className="flex items-center justify-center gap-6">
-        <NavLink prefetch="intent" to="/" end>
+      <header className="flex flex-col ">
+        <NavLink className="text-center" prefetch="intent" to="/" end>
           <strong>{shop.name}</strong>
         </NavLink>
-        <HeaderMenu
-          menu={menu}
-          primaryDomainUrl={header.shop.primaryDomain.url}
-          publicStoreDomain={publicStoreDomain}
-        />
-        <MobileMenuDrawer
-          menu={menu}
-          primaryDomainUrl={header.shop.primaryDomain.url}
-          publicStoreDomain={publicStoreDomain}
-        />
+        <div className="flex items-center justify-between px-4 sm:px-8 flex-none">
+          <Menu
+            // size={24}
+            onClick={() => setMobileMenuOpen(true)}
+            className=" block sm:hidden  w-6 h-6"
+          />
 
-        <ShoppingBagIcon onClick={() => setCartOpen(true)} />
-        <MenuIcon onClick={() => setMobileMenuOpen(true)} className="block lg:hidden" />
-        <CountrySelectorModal />
+          <HeaderMenu
+            menu={menu}
+            primaryDomainUrl={header.shop.primaryDomain.url}
+            publicStoreDomain={publicStoreDomain}
+          />
+          <div className="flex items-center justify-center gap-2 sm:gap-6 flex-none">
+            <Search className="header-btn cursor-pointer"></Search>
+
+            <NavLink to="/account" prefetch="intent">
+              <Me className="header-btn"></Me>
+            </NavLink>
+
+            <ShoppingBagIcon onClick={() => setCartOpen(true)} />
+            <CountrySelectorModal />
+          </div>
+          <MobileMenuDrawer
+            menu={menu}
+            primaryDomainUrl={header.shop.primaryDomain.url}
+            publicStoreDomain={publicStoreDomain}
+          />
+        </div>
+
+        {/* <MenuIcon
+          onClick={() => setMobileMenuOpen(true)}
+          className="block lg:hidden"
+        /> */}
       </header>
 
       {/* <MobileMenu
