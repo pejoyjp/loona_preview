@@ -47,20 +47,30 @@ export default function Collections() {
 
   return (
     <div className="collections">
-      <h1>Collections</h1>
+      {/* <h1>Collections</h1> */}
       <PaginatedResourceSection<CollectionFragment>
         connection={collections}
         resourcesClassName="collections-grid"
       >
         {({ node: collection, index }) => (
-          <CollectionItem key={collection.id} collection={collection} index={index} />
+          <CollectionItem
+            key={collection.id}
+            collection={collection}
+            index={index}
+          />
         )}
       </PaginatedResourceSection>
     </div>
   );
 }
 
-function CollectionItem({ collection, index }: { collection: CollectionFragment; index: number }) {
+function CollectionItem({
+  collection,
+  index,
+}: {
+  collection: CollectionFragment;
+  index: number;
+}) {
   return (
     <Link
       className="collection-item"
@@ -75,6 +85,7 @@ function CollectionItem({ collection, index }: { collection: CollectionFragment;
           data={collection.image}
           loading={index < 3 ? "eager" : undefined}
           sizes="(min-width: 45em) 400px, 100vw"
+          className="max-w-lg w-full mx-auto rounded-sm"
         />
       )}
       <h5>{collection.title}</h5>
