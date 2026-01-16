@@ -1,3 +1,4 @@
+import { HamburgerButton, Shopping } from "@icon-park/react";
 import { useAnalytics, useOptimisticCart } from "@shopify/hydrogen";
 import { MenuIcon, ShoppingBagIcon, Menu } from "lucide-react";
 import { Suspense, useState } from "react";

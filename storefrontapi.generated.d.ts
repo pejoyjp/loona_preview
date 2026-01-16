@@ -1479,6 +1479,17 @@ export type PageQuery = {
   >;
 };
 
+export type CartBuyerIdentityUpdateMutationVariables = StorefrontAPI.Exact<{
+  cartId: StorefrontAPI.Scalars['ID']['input'];
+  buyerIdentity: StorefrontAPI.CartBuyerIdentityInput;
+}>;
+
+export type CartBuyerIdentityUpdateMutation = {
+  cartBuyerIdentityUpdate?: StorefrontAPI.Maybe<{
+    cart?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Cart, 'id'>>;
+  }>;
+};
+
 export type PolicyFragment = Pick<
   StorefrontAPI.ShopPolicy,
   "body" | "handle" | "id" | "title" | "url"
@@ -2022,6 +2033,10 @@ interface GeneratedMutationTypes {
   "#graphql\nmutation customerUpdate(\n  $customer: CustomerUpdateInput!\n  $customerAccessToken: String!\n) {\n  customerUpdate(\n    customer: $customer\n    customerAccessToken: $customerAccessToken\n  ) {\n    userErrors {\n      field\n      message\n    }\n  }\n}\n": {
     return: CustomerUpdateMutation;
     variables: CustomerUpdateMutationVariables;
+  };
+  '#graphql\n  mutation CartBuyerIdentityUpdate(\n    $cartId: ID!\n    $buyerIdentity: CartBuyerIdentityInput!\n  ) {\n    cartBuyerIdentityUpdate(cartId: $cartId, buyerIdentity: $buyerIdentity) {\n      cart {\n        id\n      }\n    }\n  }\n': {
+    return: CartBuyerIdentityUpdateMutation;
+    variables: CartBuyerIdentityUpdateMutationVariables;
   };
 }
 

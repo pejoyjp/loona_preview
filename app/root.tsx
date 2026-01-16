@@ -13,8 +13,6 @@ import {
   useRouteLoaderData,
 } from "react-router";
 import favicon from "~/assets/favicon.svg";
-import { getCountries, getRootDomain } from "~/data/countries";
-import resetStyles from "~/styles/reset.css?url";
 import type { Route } from "./+types/root";
 import { PageLayout } from "./components/layout/layout";
 import { FOOTER_QUERY, HEADER_QUERY } from "./graphql/fragments";
@@ -69,7 +67,6 @@ export function links() {
 export async function loader(args: Route.LoaderArgs) {
   // Start fetching non-critical data without blocking time to first byte
   const deferredData = loadDeferredData(args);
-
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
 
@@ -98,7 +95,7 @@ export async function loader(args: Route.LoaderArgs) {
  * Load data necessary for rendering content above the fold. This is the critical data
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  */
-async function loadCriticalData({ context }: Route.LoaderArgs) {
+async function loadCriticalData({ context }: LoaderFunctionArgs) {
   const { storefront } = context;
 
   const [header] = await Promise.all([
@@ -121,10 +118,6 @@ async function loadCriticalData({ context }: Route.LoaderArgs) {
  */
 function loadDeferredData({ context, request }: LoaderFunctionArgs) {
   const { storefront, customerAccount, cart } = context;
-
-  const url = new URL(request.url);
-  const rootDomain = getRootDomain(url.host);
-
   const footer = storefront
     .query(FOOTER_QUERY, {
       cache: storefront.CacheLong(),
@@ -142,7 +135,6 @@ function loadDeferredData({ context, request }: LoaderFunctionArgs) {
     isLoggedIn: customerAccount.isLoggedIn(),
     footer,
     selectedLocale: getLocaleFromRequest(request),
-    countries: getCountries(rootDomain),
     okendoProviderData: getOkendoProviderData({
       context,
       subscriberId: "63676b51-1ecc-4241-95b8-1e4c501bc9fb",
@@ -159,7 +151,6 @@ export function Layout({ children }: { children?: React.ReactNode }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link rel="stylesheet" href={tailwindCss} />
-        <link rel="stylesheet" href={resetStyles} />
         <Meta />
         <Links />
       </head>
@@ -188,8 +179,8 @@ export default function App() {
       <Analytics.Provider cart={data.cart} shop={data.shop} consent={data.consent}>
         <TranslationProvider
           locale={{
-            language: data.consent.language,
-            country: data.consent.country,
+            language: data.selectedLocale.language,
+            country: data.selectedLocale.country,
           }}
         >
           <PageLayout {...data}>

@@ -19,6 +19,9 @@ export default hydrogenRoutes([
       route(":blogHandle", "routes/blogs/handle.tsx"),
       route(":blogHandle/:articleHandle", "routes/blogs/articles-handle.tsx"),
     ]),
+    ...prefix("search", [
+      index("routes/search.tsx"),
+    ]),
     ...prefix("policies", [
       index("routes/policies/index.tsx"),
       route(":policyHandle", "routes/policies/handle.tsx"),
@@ -54,5 +57,6 @@ export default hydrogenRoutes([
     route("discount/:code", "routes/discount-code.tsx"),
     route("sitemap.xml", "routes/seo/sitemap.ts"),
     route("sitemap/:type/:page.xml", "routes/seo/sitemap-page.ts"),
+    route("locale", "routes/locale.tsx"),
   ]),
 ]) satisfies RouteConfig;
