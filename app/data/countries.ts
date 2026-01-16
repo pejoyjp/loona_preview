@@ -14,11 +14,7 @@ export function getRootDomain(host: string): string {
   const isLocalhost = parts[parts.length - 1] === "localhost";
 
   const rootDomain =
-    parts.length <= 1
-      ? hostname
-      : isLocalhost
-        ? "localhost"
-        : parts.slice(-2).join(".");
+    parts.length <= 1 ? hostname : isLocalhost ? "localhost" : parts.slice(-2).join(".");
 
   return port ? `${rootDomain}:${port}` : rootDomain;
 }
@@ -79,9 +75,7 @@ export function stripLocaleFromPath(pathname: string, locales: Locale[]): string
   if (segments.length === 0) return "/";
 
   const matched = locales.find(
-    (locale) =>
-      locale.pathPrefix &&
-      locale.pathPrefix.toLowerCase() === segments[0]?.toLowerCase()
+    (locale) => locale.pathPrefix && locale.pathPrefix.toLowerCase() === segments[0]?.toLowerCase(),
   );
 
   if (!matched) return pathname;

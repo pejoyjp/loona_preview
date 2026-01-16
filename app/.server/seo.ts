@@ -194,7 +194,7 @@ function collectionJsonLd({
         position: index + 1,
         url: `/products/${prod.handle}`,
       };
-    }
+    },
   );
 
   return [

@@ -9,6 +9,6 @@ export async function loader({ request }: { request: Request }) {
 
   return data(
     { ...countries },
-    { headers: { "cache-control": generateCacheControlHeader(CacheLong()) } }
+    { headers: { "cache-control": generateCacheControlHeader(CacheLong()) } },
   );
 }

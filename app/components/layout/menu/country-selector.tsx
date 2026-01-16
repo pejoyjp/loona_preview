@@ -13,8 +13,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu"
-
+} from "~/components/ui/dropdown-menu";
 
 export function CountrySelector() {
   const root = useRouteLoaderData<RootLoader>("root");
@@ -105,8 +104,6 @@ export function CountrySelector() {
                 )}
               </button>
             </Form>
-
-        
 
             {isMultipleLanguages && isExpanded && (
               <div className="bg-background rounded-md relative">

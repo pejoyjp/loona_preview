@@ -9,4 +9,6 @@ node_modules
 .react-router
 .trae
 .codebuddy
-.vscode
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json

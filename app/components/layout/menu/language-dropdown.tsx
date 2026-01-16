@@ -21,7 +21,11 @@ export function LanguageDropdown({
         const href = `https://${locale.host}${pathWithLocale}${search}`;
 
         return (
-          <Link key={locale.language} to={href} className="text-muted-foreground flex justify-center items-center hover:bg-secondary h-12 border-t">
+          <Link
+            key={locale.language}
+            to={href}
+            className="text-muted-foreground flex justify-center items-center hover:bg-secondary h-12 border-t"
+          >
             {locale.language}
           </Link>
         );

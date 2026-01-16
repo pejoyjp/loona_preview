@@ -28,6 +28,6 @@ export default defineConfig({
     },
   },
   server: {
-    allowedHosts: [".tryhydrogen.dev",".localhost"],
+    allowedHosts: [".tryhydrogen.dev", ".localhost"],
   },
 });

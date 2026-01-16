@@ -7,7 +7,7 @@ export async function action({ params, context, request }: ActionFunctionArgs) {
       method: "POST",
       body: request.body,
       headers: request.headers,
-    }
+    },
   );
 
   return new Response(response.body, {

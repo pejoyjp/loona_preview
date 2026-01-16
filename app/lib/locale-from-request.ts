@@ -14,16 +14,15 @@ export function getLocaleFromRequest(request: Request): Locale {
 
   // 1) host + pathPrefix（用于 ca 的 /fr）
   const byPrefix = localesForHost.find(
-    (l) => l.pathPrefix && l.pathPrefix.toLowerCase() === pathPrefix
+    (l) => l.pathPrefix && l.pathPrefix.toLowerCase() === pathPrefix,
   );
-
 
   if (pathPrefix && hasPathPrefixLocales && !byPrefix) {
     // Host expects a locale path prefix but this one is unsupported.
     throw new Response(`${pathPrefix} not found`, { status: 404 });
   }
   if (byPrefix) return byPrefix;
- 
+
   // 2) host 默认（英文 ca、或 US 默认等）
   const byHostDefault = localesForHost.find((l) => !l.pathPrefix);
   if (byHostDefault) return byHostDefault;

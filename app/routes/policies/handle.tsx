@@ -16,7 +16,7 @@ export async function loader({ params, context }: LoaderFunctionArgs) {
   }
 
   const policyName = params.handle.replace(/-([a-z])/g, (_: unknown, m1: string) =>
-    m1.toUpperCase()
+    m1.toUpperCase(),
   ) as SelectedPolicies;
 
   const data = await context.storefront.query(POLICY_CONTENT_QUERY, {

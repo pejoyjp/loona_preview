@@ -1,8 +1,5 @@
 import { NavLink } from "react-router";
-import type {
-  CartApiQueryFragment,
-  HeaderQuery,
-} from "storefrontapi.generated";
+import type { CartApiQueryFragment, HeaderQuery } from "storefrontapi.generated";
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -74,13 +71,7 @@ export function HeaderMenu({
             ? new URL(item.url).pathname
             : item.url;
         return (
-          <NavLink
-            className="header-menu-item"
-            end
-            key={item.id}
-            prefetch="intent"
-            to={url}
-          >
+          <NavLink className="header-menu-item" end key={item.id} prefetch="intent" to={url}>
             {item.title}
           </NavLink>
         );

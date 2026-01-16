@@ -53,24 +53,14 @@ export default function Collections() {
         resourcesClassName="collections-grid"
       >
         {({ node: collection, index }) => (
-          <CollectionItem
-            key={collection.id}
-            collection={collection}
-            index={index}
-          />
+          <CollectionItem key={collection.id} collection={collection} index={index} />
         )}
       </PaginatedResourceSection>
     </div>
   );
 }
 
-function CollectionItem({
-  collection,
-  index,
-}: {
-  collection: CollectionFragment;
-  index: number;
-}) {
+function CollectionItem({ collection, index }: { collection: CollectionFragment; index: number }) {
   return (
     <Link
       className="collection-item"

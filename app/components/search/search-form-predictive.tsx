@@ -51,7 +51,7 @@ export function SearchFormPredictive({
   function fetchResults(event: React.ChangeEvent<HTMLInputElement>) {
     void fetcher.submit(
       { q: event.target.value || "", limit: 5, predictive: true },
-      { method: "GET", action: SEARCH_ENDPOINT }
+      { method: "GET", action: SEARCH_ENDPOINT },
     );
   }
 
