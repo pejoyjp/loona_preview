@@ -38,13 +38,13 @@ export const action: ActionFunction = async ({ request, context }) => {
     });
   }
 
-  const {PUBLIC_ENVIRONMENT} = context.env;
+  const { PUBLIC_ENVIRONMENT } = context.env;
 
-  const isDev = PUBLIC_ENVIRONMENT === 'development'
+  const isDev = PUBLIC_ENVIRONMENT === "development";
 
   const redirectUrl = new URL(
     `${toLocale.pathPrefix || ""}${path}`,
-    `http${isDev?'':'s'}://${toLocale.host}`
+    `http${isDev ? "" : "s"}://${toLocale.host}`,
   ).toString();
 
   return redirect(redirectUrl, 302);
@@ -58,7 +58,7 @@ async function updateCartBuyerIdentity(
   }: {
     cartId: string;
     buyerIdentity: CartBuyerIdentityInput;
-  }
+  },
 ) {
   const data = await storefront.mutate<{
     cartBuyerIdentityUpdate: { cart: Cart };

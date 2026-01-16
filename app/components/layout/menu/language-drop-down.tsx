@@ -25,7 +25,7 @@ export function LanguageDropDown({
   const activeLocale =
     locales.find(
       (locale) =>
-        locale.language === selectedLocale.language && locale.country === selectedLocale.country
+        locale.language === selectedLocale.language && locale.country === selectedLocale.country,
     ) ?? locales[0];
 
   return (
