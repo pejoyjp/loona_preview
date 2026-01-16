@@ -60,7 +60,7 @@ export function HeaderMenu({
   };
 
   return (
-    <nav className="hidden items-center gap-20  lg:flex">
+    <nav className="hidden items-center gap-10  sm:flex sm:flex-1 justify-center mx-6 min-w-0">
       {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
         if (!item.url) return null;
 

@@ -47,7 +47,7 @@ export default function Collections() {
 
   return (
     <div className="collections">
-      <h1>Collections</h1>
+      {/* <h1>Collections</h1> */}
       <PaginatedResourceSection<CollectionFragment>
         connection={collections}
         resourcesClassName="collections-grid"
@@ -75,6 +75,7 @@ function CollectionItem({ collection, index }: { collection: CollectionFragment;
           data={collection.image}
           loading={index < 3 ? "eager" : undefined}
           sizes="(min-width: 45em) 400px, 100vw"
+          className="w-20! sm:w-[calc(100%-2rem)]! lg:w-full! mx-auto rounded-sm"
         />
       )}
       <h5>{collection.title}</h5>

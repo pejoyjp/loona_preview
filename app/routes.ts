@@ -19,9 +19,7 @@ export default hydrogenRoutes([
       route(":blogHandle", "routes/blogs/handle.tsx"),
       route(":blogHandle/:articleHandle", "routes/blogs/articles-handle.tsx"),
     ]),
-    ...prefix("search", [
-      index("routes/search.tsx"),
-    ]),
+    ...prefix("search", [index("routes/search.tsx")]),
     ...prefix("policies", [
       index("routes/policies/index.tsx"),
       route(":policyHandle", "routes/policies/handle.tsx"),

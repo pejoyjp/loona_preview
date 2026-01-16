@@ -9,7 +9,7 @@ export default async function handleRequest(
   responseStatusCode: number,
   responseHeaders: Headers,
   reactRouterContext: EntryContext,
-  context: HydrogenRouterContextProvider
+  context: HydrogenRouterContextProvider,
 ) {
   const { nonce, header, NonceProvider } = createContentSecurityPolicy({
     shop: {
@@ -56,7 +56,7 @@ export default async function handleRequest(
         console.error(error);
         responseStatusCode = 500;
       },
-    }
+    },
   );
 
   if (isbot(request.headers.get("user-agent"))) {

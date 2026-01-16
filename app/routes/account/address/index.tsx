@@ -53,7 +53,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
         { error: { [addressId]: "Unauthorized" } },
         {
           status: 401,
-        }
+        },
       );
     }
 
@@ -116,14 +116,14 @@ export async function action({ request, context }: ActionFunctionArgs) {
               { error: { [addressId]: error.message } },
               {
                 status: 400,
-              }
+              },
             );
           }
           return data(
             { error: { [addressId]: error } },
             {
               status: 400,
-            }
+            },
           );
         }
       }
@@ -163,14 +163,14 @@ export async function action({ request, context }: ActionFunctionArgs) {
               { error: { [addressId]: error.message } },
               {
                 status: 400,
-              }
+              },
             );
           }
           return data(
             { error: { [addressId]: error } },
             {
               status: 400,
-            }
+            },
           );
         }
       }
@@ -204,14 +204,14 @@ export async function action({ request, context }: ActionFunctionArgs) {
               { error: { [addressId]: error.message } },
               {
                 status: 400,
-              }
+              },
             );
           }
           return data(
             { error: { [addressId]: error } },
             {
               status: 400,
-            }
+            },
           );
         }
       }
@@ -221,7 +221,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
           { error: { [addressId]: "Method not allowed" } },
           {
             status: 405,
-          }
+          },
         );
       }
     }
@@ -231,14 +231,14 @@ export async function action({ request, context }: ActionFunctionArgs) {
         { error: error.message },
         {
           status: 400,
-        }
+        },
       );
     }
     return data(
       { error },
       {
         status: 400,
-      }
+      },
     );
   }
 }

@@ -25,7 +25,7 @@ export function CountrySelector() {
       acc[continent][locale.country].push(locale);
       return acc;
     },
-    {} as Record<string, Record<string, Locale[]>>
+    {} as Record<string, Record<string, Locale[]>>,
   );
 
   const continentOrder = [
@@ -39,7 +39,7 @@ export function CountrySelector() {
   ];
 
   const continentEntries = Object.entries(localesByContinent).sort(
-    (a, b) => continentOrder.indexOf(a[0]) - continentOrder.indexOf(b[0])
+    (a, b) => continentOrder.indexOf(a[0]) - continentOrder.indexOf(b[0]),
   );
 
   if (continentEntries.length === 0) return null;
@@ -49,7 +49,7 @@ export function CountrySelector() {
     const activeLocale =
       locales.find(
         (locale) =>
-          locale.language === selectedLocale.language && locale.country === selectedLocale.country
+          locale.language === selectedLocale.language && locale.country === selectedLocale.country,
       ) ?? locales[0];
 
     if (!isMultiLanguage) {
@@ -96,7 +96,6 @@ export function CountrySelector() {
 
   return (
     <div className="flex max-w-full gap-8 overflow-hidden no-scrollbar h-64 max-h-64 lg:h-auto lg:max-h-full">
-
       <div className="hidden lg:flex flex-col gap-8  w-full">
         {continentEntries.map(([continent, countriesByCode]) => (
           <div key={continent} className="flex flex-col gap-4 w-full">

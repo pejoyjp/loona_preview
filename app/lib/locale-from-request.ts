@@ -9,7 +9,7 @@ export function getLocaleFromRequest(request: Request): Locale {
   if (hostsMatching.length > 0) {
     const pathMatched =
       hostsMatching.find(
-        (locale) => locale.pathPrefix && url.pathname.startsWith(locale.pathPrefix)
+        (locale) => locale.pathPrefix && url.pathname.startsWith(locale.pathPrefix),
       ) ?? hostsMatching[0];
     return pathMatched;
   }

@@ -42,7 +42,7 @@ async function loadCriticalData({ context, request, params }: LoaderFunctionArgs
     {
       handle: blogHandle,
       data: blog,
-    }
+    },
   );
 
   const article = blog.articleByHandle;

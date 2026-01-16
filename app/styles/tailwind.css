@@ -85,7 +85,11 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 }
-
+@layer components {
+  .header-btn {
+    @apply w-6 h-6 flex items-center justify-center [&>svg]:w-full [&>svg]:h-full;
+  }
+}
 /* =========================================================
  * Light theme（默认主题）
  * 这里定义「语义 → 具体颜色」

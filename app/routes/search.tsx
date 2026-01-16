@@ -233,7 +233,7 @@ async function regularSearch({
 
   const total = Object.values(items).reduce(
     (acc: number, { nodes }: { nodes: Array<unknown> }) => acc + nodes.length,
-    0
+    0,
   );
 
   const error = errors
@@ -396,12 +396,12 @@ async function predictiveSearch({
         limitScope: "EACH",
         term,
       },
-    }
+    },
   );
 
   if (errors) {
     throw new Error(
-      `Shopify API errors: ${errors.map(({ message }: { message: string }) => message).join(", ")}`
+      `Shopify API errors: ${errors.map(({ message }: { message: string }) => message).join(", ")}`,
     );
   }
 
@@ -411,7 +411,7 @@ async function predictiveSearch({
 
   const total = Object.values(items).reduce(
     (acc: number, item: Array<unknown>) => acc + item.length,
-    0
+    0,
   );
 
   return { type, term, result: { items, total } };

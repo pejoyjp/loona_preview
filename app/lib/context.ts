@@ -26,7 +26,7 @@ declare global {
 export async function createHydrogenRouterContext(
   request: Request,
   env: Env,
-  executionContext: ExecutionContext
+  executionContext: ExecutionContext,
 ) {
   /**
    * Open a cache instance in the worker and a custom session instance.
@@ -54,7 +54,7 @@ export async function createHydrogenRouterContext(
         queryFragment: CART_QUERY_FRAGMENT,
       },
     },
-    additionalContext
+    additionalContext,
   );
 
   return hydrogenContext;

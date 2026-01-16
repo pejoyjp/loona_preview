@@ -98,7 +98,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
         cartId,
       },
     },
-    { status, headers }
+    { status, headers },
   );
 }
 

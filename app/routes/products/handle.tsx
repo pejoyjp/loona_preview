@@ -90,7 +90,7 @@ export default function Product() {
   // Optimistically selects a variant with given available variant information
   const selectedVariant = useOptimisticVariant(
     product.selectedOrFirstAvailableVariant,
-    getAdjacentAndFirstAvailableVariants(product)
+    getAdjacentAndFirstAvailableVariants(product),
   );
 
   // Sets the search param to the selected variant without navigation

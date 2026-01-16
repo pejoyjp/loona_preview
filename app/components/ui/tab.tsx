@@ -6,9 +6,9 @@ import React, {
   isValidElement,
   useMemo,
   useCallback,
-} from 'react';
-import { cn } from '~/lib/utils';
-import { AnimatePresence, motion } from 'motion/react';
+} from "react";
+import { cn } from "~/lib/utils";
+import { AnimatePresence, motion } from "motion/react";
 
 // Improved TypeScript interfaces with more specific types
 interface TabContextType {
@@ -28,7 +28,7 @@ const TabContext = createContext<TabContextType | undefined>(undefined);
 export const useTabs = () => {
   const context = useContext(TabContext);
   if (!context) {
-    throw new Error('useTabs must be used within a TabsProvider');
+    throw new Error("useTabs must be used within a TabsProvider");
   }
   return context;
 };
@@ -79,102 +79,80 @@ export const TabsProvider: React.FC<TabsProviderProps> = React.memo(
         prevIndex,
         tabsOrder,
       }),
-      [
-        activeTab,
-        setActiveTab,
-        wobbly,
-        hover,
-        defaultValue,
-        prevIndex,
-        tabsOrder,
-      ]
+      [activeTab, setActiveTab, wobbly, hover, defaultValue, prevIndex, tabsOrder],
     );
 
-    return (
-      <TabContext.Provider value={contextValue}>{children}</TabContext.Provider>
-    );
-  }
+    return <TabContext.Provider value={contextValue}>{children}</TabContext.Provider>;
+  },
 );
 
 // Memoized TabsBtn component
-export const TabsBtn: React.FC<TabsBtnProps> = React.memo(
-  ({ children, className, value }) => {
-    const {
-      activeTab,
-      setPrevIndex,
-      setActiveTab,
-      defaultValue,
-      hover,
-      wobbly,
-      tabsOrder,
-    } = useTabs();
+export const TabsBtn: React.FC<TabsBtnProps> = React.memo(({ children, className, value }) => {
+  const { activeTab, setPrevIndex, setActiveTab, defaultValue, hover, wobbly, tabsOrder } =
+    useTabs();
 
-    // Use useCallback to memoize the click handler
-    const handleClick = useCallback(() => {
-      setPrevIndex(tabsOrder.indexOf(activeTab));
-      setActiveTab(value);
-    }, [setPrevIndex, tabsOrder, activeTab, setActiveTab, value]);
+  // Use useCallback to memoize the click handler
+  const handleClick = useCallback(() => {
+    setPrevIndex(tabsOrder.indexOf(activeTab));
+    setActiveTab(value);
+  }, [setPrevIndex, tabsOrder, activeTab, setActiveTab, value]);
 
-    return (
-      <motion.div
-        className={cn(
-          `cursor-pointer 2xl:p-2 p-2 2xl:px-4 px-2 rounded-md relative`,
-          className
+  return (
+    <motion.div
+      className={cn(`cursor-pointer 2xl:p-2 p-2 2xl:px-4 px-2 rounded-md relative`, className)}
+      onFocus={() => hover && handleClick()}
+      onMouseEnter={() => hover && handleClick()}
+      onClick={handleClick}
+    >
+      {children}
+
+      <AnimatePresence mode="wait">
+        {activeTab === value && (
+          <>
+            <motion.div
+              transition={{
+                layout: {
+                  duration: 0.2,
+                  ease: "easeInOut",
+                  delay: 0.2,
+                },
+              }}
+              layoutId={defaultValue}
+              className="absolute w-full h-0.5 left-0 bottom-0 bg-foreground rounded-md z-1"
+            />
+
+            {wobbly && (
+              <>
+                <motion.div
+                  transition={{
+                    layout: {
+                      duration: 0.4,
+                      ease: "easeInOut",
+                      delay: 0.04,
+                    },
+                  }}
+                  layoutId={defaultValue}
+                  className="absolute w-full h-0.5 left-0 bottom-0 bg-foreground rounded-md z-1 tab-shadow"
+                />
+                <motion.div
+                  transition={{
+                    layout: {
+                      duration: 0.4,
+                      ease: "easeOut",
+                      delay: 0.2,
+                    },
+                  }}
+                  layoutId={`${defaultValue}b`}
+                  className="absolute w-full h-0.5 left-0 bottom-0 bg-foreground rounded-md z-1 tab-shadow"
+                />
+              </>
+            )}
+          </>
         )}
-        onFocus={() => hover && handleClick()}
-        onMouseEnter={() => hover && handleClick()}
-        onClick={handleClick}
-      >
-        {children}
-
-        <AnimatePresence mode='wait'>
-          {activeTab === value && (
-            <>
-              <motion.div
-                transition={{
-                  layout: {
-                    duration: 0.2,
-                    ease: 'easeInOut',
-                    delay: 0.2,
-                  },
-                }}
-                layoutId={defaultValue}
-                className='absolute w-full h-0.5 left-0 bottom-0 bg-foreground rounded-md z-1'
-              />
-
-              {wobbly && (
-                <>
-                  <motion.div
-                    transition={{
-                      layout: {
-                        duration: 0.4,
-                        ease: 'easeInOut',
-                        delay: 0.04,
-                      },
-                    }}
-                    layoutId={defaultValue}
-                    className='absolute w-full h-0.5 left-0 bottom-0 bg-foreground rounded-md z-1 tab-shadow'
-                  />
-                  <motion.div
-                    transition={{
-                      layout: {
-                        duration: 0.4,
-                        ease: 'easeOut',
-                        delay: 0.2,
-                      },
-                    }}
-                    layoutId={`${defaultValue}b`}
-                    className='absolute w-full h-0.5 left-0 bottom-0 bg-foreground rounded-md z-1 tab-shadow'
-                  />
-                </>
-              )}
-            </>
-          )}
-        </AnimatePresence>
-      </motion.div>
-    );
-  }
-);
+      </AnimatePresence>
+    </motion.div>
+  );
+});
 
 // Memoized TabsContent component
 export const TabsContent: React.FC<TabsContentProps> = React.memo(
@@ -184,11 +162,11 @@ export const TabsContent: React.FC<TabsContentProps> = React.memo(
     // Memoize direction calculation
     const isForward = useMemo(
       () => tabsOrder.indexOf(activeTab) > prevIndex,
-      [tabsOrder, activeTab, prevIndex]
+      [tabsOrder, activeTab, prevIndex],
     );
 
     return (
-      <AnimatePresence mode='popLayout'>
+      <AnimatePresence mode="popLayout">
         {activeTab === value && (
           <motion.div
             initial={{ opacity: 0, y: yValue ? (isForward ? 10 : -10) : 0 }}
@@ -196,20 +174,20 @@ export const TabsContent: React.FC<TabsContentProps> = React.memo(
             exit={{ opacity: 0, y: yValue ? (isForward ? -50 : 50) : 0 }}
             transition={{
               duration: 0.3,
-              ease: 'easeInOut',
+              ease: "easeInOut",
               delay: 0.5,
             }}
-            className={cn('p-2 px-4 rounded-md relative', className)}
+            className={cn("p-2 px-4 rounded-md relative", className)}
           >
             {children}
           </motion.div>
         )}
       </AnimatePresence>
     );
-  }
+  },
 );
 
 // Add display names for better debugging
-TabsProvider.displayName = 'TabsProvider';
-TabsBtn.displayName = 'TabsBtn';
-TabsContent.displayName = 'TabsContent';
+TabsProvider.displayName = "TabsProvider";
+TabsBtn.displayName = "TabsBtn";
+TabsContent.displayName = "TabsContent";

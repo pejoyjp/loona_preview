@@ -104,7 +104,7 @@ export function MediaModal({ imgSrc, videoSrc, image, className }: IMediaModal) 
               <motion.div
                 className={cn(
                   "pointer-events-auto relative flex flex-col overflow-hidden dark:bg-gray-950 bg-gray-200 border w-1/4 aspect-square",
-                  imgSrc && "cursor-zoom-out"
+                  imgSrc && "cursor-zoom-out",
                 )}
                 layoutId={`dialog-${uniqueId}`}
                 layout={isMediaModalOpen}
