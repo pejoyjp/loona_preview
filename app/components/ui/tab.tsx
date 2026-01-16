@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, {
   ReactNode,
   createContext,
@@ -191,3 +192,164 @@ export const TabsContent: React.FC<TabsContentProps> = React.memo(
 TabsProvider.displayName = "TabsProvider";
 TabsBtn.displayName = "TabsBtn";
 TabsContent.displayName = "TabsContent";
+=======
+import { AnimatePresence, motion } from "motion/react";
+import React, {
+  createContext,
+  isValidElement,
+  type ReactNode,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
+import { cn } from "~/lib/utils";
+
+// Improved TypeScript interfaces with more specific types
+interface TabContextType {
+  activeTab: string;
+  setActiveTab: (value: string) => void;
+  wobbly: boolean;
+  hover: boolean;
+  defaultValue: string;
+  prevIndex: number;
+  setPrevIndex: (value: number) => void;
+  tabsOrder: string[];
+}
+
+const TabContext = createContext<TabContextType | undefined>(undefined);
+
+// Custom hook with memoization
+export const useTabs = () => {
+  const context = useContext(TabContext);
+  if (!context) {
+    throw new Error("useTabs must be used within a TabsProvider");
+  }
+  return context;
+};
+
+// Props interfaces with more specific types
+interface TabsProviderProps {
+  children: ReactNode;
+  defaultValue: string;
+  wobbly?: boolean;
+  hover?: boolean;
+}
+
+interface TabsBtnProps {
+  children: ReactNode;
+  className?: string;
+  value: string;
+}
+
+interface TabsContentProps {
+  children: ReactNode;
+  className?: string;
+  value: string;
+  yValue?: boolean;
+}
+
+export const TabsProvider: React.FC<TabsProviderProps> = React.memo(
+  ({ children, defaultValue, wobbly = true, hover = false }) => {
+    // Use useCallback to memoize state setters
+    const [activeTab, setActiveTab] = useState(defaultValue);
+    const [prevIndex, setPrevIndex] = useState(0);
+
+    // Memoize tabs order to prevent unnecessary recalculations
+    const tabsOrder = useMemo(() => {
+      return React.Children.toArray(children)
+        .filter((child) => isValidElement(child) && child.type === TabsContent)
+        .map((child) => (child as React.ReactElement<any>).props.value);
+    }, [children]);
+
+    // Memoize context value to prevent unnecessary re-renders
+    const contextValue = useMemo(
+      () => ({
+        activeTab,
+        setActiveTab,
+        wobbly,
+        hover,
+        defaultValue,
+        setPrevIndex,
+        prevIndex,
+        tabsOrder,
+      }),
+      [activeTab, wobbly, hover, defaultValue, prevIndex, tabsOrder]
+    );
+
+    return <TabContext.Provider value={contextValue}>{children}</TabContext.Provider>;
+  }
+);
+
+// Memoized TabsBtn component
+export const TabsBtn: React.FC<TabsBtnProps> = React.memo(({ children, className, value }) => {
+  const { activeTab, setPrevIndex, setActiveTab, hover, tabsOrder } = useTabs();
+
+  // Use useCallback to memoize the click handler
+  const handleClick = useCallback(() => {
+    setPrevIndex(tabsOrder.indexOf(activeTab));
+    setActiveTab(value);
+  }, [setPrevIndex, tabsOrder, activeTab, setActiveTab, value]);
+
+  return (
+    <motion.div
+      className={cn(`cursor-pointer 2xl:p-2 p-2 2xl:px-4 px-2 rounded-md relative`, className)}
+      onFocus={() => hover && handleClick()}
+      onMouseEnter={() => hover && handleClick()}
+      onClick={handleClick}
+    >
+      <motion.span
+        initial={false}
+        animate={{
+          color: activeTab === value ? "var(--primary)" : "var(--foreground)",
+        }}
+        transition={{
+          duration: 0.4,
+          ease: "easeInOut",
+          delay: activeTab === value ? 0.2 : 0,
+        }}
+      >
+        {children}
+      </motion.span>
+    </motion.div>
+  );
+});
+
+// Memoized TabsContent component
+export const TabsContent: React.FC<TabsContentProps> = React.memo(
+  ({ children, className, value, yValue }) => {
+    const { activeTab, tabsOrder, prevIndex } = useTabs();
+
+    // Memoize direction calculation
+    const isForward = useMemo(
+      () => tabsOrder.indexOf(activeTab) > prevIndex,
+      [tabsOrder, activeTab, prevIndex]
+    );
+
+    return (
+      <AnimatePresence mode="popLayout">
+        {activeTab === value && (
+          <motion.div
+            initial={{ opacity: 0, y: yValue ? (isForward ? 10 : -10) : 0 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: yValue ? (isForward ? -50 : 50) : 0 }}
+            transition={{
+              duration: 0.3,
+              ease: "easeInOut",
+              delay: 0.5,
+            }}
+            className={cn("relative", className)}
+          >
+            {children}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    );
+  }
+);
+
+// Add display names for better debugging
+TabsProvider.displayName = "TabsProvider";
+TabsBtn.displayName = "TabsBtn";
+TabsContent.displayName = "TabsContent";
+>>>>>>> 0b9090f (feat: 优化国家选择器布局和样式)
