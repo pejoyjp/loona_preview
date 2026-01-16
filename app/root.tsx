@@ -16,7 +16,9 @@ import favicon from "~/assets/favicon.svg";
 import type { Route } from "./+types/root";
 import { PageLayout } from "./components/layout/layout";
 import { FOOTER_QUERY, HEADER_QUERY } from "./graphql/fragments";
+import { LOCALIZATION_OPTIONS_QUERY } from "./graphql/query";
 import { TranslationProvider } from "./lib/i18n/translation-context";
+import { getCountries } from "./data/countries";
 import { getLocaleFromRequest } from "./lib/locale-from-request";
 import tailwindCss from "./styles/tailwind.css?url";
 
@@ -68,13 +70,18 @@ export async function loader(args: Route.LoaderArgs) {
   // Start fetching non-critical data without blocking time to first byte
   const deferredData = loadDeferredData(args);
   // Await the critical data required to render initial state of the page
-  const criticalData = await loadCriticalData(args);
+  const criticalData = loadCriticalData(args);
+
+  const [resolvedDeferredData, resolvedCriticalData] = await Promise.all([
+    deferredData,
+    criticalData,
+  ]);
 
   const { storefront, env } = args.context;
 
   return {
-    ...deferredData,
-    ...criticalData,
+    ...resolvedDeferredData,
+    ...resolvedCriticalData,
     publicStoreDomain: env.PUBLIC_STORE_DOMAIN,
     shop: getShopAnalytics({
       storefront,
@@ -116,9 +123,10 @@ async function loadCriticalData({ context }: LoaderFunctionArgs) {
  * fetched after the initial page load. If it's unavailable, the page should still 200.
  * Make sure to not throw any errors here, as it will cause the page to 500.
  */
-function loadDeferredData({ context, request }: LoaderFunctionArgs) {
+async function loadDeferredData({ context, request }: LoaderFunctionArgs) {
   const { storefront, customerAccount, cart } = context;
-  const footer = storefront
+
+  const footerPromise = storefront
     .query(FOOTER_QUERY, {
       cache: storefront.CacheLong(),
       variables: {
@@ -130,11 +138,25 @@ function loadDeferredData({ context, request }: LoaderFunctionArgs) {
       return null;
     });
 
+  const localizationPromise = storefront
+    .query(LOCALIZATION_OPTIONS_QUERY, {
+      cache: storefront.CacheLong(),
+    })
+    .catch((error: Error) => {
+      console.error(error);
+      return null;
+    });
+
+  const [footer, localization] = await Promise.all([footerPromise, localizationPromise]);
+  const countries = await getCountries(localization, storefront.i18n.country);
+
   return {
     cart: cart.get(),
     isLoggedIn: customerAccount.isLoggedIn(),
     footer,
-    selectedLocale: getLocaleFromRequest(request),
+    localization,
+    countries,
+    selectedLocale: getLocaleFromRequest(request, countries),
     okendoProviderData: getOkendoProviderData({
       context,
       subscriberId: "63676b51-1ecc-4241-95b8-1e4c501bc9fb",
@@ -165,6 +187,8 @@ export function Layout({ children }: { children?: React.ReactNode }) {
 
 export default function App() {
   const data = useRouteLoaderData<RootLoader>("root");
+  const localization = data?.localization;
+  console.log(localization);
 
   if (!data) {
     return (

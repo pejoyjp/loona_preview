@@ -52,6 +52,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      countries-list:
+        specifier: ^3.2.2
+        version: 3.2.2
       graphql:
         specifier: ^16.10.0
         version: 16.12.0
@@ -3686,6 +3689,9 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+
+  countries-list@3.2.2:
+    resolution: {integrity: sha512-ABJ/RWQBrPWy+hRuZoW+0ooK8p65Eo3WmUZwHm6v4wmfSPznNAKzjy3+UUYrJK2v3182BVsgWxdB6ROidj39kw==}
 
   cross-fetch@3.2.0:
     resolution:
@@ -9589,6 +9595,8 @@ snapshots:
       parse-json: 5.2.0
     optionalDependencies:
       typescript: 5.9.3
+
+  countries-list@3.2.2: {}
 
   cross-fetch@3.2.0:
     dependencies:

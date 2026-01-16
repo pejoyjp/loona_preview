@@ -44,7 +44,11 @@ export const action: ActionFunction = async ({ request, context }) => {
 
   const redirectUrl = new URL(
     `${toLocale.pathPrefix || ""}${path}`,
+<<<<<<< HEAD
     `http${isDev ? "" : "s"}://${toLocale.host}`,
+=======
+    `http${isDev ? "" : "s"}://${toLocale.host}`
+>>>>>>> 0b9090f (feat: 优化国家选择器布局和样式)
   ).toString();
 
   return redirect(redirectUrl, 302);
