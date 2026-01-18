@@ -2,7 +2,6 @@ import { Earth } from "@icon-park/react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
