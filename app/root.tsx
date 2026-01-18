@@ -20,7 +20,7 @@ import { LOCALIZATION_OPTIONS_QUERY } from "./graphql/query";
 import { TranslationProvider } from "./lib/i18n/translation-context";
 import { getLocaleFromRequest } from "./lib/locale-from-request";
 import tailwindCss from "./styles/tailwind.css?url";
-import { getCountries, getCountriesbyContinent } from "./lib/get-countries";
+import { getCountries, getCountriesByContinent } from "./lib/get-countries";
 
 export type RootLoader = typeof loader;
 
@@ -113,13 +113,13 @@ async function loadCriticalData({ context, request }: LoaderFunctionArgs) {
     // Add other queries here, so that they are loaded in parallel
   ]);
   const countries = getCountries(localizationData.localization.availableCountries);
-  const countriesbyContinent = getCountriesbyContinent(
+  const countriesByContinent = getCountriesByContinent(
     localizationData.localization.availableCountries,
   );
 
   const selectedCountry = getLocaleFromRequest(request, countries);
 
-  return { header, countries, selectedCountry, countriesbyContinent };
+  return { header, countries, selectedCountry, countriesByContinent };
 }
 
 /**

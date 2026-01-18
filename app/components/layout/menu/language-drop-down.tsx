@@ -31,7 +31,7 @@ export function LanguageDropDown({
       <DropdownMenuTrigger asChild>
         <button
           type="button"
-          className="flex flex-col px-4 py-3 bg-muted hover:bg-muted/80 overflow-hidden group relative lg:w-full w-71"
+          className="flex flex-col px-4 py-3 bg-muted hover:bg-muted/80 overflow-hidden group relative w-full"
           aria-label={`${activeLocale.country} locale options`}
         >
           <div className="flex">
@@ -51,7 +51,7 @@ export function LanguageDropDown({
           </div>
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-71 lg:w-full">
+      <DropdownMenuContent className="w-full">
         {locales.map((locale) => {
           const localeKey = `${locale.language}-${locale.country}`;
           const isActive =

@@ -14,12 +14,12 @@ export function CountrySelector() {
   const strippedPathname = pathname.replace(selectedLocale.pathPrefix || "", "");
   const pathWithSearch = `${strippedPathname}${search}`;
 
-  const continentEntries = root?.countriesbyContinent;
-  if (!continentEntries) return null;
+  const continentEntries = root?.countriesByContinent;
+  if (!continentEntries || continentEntries.length === 0) return null;
 
   const renderCountryCard = (locales: Locale[]) => {
     const isMultiLanguage = locales.length > 1;
-    const activeLocale =
+    const isActiveLocale =
       locales.find(
         (locale) =>
           locale.language === selectedLocale.language && locale.country === selectedLocale.country,
@@ -27,17 +27,17 @@ export function CountrySelector() {
 
     if (!isMultiLanguage) {
       const isActive =
-        activeLocale.language === selectedLocale.language &&
-        activeLocale.country === selectedLocale.country;
+        isActiveLocale.language === selectedLocale.language &&
+        isActiveLocale.country === selectedLocale.country;
       return (
         <Form
           method="post"
           action="/locale"
-          key={`${activeLocale.language}-${activeLocale.country}`}
-          className="flex flex-col bg-muted hover:bg-muted/80 w-71"
+          key={`${isActiveLocale.language}-${isActiveLocale.country}`}
+          className="flex flex-col bg-muted hover:bg-muted/80"
         >
-          <input type="hidden" name="language" value={activeLocale.language} />
-          <input type="hidden" name="country" value={activeLocale.country} />
+          <input type="hidden" name="language" value={isActiveLocale.language} />
+          <input type="hidden" name="country" value={isActiveLocale.country} />
           <input type="hidden" name="path" value={pathWithSearch} />
           <button
             type="submit"
@@ -48,14 +48,14 @@ export function CountrySelector() {
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">
                   <DynamicFlag
-                    code={activeLocale.country}
+                    code={isActiveLocale.country}
                     height={24}
                     width={24}
                     className="rounded-full"
                   />
-                  <p>{activeLocale.label}</p>
+                  <p>{isActiveLocale.label}</p>
                 </div>
-                <p>{activeLocale.language}</p>
+                <p>{isActiveLocale.language}</p>
               </div>
             </div>
           </button>
@@ -74,7 +74,7 @@ export function CountrySelector() {
   };
 
   return (
-    <div className="flex gap-8 justify-center h-64 lg:h-128 ">
+    <div className="flex gap-8 justify-center h-64 lg:h-[32rem]">
       <div className="hidden lg:flex flex-col gap-8 w-full overflow-auto">
         {continentEntries.map(([continent, countriesByCode]) => (
           <div key={continent} className="flex flex-col gap-4 w-full">
@@ -89,7 +89,7 @@ export function CountrySelector() {
         ))}
       </div>
 
-      <div className="md:hidden w-82 lg:h-full">
+      <div className="md:hidden w-full lg:h-full">
         <TabsProvider defaultValue={continentEntries[0]?.[0]}>
           <div
             className="flex w-full whitespace-nowrap
@@ -106,7 +106,7 @@ export function CountrySelector() {
 
           {continentEntries.map(([continent, countriesByCode]) => (
             <TabsContent key={continent} value={continent} className="w-full overflow-y-hidden">
-              <div className="flex flex-col gap-4 items-center h-46 overflow-y-auto ">
+              <div className="flex flex-col gap-4 items-center h-[11.5rem] overflow-y-auto">
                 {Object.values(countriesByCode).map((locales) => renderCountryCard(locales))}
               </div>
             </TabsContent>
