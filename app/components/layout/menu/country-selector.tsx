@@ -2,47 +2,20 @@ import { DynamicFlag } from "@sankyu/react-circle-flags";
 import { Form, useLocation, useRouteLoaderData } from "react-router";
 import { TabsBtn, TabsContent, TabsProvider } from "~/components/ui/tab";
 import type { Locale } from "~/data/countries";
-import { countries as countriesData } from "~/data/countries";
 import type { RootLoader } from "~/root";
 import { LanguageDropDown } from "./language-drop-down";
 
 export function CountrySelector() {
   const root = useRouteLoaderData<RootLoader>("root");
-  const selectedLocale = root?.selectedLocale as Locale | undefined;
+  const selectedLocale = root?.selectedCountry as Locale | undefined;
   const { pathname, search } = useLocation();
 
   if (!selectedLocale) return null;
-  const countries = countriesData;
-
   const strippedPathname = pathname.replace(selectedLocale.pathPrefix || "", "");
   const pathWithSearch = `${strippedPathname}${search}`;
 
-  const localesByContinent = Object.values(countries).reduce(
-    (acc, locale) => {
-      const continent = locale.continent || "Other";
-      if (!acc[continent]) acc[continent] = {};
-      if (!acc[continent][locale.country]) acc[continent][locale.country] = [];
-      acc[continent][locale.country].push(locale);
-      return acc;
-    },
-    {} as Record<string, Record<string, Locale[]>>,
-  );
-
-  const continentOrder = [
-    "North America",
-    "Europe",
-    "Asia",
-    "Oceania",
-    "South America",
-    "Africa",
-    "Other",
-  ];
-
-  const continentEntries = Object.entries(localesByContinent).sort(
-    (a, b) => continentOrder.indexOf(a[0]) - continentOrder.indexOf(b[0]),
-  );
-
-  if (continentEntries.length === 0) return null;
+  const continentEntries = root?.countriesbyContinent;
+  if (!continentEntries) return null;
 
   const renderCountryCard = (locales: Locale[]) => {
     const isMultiLanguage = locales.length > 1;
@@ -101,18 +74,14 @@ export function CountrySelector() {
   };
 
   return (
-<<<<<<< HEAD
-    <div className="flex max-w-full gap-8 overflow-hidden no-scrollbar h-64 max-h-64 lg:h-auto lg:max-h-full">
-      <div className="hidden lg:flex flex-col gap-8  w-full">
-=======
-    <div className="flex gap-8 justify-center h-64">
-      <div className="hidden lg:flex flex-col gap-8 w-full">
->>>>>>> 0b9090f (feat: 优化国家选择器布局和样式)
+    <div className="flex gap-8 justify-center h-64 lg:h-128 ">
+      <div className="hidden lg:flex flex-col gap-8 w-full overflow-auto">
         {continentEntries.map(([continent, countriesByCode]) => (
           <div key={continent} className="flex flex-col gap-4 w-full">
             <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
               {continent}
             </p>
+
             <div className="grid grid-cols-1 lg:grid-cols-2">
               {Object.values(countriesByCode).map((locales) => renderCountryCard(locales))}
             </div>
@@ -121,22 +90,23 @@ export function CountrySelector() {
       </div>
 
       <div className="md:hidden w-82 lg:h-full">
-        <TabsProvider defaultValue={continentEntries[0]?.[0] ?? continentOrder[0]}>
+        <TabsProvider defaultValue={continentEntries[0]?.[0]}>
           <div
-            className=" flex w-full whitespace-nowrap
-      overflow-x-auto overflow-y-hidden
-      scrollbar-none
-      -mx-4 px-4"
+            className="flex w-full whitespace-nowrap
+                  overflow-x-auto overflow-y-hidden
+                  scrollbar-none
+                  -mx-4 px-4"
           >
             {continentEntries.map(([continent]) => (
-              <TabsBtn key={continent} value={continent} className="">
+              <TabsBtn key={continent} value={continent}>
                 {continent}
               </TabsBtn>
             ))}
           </div>
+
           {continentEntries.map(([continent, countriesByCode]) => (
-            <TabsContent key={continent} value={continent} className="w-full">
-              <div className="flex flex-col gap-4 items-center ">
+            <TabsContent key={continent} value={continent} className="w-full overflow-y-hidden">
+              <div className="flex flex-col gap-4 items-center h-46 overflow-y-auto ">
                 {Object.values(countriesByCode).map((locales) => renderCountryCard(locales))}
               </div>
             </TabsContent>

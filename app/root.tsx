@@ -18,9 +18,9 @@ import { PageLayout } from "./components/layout/layout";
 import { FOOTER_QUERY, HEADER_QUERY } from "./graphql/fragments";
 import { LOCALIZATION_OPTIONS_QUERY } from "./graphql/query";
 import { TranslationProvider } from "./lib/i18n/translation-context";
-import { getCountries } from "./data/countries";
 import { getLocaleFromRequest } from "./lib/locale-from-request";
 import tailwindCss from "./styles/tailwind.css?url";
+import { getCountries, getCountriesbyContinent } from "./lib/get-countries";
 
 export type RootLoader = typeof loader;
 
@@ -70,18 +70,13 @@ export async function loader(args: Route.LoaderArgs) {
   // Start fetching non-critical data without blocking time to first byte
   const deferredData = loadDeferredData(args);
   // Await the critical data required to render initial state of the page
-  const criticalData = loadCriticalData(args);
-
-  const [resolvedDeferredData, resolvedCriticalData] = await Promise.all([
-    deferredData,
-    criticalData,
-  ]);
+  const criticalData = await loadCriticalData(args);
 
   const { storefront, env } = args.context;
 
   return {
-    ...resolvedDeferredData,
-    ...resolvedCriticalData,
+    ...deferredData,
+    ...criticalData,
     publicStoreDomain: env.PUBLIC_STORE_DOMAIN,
     shop: getShopAnalytics({
       storefront,
@@ -102,20 +97,29 @@ export async function loader(args: Route.LoaderArgs) {
  * Load data necessary for rendering content above the fold. This is the critical data
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  */
-async function loadCriticalData({ context }: LoaderFunctionArgs) {
+async function loadCriticalData({ context, request }: LoaderFunctionArgs) {
   const { storefront } = context;
 
-  const [header] = await Promise.all([
+  const [header, localizationData] = await Promise.all([
     storefront.query(HEADER_QUERY, {
       cache: storefront.CacheLong(),
       variables: {
         headerMenuHandle: "main-menu", // Adjust to your header menu handle
       },
     }),
+    storefront.query(LOCALIZATION_OPTIONS_QUERY, {
+      cache: storefront.CacheLong(),
+    }),
     // Add other queries here, so that they are loaded in parallel
   ]);
+  const countries = getCountries(localizationData.localization.availableCountries);
+  const countriesbyContinent = getCountriesbyContinent(
+    localizationData.localization.availableCountries,
+  );
 
-  return { header };
+  const selectedCountry = getLocaleFromRequest(request, countries);
+
+  return { header, countries, selectedCountry, countriesbyContinent };
 }
 
 /**
@@ -123,10 +127,10 @@ async function loadCriticalData({ context }: LoaderFunctionArgs) {
  * fetched after the initial page load. If it's unavailable, the page should still 200.
  * Make sure to not throw any errors here, as it will cause the page to 500.
  */
-async function loadDeferredData({ context, request }: LoaderFunctionArgs) {
+function loadDeferredData({ context, request }: LoaderFunctionArgs) {
   const { storefront, customerAccount, cart } = context;
 
-  const footerPromise = storefront
+  const footer = storefront
     .query(FOOTER_QUERY, {
       cache: storefront.CacheLong(),
       variables: {
@@ -138,25 +142,10 @@ async function loadDeferredData({ context, request }: LoaderFunctionArgs) {
       return null;
     });
 
-  const localizationPromise = storefront
-    .query(LOCALIZATION_OPTIONS_QUERY, {
-      cache: storefront.CacheLong(),
-    })
-    .catch((error: Error) => {
-      console.error(error);
-      return null;
-    });
-
-  const [footer, localization] = await Promise.all([footerPromise, localizationPromise]);
-  const countries = await getCountries(localization, storefront.i18n.country);
-
   return {
     cart: cart.get(),
     isLoggedIn: customerAccount.isLoggedIn(),
     footer,
-    localization,
-    countries,
-    selectedLocale: getLocaleFromRequest(request, countries),
     okendoProviderData: getOkendoProviderData({
       context,
       subscriberId: "63676b51-1ecc-4241-95b8-1e4c501bc9fb",
@@ -187,8 +176,6 @@ export function Layout({ children }: { children?: React.ReactNode }) {
 
 export default function App() {
   const data = useRouteLoaderData<RootLoader>("root");
-  const localization = data?.localization;
-  console.log(localization);
 
   if (!data) {
     return (
@@ -203,8 +190,8 @@ export default function App() {
       <Analytics.Provider cart={data.cart} shop={data.shop} consent={data.consent}>
         <TranslationProvider
           locale={{
-            language: data.selectedLocale.language,
-            country: data.selectedLocale.country,
+            language: data.selectedCountry.language,
+            country: data.selectedCountry.country,
           }}
         >
           <PageLayout {...data}>

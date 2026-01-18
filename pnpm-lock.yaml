@@ -3691,7 +3691,10 @@ packages:
         optional: true
 
   countries-list@3.2.2:
-    resolution: {integrity: sha512-ABJ/RWQBrPWy+hRuZoW+0ooK8p65Eo3WmUZwHm6v4wmfSPznNAKzjy3+UUYrJK2v3182BVsgWxdB6ROidj39kw==}
+    resolution:
+      {
+        integrity: sha512-ABJ/RWQBrPWy+hRuZoW+0ooK8p65Eo3WmUZwHm6v4wmfSPznNAKzjy3+UUYrJK2v3182BVsgWxdB6ROidj39kw==,
+      }
 
   cross-fetch@3.2.0:
     resolution:

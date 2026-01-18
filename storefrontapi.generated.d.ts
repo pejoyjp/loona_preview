@@ -753,9 +753,7 @@ export type MenuFragment = Pick<StorefrontAPI.Menu, "id"> & {
 export type ShopFragment = Pick<StorefrontAPI.Shop, "id" | "name" | "description"> & {
   primaryDomain: Pick<StorefrontAPI.Domain, "url">;
   brand?: StorefrontAPI.Maybe<{
-    logo?: StorefrontAPI.Maybe<{
-      image?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Image, "url">>;
-    }>;
+    logo?: StorefrontAPI.Maybe<{ image?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Image, "url">> }>;
   }>;
 };
 
@@ -769,9 +767,7 @@ export type HeaderQuery = {
   shop: Pick<StorefrontAPI.Shop, "id" | "name" | "description"> & {
     primaryDomain: Pick<StorefrontAPI.Domain, "url">;
     brand?: StorefrontAPI.Maybe<{
-      logo?: StorefrontAPI.Maybe<{
-        image?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Image, "url">>;
-      }>;
+      logo?: StorefrontAPI.Maybe<{ image?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Image, "url">> }>;
     }>;
   };
   menu?: StorefrontAPI.Maybe<
@@ -1081,22 +1077,15 @@ export type ProductQuery = {
   };
 };
 
-export type LocalizationOptionsQueryVariables = StorefrontAPI.Exact<{
-  [key: string]: never;
-}>;
+export type LocalizationOptionsQueryVariables = StorefrontAPI.Exact<{ [key: string]: never }>;
 
 export type LocalizationOptionsQuery = {
   localization: {
     availableCountries: Array<
-      Pick<StorefrontAPI.Country, 'isoCode' | 'name'> & {
-        defaultLanguage: Pick<
-          StorefrontAPI.Language,
-          'isoCode' | 'name' | 'endonymName'
-        >;
-        availableLanguages: Array<
-          Pick<StorefrontAPI.Language, 'isoCode' | 'name' | 'endonymName'>
-        >;
-        currency: Pick<StorefrontAPI.Currency, 'isoCode' | 'symbol'>;
+      Pick<StorefrontAPI.Country, "isoCode" | "name"> & {
+        defaultLanguage: Pick<StorefrontAPI.Language, "isoCode" | "name" | "endonymName">;
+        availableLanguages: Array<Pick<StorefrontAPI.Language, "isoCode" | "name" | "endonymName">>;
+        currency: Pick<StorefrontAPI.Currency, "isoCode" | "symbol">;
       }
     >;
   };
@@ -1458,9 +1447,7 @@ export type FeaturedCollectionQuery = {
 };
 
 export type RecommendedProductFragment = Pick<StorefrontAPI.Product, "id" | "title" | "handle"> & {
-  priceRange: {
-    minVariantPrice: Pick<StorefrontAPI.MoneyV2, "amount" | "currencyCode">;
-  };
+  priceRange: { minVariantPrice: Pick<StorefrontAPI.MoneyV2, "amount" | "currencyCode"> };
   featuredImage?: StorefrontAPI.Maybe<
     Pick<StorefrontAPI.Image, "id" | "url" | "altText" | "width" | "height">
   >;
@@ -1475,9 +1462,7 @@ export type RecommendedProductsQuery = {
   products: {
     nodes: Array<
       Pick<StorefrontAPI.Product, "id" | "title" | "handle"> & {
-        priceRange: {
-          minVariantPrice: Pick<StorefrontAPI.MoneyV2, "amount" | "currencyCode">;
-        };
+        priceRange: { minVariantPrice: Pick<StorefrontAPI.MoneyV2, "amount" | "currencyCode"> };
         featuredImage?: StorefrontAPI.Maybe<
           Pick<StorefrontAPI.Image, "id" | "url" | "altText" | "width" | "height">
         >;
@@ -1876,9 +1861,10 @@ export type PredictiveProductFragment = { __typename: "Product" } & Pick<
     >;
   };
 
-export type PredictiveQueryFragment = {
-  __typename: "SearchQuerySuggestion";
-} & Pick<StorefrontAPI.SearchQuerySuggestion, "text" | "styledText" | "trackingParameters">;
+export type PredictiveQueryFragment = { __typename: "SearchQuerySuggestion" } & Pick<
+  StorefrontAPI.SearchQuerySuggestion,
+  "text" | "styledText" | "trackingParameters"
+>;
 
 export type PredictiveSearchQueryVariables = StorefrontAPI.Exact<{
   country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
@@ -1972,7 +1958,7 @@ interface GeneratedQueryTypes {
     return: ProductQuery;
     variables: ProductQueryVariables;
   };
-  '#graphql\n  query LocalizationOptions {\n    localization {\n      availableCountries {\n        isoCode\n        name\n        defaultLanguage{\n          isoCode\n          name\n          endonymName\n        }\n        availableLanguages{\n          isoCode\n          name\n          endonymName\n        }\n        currency {\n          isoCode\n          symbol\n        }\n      }\n    }\n  }\n': {
+  "#graphql\n  query LocalizationOptions {\n    localization {\n      availableCountries {\n        isoCode\n        name\n        defaultLanguage{\n          isoCode\n          name\n          endonymName\n        }\n        availableLanguages{\n          isoCode\n          name\n          endonymName\n        }\n        currency {\n          isoCode\n          symbol\n        }\n      }\n    }\n  }\n": {
     return: LocalizationOptionsQuery;
     variables: LocalizationOptionsQueryVariables;
   };
