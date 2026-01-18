@@ -6,16 +6,15 @@ import type {
 } from "@shopify/hydrogen/storefront-api-types";
 import { type ActionFunction, type AppLoadContext, redirect } from "react-router";
 import invariant from "tiny-invariant";
-import { countries } from "~/data/countries";
+import { LOCALIZATION_OPTIONS_QUERY } from "~/graphql/query";
+import { getCountries } from "~/lib/get-countries";
 
 export const action: ActionFunction = async ({ request, context }) => {
-  const { session } = context;
+  const { session, storefront } = context;
   const formData = await request.formData();
-  console.log("formData", formData);
 
   // Make sure the form request is valid
   const languageCode = formData.get("language") as LanguageCode;
-  console.log("languageCode", languageCode);
   invariant(languageCode, "Missing language");
 
   const countryCode = formData.get("country") as CountryCode;
@@ -24,7 +23,13 @@ export const action: ActionFunction = async ({ request, context }) => {
   // Determine where to redirect to relative to where user navigated from
   // ie. hydrogen.shop/collections -> ca.hydrogen.shop/collections
   const path = formData.get("path");
-  const toLocale = countries[`${languageCode}-${countryCode}`.toLowerCase()];
+
+  const localizationResponse = await storefront.query(LOCALIZATION_OPTIONS_QUERY, {
+    cache: storefront.CacheLong(),
+  });
+
+  const countries = getCountries(localizationResponse.localization.availableCountries);
+  const toLocale = countries[`${countryCode}-${languageCode}`.toLowerCase()];
 
   const cartId = await session.get("cartId");
 
@@ -44,11 +49,7 @@ export const action: ActionFunction = async ({ request, context }) => {
 
   const redirectUrl = new URL(
     `${toLocale.pathPrefix || ""}${path}`,
-<<<<<<< HEAD
     `http${isDev ? "" : "s"}://${toLocale.host}`,
-=======
-    `http${isDev ? "" : "s"}://${toLocale.host}`
->>>>>>> 0b9090f (feat: 优化国家选择器布局和样式)
   ).toString();
 
   return redirect(redirectUrl, 302);

@@ -22,7 +22,7 @@ export function CountrySelectorModal() {
               strokeWidth={1}
             />
           </DialogTrigger>
-          <DialogContent className="lg:max-w-158 max-w-90 max-h-100 p-0 ">
+          <DialogContent className="lg:max-w-158 max-w-90 p-0 ">
             <DialogHeader className="p-4 border-b">
               <DialogTitle>Language Selector</DialogTitle>
               <DialogDescription />
