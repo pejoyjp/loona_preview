@@ -1,8 +1,12 @@
 import { countries as countryList, continents, type TCountries } from "countries-list";
 import type { Locale } from "~/data/countries";
 import { hostFor } from "~/data/countries";
+import type { LocalizationOptionsQuery } from "storefrontapi.generated";
+import type { CountryCode } from "@shopify/hydrogen/storefront-api-types";
 
-export function getCountriesbyContinent(localization: any[]) {
+type AvailableCountry = LocalizationOptionsQuery["localization"]["availableCountries"][number];
+
+export function getCountriesbyContinent(localization: AvailableCountry[]) {
   const countries: Record<string, Locale> = {};
   localization.forEach((item) => {
     const isoCode = item.isoCode?.toUpperCase() as keyof TCountries | undefined;
@@ -14,7 +18,7 @@ export function getCountriesbyContinent(localization: any[]) {
       language: item.defaultLanguage.isoCode,
       country: item.isoCode,
       label: `${item.name} (${item.defaultLanguage.name}) (${item.currency.symbol})`,
-      host: hostFor(item.isoCode.toLowerCase()),
+      host: hostFor(item.isoCode.toLowerCase() as CountryCode),
       continent: continentName,
     };
   });
@@ -35,7 +39,7 @@ export function getCountriesbyContinent(localization: any[]) {
   return continentEntries;
 }
 
-export function getCountries(localization: any[]) {
+export function getCountries(localization: AvailableCountry[]) {
   const countries: Record<string, Locale> = {};
   localization.forEach((item) => {
     const isoCode = item.isoCode?.toUpperCase() as keyof TCountries | undefined;
@@ -47,7 +51,7 @@ export function getCountries(localization: any[]) {
       language: item.defaultLanguage.isoCode,
       country: item.isoCode,
       label: `${item.name} (${item.defaultLanguage.name}) (${item.currency.symbol})`,
-      host: hostFor(item.isoCode.toLowerCase()),
+      host: hostFor(item.isoCode.toLowerCase() as CountryCode),
       continent: continentName,
     };
   });
