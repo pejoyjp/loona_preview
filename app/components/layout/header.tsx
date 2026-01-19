@@ -1,4 +1,3 @@
-import { HamburgerButton, Shopping } from "@icon-park/react";
 import { useAnalytics, useOptimisticCart } from "@shopify/hydrogen";
 import { MenuIcon, ShoppingBagIcon, Menu } from "lucide-react";
 import { Suspense, useState } from "react";
@@ -9,7 +8,7 @@ import { useMobileMenuDrawerStore } from "~/hooks/store/use-mobile-menu-store";
 import { MobileMenuDrawer } from "../drawer/mobile-menu-drawer";
 import { CountrySelectorModal } from "../modal/country-selector-modal";
 import { HeaderMenu } from "./menu/menu";
-import { HamburgerButton, Me, Search } from "@icon-park/react";
+import { HamburgerButton, Shopping, Me, Search } from "@icon-park/react";
 
 interface HeaderProps {
   header: HeaderQuery;

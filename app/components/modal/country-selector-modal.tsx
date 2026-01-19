@@ -14,11 +14,11 @@ import { Earth } from "@icon-park/react";
 
 export function CountrySelectorModal() {
   return (
-    <div className="">
+    <div>
       <Dialog>
-        <form>
+        <form className="flex items-center justify-center size-6">
           <DialogTrigger>
-            <Earth size="24" theme="outline" />
+            <Earth size="24" theme="outline" className="cursor-pointer" />
           </DialogTrigger>
           <DialogContent className="lg:max-w-4xl max-w-11/12">
             <DialogHeader className="">
