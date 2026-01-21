@@ -10,7 +10,7 @@ import {
   DrawerTitle,
 } from "~/components/ui/drawer";
 import { useMobileMenuDrawerStore } from "~/hooks/store/use-mobile-menu-store";
-import { MobileMenu } from "../layout/menu/mobile-menu";
+import { MobileMenu } from "../menu/mobile-menu";
 import { useEffect, useState } from "react";
 import { useClientMobile } from "~/hooks/use-client-mobile";
 
@@ -24,13 +24,6 @@ interface MobileMenuDrawerProps {
  * Ensures the component only renders on the client,
  * after hydration has fully completed.
  */
-function useMounted() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-  return mounted;
-}
 
 export function MobileMenuDrawer({
   menu,

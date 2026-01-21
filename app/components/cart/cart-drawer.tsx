@@ -12,7 +12,7 @@ import {
   DrawerTitle,
 } from "~/components/ui/drawer";
 import { useCartStore } from "~/hooks/store/use-cart-store";
-import { CartMain } from "../cart/cart-main";
+import { CartMain } from "./cart-main";
 
 interface CartDrawerProps {
   cart: Promise<CartApiQueryFragment | null>;
