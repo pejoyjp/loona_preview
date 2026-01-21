@@ -13,14 +13,12 @@ type LanguageDropDownProps = {
   locales: Locale[];
   selectedLocale: Locale;
   pathWithSearch: string;
-  className?: string;
 };
 
 export function LanguageDropDown({
   locales,
   selectedLocale,
   pathWithSearch,
-  className,
 }: LanguageDropDownProps) {
   const activeLocale =
     locales.find(
@@ -30,25 +28,30 @@ export function LanguageDropDown({
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild className={className}>
+      <DropdownMenuTrigger asChild>
         <button
           type="button"
-          className="flex flex-col bg-muted hover:bg-muted/80 overflow-hidden group relative w-full"
+          className="flex flex-col px-4 py-3 bg-muted hover:bg-muted/80 overflow-hidden group relative w-full"
           aria-label={`${activeLocale.country} locale options`}
         >
           <div className="flex">
             <div className="flex items-center gap-3">
-              <DynamicFlag code={activeLocale.country} height={24} width={24} />
+              <DynamicFlag
+                code={activeLocale.country}
+                height={24}
+                width={24}
+                className="rounded-full"
+              />
               <p>{activeLocale.label}</p>
             </div>
-            <div className="flex items-center gap-4 transition-transform duration-300 absolute -right-8 group-hover:-translate-x-8 group-data-[state=open]:-translate-x-8">
+            <div className="flex items-center gap-4 transition-transform duration-300 absolute -right-4 group-hover:-translate-x-8 group-data-[state=open]:-translate-x-8">
               <p>{activeLocale.language}</p>
               <ChevronDownIcon className="size-4" />
             </div>
           </div>
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-full ">
+      <DropdownMenuContent className="w-full">
         {locales.map((locale) => {
           const localeKey = `${locale.language}-${locale.country}`;
           const isActive =

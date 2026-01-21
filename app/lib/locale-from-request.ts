@@ -1,9 +1,7 @@
 import type { Locale } from "~/data/countries";
-import { countries } from "~/data/countries";
 
-export function getLocaleFromRequest(request: Request): Locale {
+export function getLocaleFromRequest(request: Request, countries: Record<string, Locale>): Locale {
   const url = new URL(request.url);
-
   const hostsMatching = Object.values(countries).filter((locale) => locale.host === url.host);
 
   if (hostsMatching.length > 0) {
@@ -14,5 +12,14 @@ export function getLocaleFromRequest(request: Request): Locale {
     return pathMatched;
   }
 
-  return countries["en-us"];
+  // Return matched country or fallback to first available country
+  return (
+    countries["en-us"] ||
+    Object.values(countries)[0] || {
+      language: "EN",
+      country: "US",
+      label: "United States",
+      host: "localhost:3000",
+    }
+  );
 }

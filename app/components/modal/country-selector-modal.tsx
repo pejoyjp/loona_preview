@@ -1,16 +1,12 @@
+import { Earth } from "@icon-park/react";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
-import { Separator } from "~/components/ui/separator";
 import { CountrySelector } from "../layout/menu/country-selector";
-import { Earth } from "@icon-park/react";
 
 export function CountrySelectorModal() {
   return (

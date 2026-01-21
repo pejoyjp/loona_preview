@@ -98,8 +98,8 @@
   --radius: 0.625rem; /* 全局圆角基准 */
 
   /* 页面基础 */
-  --background: oklch(1 0 0); /* 页面背景（白） */
-  --foreground: #262626; /* 主体文字 */
+  --background: #ffffff; /* 页面背景（白） */
+  --foreground: #262626; /* 主体文字，Icon 颜色 */
 
   /* 卡片 */
   --card: oklch(1 0 0);
@@ -118,7 +118,7 @@
 
   /* 弱语义 */
   --muted: #f5f5f5; /* 弱背景区 */
-  --muted-foreground: #262626; /* 注释 / 次要说明 */
+  --muted-foreground: #808080; /* 注释 / 次要说明 */
 
   /* 强调 */
   --accent: oklch(0.97 0 0);
@@ -138,6 +138,10 @@
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
+
+  /* Badge - 营销 / 状态  比如说打折的标签 */
+  --badge-sale: #c3fc69; /* 标签背景 */
+  --badge-sale-foreground: #262626; /* 标签文字 */
 
   /* Sidebar */
   --sidebar: oklch(0.985 0 0);
@@ -207,13 +211,16 @@
   }
 }
 
-/* 隐藏 scrollbar */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
+/* =========================================================
+ * Tailwindb 不直接提供的, 需要自定义 
+ * 直接在 class 中使用。 比如说  className='no-scrollbar'
+ * ======================================================= */
 
+/* 隐藏 scrollbar */
 .no-scrollbar {
-  -ms-overflow-style: none; /* IE / Edge */
+  -ms-overflow-style: none; /* IE */
   scrollbar-width: none; /* Firefox */
-  scrollbar-color: transparent transparent;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome / Safari */
 }

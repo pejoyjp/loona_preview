@@ -1,6 +1,5 @@
 import { createHydrogenContext } from "@shopify/hydrogen";
 import { CART_QUERY_FRAGMENT } from "~/graphql/fragments";
-import { getLocaleFromRequest } from "~/lib/locale-from-request";
 import { AppSession } from "~/lib/session";
 
 // Define the additional context object
@@ -49,7 +48,6 @@ export async function createHydrogenRouterContext(
       waitUntil,
       session,
       // Or detect from URL path based on locale subpath, cookies, or any other strategy
-      i18n: getLocaleFromRequest(request),
       cart: {
         queryFragment: CART_QUERY_FRAGMENT,
       },
