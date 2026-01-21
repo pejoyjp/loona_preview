@@ -111,7 +111,7 @@
 
   /* 主 / 次操作 */
   --primary: #5940ff; /* 主按钮背景 */
-  --primary-foreground: oklch(0.985 0 0); /* 主按钮文字 */
+  --primary-foreground: white; /* 主按钮文字 */
 
   --secondary: #eeecff; /* 次级按钮背景 */
   --secondary-foreground: oklch(0.205 0 0);

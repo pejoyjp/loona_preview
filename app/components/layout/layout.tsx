@@ -27,7 +27,12 @@ export function PageLayout({
   return (
     <>
       {header && (
-        <Header header={header} isLoggedIn={isLoggedIn} publicStoreDomain={publicStoreDomain} />
+        <Header
+          header={header}
+          isLoggedIn={isLoggedIn}
+          publicStoreDomain={publicStoreDomain}
+          cart={cart}
+        />
       )}
       <CartDrawer cart={cart} />
       <main>{children}</main>

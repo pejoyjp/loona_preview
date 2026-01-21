@@ -10,16 +10,28 @@ import { CountrySelector } from "../layout/menu/country-selector";
 
 export function CountrySelectorModal() {
   return (
-    <Dialog>
-      <DialogTrigger aria-label="Open country selector">
-        <Earth size="24" theme="outline" />
-      </DialogTrigger>
-      <DialogContent className="max-w-[95vw] lg:max-w-[600px] p-0">
-        <DialogHeader className="p-4 border-b">
-          <DialogTitle>Select Country / Language</DialogTitle>
-        </DialogHeader>
-        <CountrySelector />
-      </DialogContent>
-    </Dialog>
+    <div>
+      <Dialog>
+        <form className="flex items-center justify-center">
+          <DialogTrigger>
+            <Earth
+              size="24"
+              theme="outline"
+              className="cursor-pointer text-foreground hidden md:block"
+              strokeWidth={1}
+            />
+          </DialogTrigger>
+          <DialogContent className="lg:max-w-4xl max-w-11/12">
+            <DialogHeader className="">
+              <DialogTitle>Country Selector</DialogTitle>
+              <DialogDescription>Select your country and language preferences</DialogDescription>
+              <Separator className="my-4" />
+            </DialogHeader>
+
+            <CountrySelector />
+          </DialogContent>
+        </form>
+      </Dialog>
+    </div>
   );
 }
