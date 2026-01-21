@@ -21,13 +21,10 @@ export function CountrySelectorModal() {
               strokeWidth={1}
             />
           </DialogTrigger>
-          <DialogContent className="lg:max-w-4xl max-w-11/12">
-            <DialogHeader className="">
-              <DialogTitle>Country Selector</DialogTitle>
-              <DialogDescription>Select your country and language preferences</DialogDescription>
-              <Separator className="my-4" />
+          <DialogContent className="lg:max-w-158 max-w-90 p-0 ">
+            <DialogHeader className="p-4 border-b">
+              <DialogTitle>Language Selector</DialogTitle>
             </DialogHeader>
-
             <CountrySelector />
           </DialogContent>
         </form>

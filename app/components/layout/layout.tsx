@@ -3,7 +3,7 @@ import { Await, Link } from "react-router";
 import type { CartApiQueryFragment, FooterQuery, HeaderQuery } from "storefrontapi.generated";
 import { SEARCH_ENDPOINT, SearchFormPredictive } from "~/components/search/search-form-predictive";
 import { SearchResultsPredictive } from "~/components/search/search-results-predictive";
-import { CartDrawer } from "../drawer/cart-drawer";
+import { CartDrawer } from "../cart/cart-drawer";
 import { Footer } from "./footer";
 import { Header } from "./header";
 

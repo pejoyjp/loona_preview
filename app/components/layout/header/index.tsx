@@ -5,13 +5,13 @@ import { Await, NavLink, useAsyncValue, type LoaderFunctionArgs } from "react-ro
 import type { HeaderQuery } from "storefrontapi.generated";
 import { useCartStore } from "~/hooks/store/use-cart-store";
 import { useMobileMenuDrawerStore } from "~/hooks/store/use-mobile-menu-store";
-import { MobileMenuDrawer } from "../drawer/mobile-menu-drawer";
-import { CountrySelectorModal } from "../modal/country-selector-modal";
-import { HeaderMenu } from "./menu/menu";
+import { MobileMenuDrawer } from "./mobile-menu-drawer";
+import { CountrySelectorModal } from "../../modal/country-selector-modal";
+import { HeaderMenu } from "../menu/menu";
 import { HamburgerButton, Shopping, Me, Search } from "@icon-park/react";
 import type { CartApiQueryFragment } from "storefrontapi.generated";
-import SearchButton from "../header/search-button";
-import { SearchDrawer } from "../drawer/search-drawer";
+import { SeachButton } from "./search-button";
+
 interface HeaderProps {
   header: HeaderQuery;
   isLoggedIn: Promise<boolean>;
@@ -45,8 +45,8 @@ export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderPr
             publicStoreDomain={publicStoreDomain}
           />
           <div className="flex items-center justify-center gap-2 sm:gap-6 flex-none">
-            <SearchButton></SearchButton>
-            <SearchDrawer></SearchDrawer>
+            <SeachButton />
+
             <NavLink to="/account" prefetch="intent">
               <Me className="header-btn text-foreground" strokeWidth={1}></Me>
             </NavLink>

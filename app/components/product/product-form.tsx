@@ -3,7 +3,7 @@ import type { Maybe, ProductOptionValueSwatch } from "@shopify/hydrogen/storefro
 import { Link, useNavigate } from "react-router";
 import type { ProductCardFragment } from "storefrontapi.generated";
 import { useCartStore } from "~/hooks/store/use-cart-store";
-import { AddToCartButton } from "../add-to-cart-button";
+import { AddToCartButton } from "../common/add-to-cart-button";
 
 export function ProductForm({
   productOptions,
