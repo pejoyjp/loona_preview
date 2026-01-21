@@ -45,8 +45,9 @@ export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderPr
             publicStoreDomain={publicStoreDomain}
           />
           <div className="flex items-center justify-center gap-2 sm:gap-6 flex-none">
-            <SearchButton></SearchButton>
-            <SearchDrawer></SearchDrawer>
+            <SearchButton />
+            <SearchDrawer />
+
             <NavLink to="/account" prefetch="intent">
               <Me className="header-btn text-foreground" strokeWidth={1}></Me>
             </NavLink>

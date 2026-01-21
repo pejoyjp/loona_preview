@@ -24,7 +24,6 @@ export function CountrySelectorModal() {
           <DialogContent className="lg:max-w-158 max-w-90 p-0 ">
             <DialogHeader className="p-4 border-b">
               <DialogTitle>Language Selector</DialogTitle>
-              <DialogDescription />
             </DialogHeader>
             <CountrySelector />
           </DialogContent>

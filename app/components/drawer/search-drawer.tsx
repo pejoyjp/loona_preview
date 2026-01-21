@@ -20,6 +20,7 @@ export function SearchDrawer() {
   return (
     <Drawer direction="top" open={open} onOpenChange={setOpen}>
       <DrawerContent>
+        <DrawerTitle />
         <div className="h-14 flex items-center px-4 py-3 relative">
           <input
             className="bg-[#F5F5F5] w-full h-full rounded-full pl-4 pr-12 focus:outline-none"

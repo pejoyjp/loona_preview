@@ -8,18 +8,28 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
 } from "~/components/ui/drawer";
 import { useMobileMenuDrawerStore } from "~/hooks/store/use-mobile-menu-store";
 import { MobileMenu } from "../layout/menu/mobile-menu";
-import { useEffect } from "react";
-// import { useMediaQuery } from "react-responsive";
-import { useMediaQuery } from "@mantine/hooks";
+import { useEffect, useState } from "react";
+import { useClientMobile } from "~/hooks/use-client-mobile";
 
 interface MobileMenuDrawerProps {
   menu: HeaderQuery["menu"];
   primaryDomainUrl: HeaderQuery["shop"]["primaryDomain"]["url"];
   publicStoreDomain: string;
+}
+
+/**
+ * Ensures the component only renders on the client,
+ * after hydration has fully completed.
+ */
+function useMounted() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  return mounted;
 }
 
 export function MobileMenuDrawer({
@@ -28,25 +38,27 @@ export function MobileMenuDrawer({
   publicStoreDomain,
 }: MobileMenuDrawerProps) {
   const { open, setOpen } = useMobileMenuDrawerStore();
-  const isMobile = useMediaQuery("(max-width: 640px)");
-  useEffect(() => {
-    if (!isMobile) setOpen(false);
-  }, [isMobile, setOpen]);
-  if (!isMobile) return null;
+
+  const { canRender } = useClientMobile({
+    onExitMobile: () => setOpen(false),
+  });
+
+  if (!canRender) return null;
+
   return (
     <Drawer direction="top" open={open} onOpenChange={setOpen}>
-      <DrawerContent className="top-20  ">
+      <DrawerContent className="top-20">
         <DrawerHeader>
           <DrawerTitle>Mobile Menu</DrawerTitle>
           <DrawerDescription>Navigate through our shop</DrawerDescription>
         </DrawerHeader>
-        <div>
-          <MobileMenu
-            menu={menu}
-            primaryDomainUrl={primaryDomainUrl}
-            publicStoreDomain={publicStoreDomain}
-          />
-        </div>
+
+        <MobileMenu
+          menu={menu}
+          primaryDomainUrl={primaryDomainUrl}
+          publicStoreDomain={publicStoreDomain}
+        />
+
         <DrawerFooter>
           <Button>Submit</Button>
           <DrawerClose asChild>
