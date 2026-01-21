@@ -10,6 +10,8 @@ import { CountrySelectorModal } from "../modal/country-selector-modal";
 import { HeaderMenu } from "./menu/menu";
 import { HamburgerButton, Shopping, Me, Search } from "@icon-park/react";
 import type { CartApiQueryFragment } from "storefrontapi.generated";
+import SearchButton from "../header/search-button";
+import { SearchDrawer } from "../drawer/search-drawer";
 interface HeaderProps {
   header: HeaderQuery;
   isLoggedIn: Promise<boolean>;
@@ -43,7 +45,8 @@ export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderPr
             publicStoreDomain={publicStoreDomain}
           />
           <div className="flex items-center justify-center gap-2 sm:gap-6 flex-none">
-            <Search className="header-btn cursor-pointer text-foreground" strokeWidth={1}></Search>
+            <SearchButton></SearchButton>
+            <SearchDrawer></SearchDrawer>
             <NavLink to="/account" prefetch="intent">
               <Me className="header-btn text-foreground" strokeWidth={1}></Me>
             </NavLink>
