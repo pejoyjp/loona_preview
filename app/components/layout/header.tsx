@@ -1,26 +1,30 @@
-import { HamburgerButton, Shopping } from "@icon-park/react";
 import { useAnalytics, useOptimisticCart } from "@shopify/hydrogen";
 import { MenuIcon, ShoppingBagIcon, Menu } from "lucide-react";
-import { Suspense, useState } from "react";
-import { Await, NavLink, useAsyncValue } from "react-router";
+import { startTransition, Suspense, useState } from "react";
+import { Await, NavLink, useAsyncValue, type LoaderFunctionArgs } from "react-router";
 import type { HeaderQuery } from "storefrontapi.generated";
 import { useCartStore } from "~/hooks/store/use-cart-store";
 import { useMobileMenuDrawerStore } from "~/hooks/store/use-mobile-menu-store";
 import { MobileMenuDrawer } from "../drawer/mobile-menu-drawer";
 import { CountrySelectorModal } from "../modal/country-selector-modal";
 import { HeaderMenu } from "./menu/menu";
-import { HamburgerButton, Me, Search } from "@icon-park/react";
-
+import { HamburgerButton, Shopping, Me, Search } from "@icon-park/react";
+import type { CartApiQueryFragment } from "storefrontapi.generated";
+import SearchButton from "../header/search-button";
+import { SearchDrawer } from "../drawer/search-drawer";
 interface HeaderProps {
   header: HeaderQuery;
   isLoggedIn: Promise<boolean>;
   publicStoreDomain: string;
+  cart: Promise<CartApiQueryFragment | null>;
 }
 
-export function Header({ header, isLoggedIn, publicStoreDomain }: HeaderProps) {
+export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderProps) {
   const { shop, menu } = header;
-  const { setOpen: setCartOpen } = useCartStore();
+
   const { setOpen: setMobileMenuOpen } = useMobileMenuDrawerStore();
+
+  // const optimisticCart = useOptimisticCart(cart);
 
   return (
     <>
@@ -41,13 +45,12 @@ export function Header({ header, isLoggedIn, publicStoreDomain }: HeaderProps) {
             publicStoreDomain={publicStoreDomain}
           />
           <div className="flex items-center justify-center gap-2 sm:gap-6 flex-none">
-            <Search className="header-btn cursor-pointer"></Search>
-
+            <SearchButton></SearchButton>
+            <SearchDrawer></SearchDrawer>
             <NavLink to="/account" prefetch="intent">
-              <Me className="header-btn"></Me>
+              <Me className="header-btn text-foreground" strokeWidth={1}></Me>
             </NavLink>
-
-            <ShoppingBagIcon onClick={() => setCartOpen(true)} />
+            <CartBadge cart={cart} />
             <CountrySelectorModal />
           </div>
           <MobileMenuDrawer
@@ -69,5 +72,34 @@ export function Header({ header, isLoggedIn, publicStoreDomain }: HeaderProps) {
         publicStoreDomain={publicStoreDomain}
       /> */}
     </>
+  );
+}
+
+export function CartBadge({ cart }: { cart: Promise<CartApiQueryFragment | null> }) {
+  const { setOpen: setCartOpen } = useCartStore();
+  return (
+    <div className="w-6 h-6 flex flex-col relative">
+      {" "}
+      <ShoppingBagIcon
+        className="text-foreground cursor-pointer w-6 h-6"
+        strokeWidth={1}
+        onClick={() => {
+          startTransition(() => {
+            setCartOpen(true);
+          });
+        }}
+      />
+      <Suspense fallback={null}>
+        <Await resolve={cart}>
+          {(cart) =>
+            (cart?.totalQuantity ?? 0) > 0 && (
+              <div className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs w-4 h-4 flex items-center justify-center rounded-full">
+                {cart?.totalQuantity}
+              </div>
+            )
+          }
+        </Await>
+      </Suspense>
+    </div>
   );
 }
