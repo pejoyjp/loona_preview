@@ -1,5 +1,5 @@
 import { useAnalytics, useOptimisticCart } from "@shopify/hydrogen";
-import { MenuIcon, ShoppingBagIcon, Menu } from "lucide-react";
+import { MenuIcon, ShoppingBagIcon, Menu, CircleUserRound } from "lucide-react";
 import { startTransition, Suspense, useState } from "react";
 import { Await, NavLink, useAsyncValue, type LoaderFunctionArgs } from "react-router";
 import type { HeaderQuery } from "storefrontapi.generated";
@@ -33,11 +33,12 @@ export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderPr
           <strong>{shop.name}</strong>
         </NavLink> */}
         <div className="h-14 flex items-center justify-between px-4 sm:px-8 flex-none relative">
-          <Menu
+          {/* <Menu
             // size={24}
             onClick={() => setMobileMenuOpen(true)}
             className=" block sm:hidden  w-6 h-6"
-          />
+          /> */}
+          <MobileMenuDrawer />
 
           <HeaderMenu
             menu={menu}
@@ -47,17 +48,13 @@ export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderPr
           <div className="flex items-center justify-center space-x-2 sm:space-x-6 flex-none">
             <SearchButton />
             <NavLink to="/account" prefetch="intent">
-              <Me className="header-btn text-foreground" strokeWidth={1}></Me>
+              <CircleUserRound className="header-btn text-foreground" strokeWidth={1} />
             </NavLink>
             <CartBadge cart={cart} />
-            <CountrySelectorModal />
           </div>
-          <MobileMenuDrawer
-            menu={menu}
-            primaryDomainUrl={header.shop.primaryDomain.url}
-            publicStoreDomain={publicStoreDomain}
-          />
+          {/* <MobileMenuDrawer /> */}
         </div>
+        <CountrySelectorModal />
 
         {/* <MenuIcon
           onClick={() => setMobileMenuOpen(true)}

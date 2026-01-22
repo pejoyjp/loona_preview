@@ -75,7 +75,7 @@ export function HeaderMenu({
             className="header-menu-item text-base text-foreground relative inline-block py-2  font-normal
             hover:text-primary
          after:absolute after:left-0 after:bottom-0
-         after:h-[1px] after:w-full after:bg-primary
+         after:h-[2px] after:w-full after:bg-primary after:rounded-full
          after:scale-x-0 after:origin-left
          after:transition-transform after:duration-300
          hover:after:scale-x-100"
