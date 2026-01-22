@@ -87,7 +87,7 @@
 }
 @layer components {
   .header-btn {
-    @apply w-6 h-6 flex items-center justify-center [&>svg]:w-full [&>svg]:h-full;
+    @apply w-6 h-6 cursor-pointer;
   }
 }
 /* =========================================================
@@ -128,7 +128,7 @@
   --destructive: oklch(0.577 0.245 27.325);
 
   /* 边界 & 输入 */
-  --border: oklch(0.922 0 0); /* 分割线 */
+  --border: #dddddd; /* 分割线 */
   --input: oklch(0.922 0 0); /* 输入框 */
   --ring: oklch(0.708 0 0); /* focus 高亮 */
 

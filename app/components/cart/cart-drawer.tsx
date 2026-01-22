@@ -23,7 +23,7 @@ export function CartDrawer({ cart }: CartDrawerProps) {
 
   return (
     <Drawer direction="right" open={open} onOpenChange={setOpen}>
-      <DrawerContent>
+      <DrawerContent className="overflow-y-auto overflow-x-hidden">
         <DrawerHeader>
           <DrawerTitle>Your Cart</DrawerTitle>
           <DrawerDescription>Review your items before checkout</DrawerDescription>
