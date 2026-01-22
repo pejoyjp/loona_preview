@@ -10,7 +10,7 @@ import { CountrySelectorModal } from "../../modal/country-selector-modal";
 import { HeaderMenu } from "../menu/menu";
 import { HamburgerButton, Shopping, Me, Search } from "@icon-park/react";
 import type { CartApiQueryFragment } from "storefrontapi.generated";
-import { SeachButton } from "./search-button";
+import { SearchButton } from "./search-button";
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -29,10 +29,10 @@ export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderPr
   return (
     <>
       <header className="flex flex-col ">
-        <NavLink className="text-center" prefetch="intent" to="/" end>
+        {/* <NavLink className="text-center" prefetch="intent" to="/" end>
           <strong>{shop.name}</strong>
-        </NavLink>
-        <div className="flex items-center justify-between px-4 sm:px-8 flex-none">
+        </NavLink> */}
+        <div className="h-14 flex items-center justify-between px-4 sm:px-8 flex-none relative">
           <Menu
             // size={24}
             onClick={() => setMobileMenuOpen(true)}
@@ -44,9 +44,8 @@ export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderPr
             primaryDomainUrl={header.shop.primaryDomain.url}
             publicStoreDomain={publicStoreDomain}
           />
-          <div className="flex items-center justify-center gap-2 sm:gap-6 flex-none">
-            <SeachButton />
-
+          <div className="flex items-center justify-center space-x-2 sm:space-x-6 flex-none">
+            <SearchButton />
             <NavLink to="/account" prefetch="intent">
               <Me className="header-btn text-foreground" strokeWidth={1}></Me>
             </NavLink>
