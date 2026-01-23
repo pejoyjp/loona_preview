@@ -1,17 +1,14 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useClientMobile } from "~/hooks/use-client-mobile";
-import { CircleUserRound, EarthIcon, Menu, ShoppingCart } from "lucide-react";
-
-/**
- * Ensures the component only renders on the client,
- * after hydration has fully completed.
- */
+import { CircleUserRound, EarthIcon, Menu, ShoppingCart, X } from "lucide-react";
+import { cn } from "~/lib/utils";
+import { useMobileMenuDrawerStore } from "~/hooks/store/use-mobile-menu-store";
 
 export function MobileMenuDrawer() {
-  const [visible, setVisible] = useState(false);
-  const [open, setOpen] = useState(false);
+  const { open, setOpen } = useMobileMenuDrawerStore();
   const searchRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
+
   const { canRender } = useClientMobile({
     onExitMobile: () => setOpen(false),
   });
@@ -19,65 +16,57 @@ export function MobileMenuDrawer() {
   const HEADER_HEIGHT = 56;
 
   const openMenu = () => {
-    setVisible(true);
-    requestAnimationFrame(() => setOpen(true));
+    setOpen(true);
   };
 
   const closeMenu = () => {
     setOpen(false);
-    setTimeout(() => setVisible(false), 200);
   };
-
-  // 点击页面任意位置关闭
-  useEffect(() => {
-    if (!open) return;
-    const handler = (e: MouseEvent) => {
-      if (searchRef.current?.contains(e.target as Node)) return;
-      if (triggerRef.current?.contains(e.target as Node)) return;
-      closeMenu();
-    };
-
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, [open]);
 
   return (
     <>
-      <div ref={triggerRef}>
-        <Menu strokeWidth={1} onClick={openMenu} className="sm:hidden header-btn" />
+      <div ref={triggerRef} className="flex items-center">
+        {open ? (
+          <X strokeWidth={1} onClick={closeMenu} className="sm:hidden header-btn" />
+        ) : (
+          <Menu strokeWidth={1} onClick={openMenu} className="sm:hidden header-btn" />
+        )}
       </div>
-      {visible && canRender && (
-        <>
+
+      {canRender && (
+        <div
+          className={cn("fixed inset-0 z-40 overflow-hidden", `top-${HEADER_HEIGHT / 4}`)}
+          onClick={closeMenu}
+        >
           <div
-            className={`absolute left-0 right-0 z-40 bg-black/50 transition-opacity duration-200 ${
+            className={`absolute inset-0 bg-black/50 transition-opacity duration-300 ${
               open ? "opacity-100" : "opacity-0"
             }`}
-            style={{ top: HEADER_HEIGHT, height: `calc(100vh - ${HEADER_HEIGHT}px)` }}
+            onClick={closeMenu}
           />
+
           <div
             ref={searchRef}
-            className={`absolute left-0 right-0 z-50 bg-white transform transition-all duration-200 ease-out ${
-              open ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"
+            className={`absolute left-0 right-0 bg-white transform transition-transform duration-300 ease-out ${
+              open ? "translate-y-0" : "-translate-y-full"
             }`}
-            style={{ top: HEADER_HEIGHT }}
           >
-            <MobileMenuDrawerItem
-              title="Language Setting"
-              icon={<EarthIcon strokeWidth={1} className="header-btn" />}
-              onClick={() => console.log("clicked！！！")}
-            />
-            <MobileMenuDrawerItem
-              title="Cart"
-              icon={<ShoppingCart strokeWidth={1} className="header-btn" />}
-              onClick={() => console.log("clicked！！！")}
-            />
-            <MobileMenuDrawerItem
-              title="Language Setting"
-              icon={<CircleUserRound strokeWidth={1} className="header-btn" />}
-              onClick={() => console.log("clicked！！！")}
-            />
+            <div className="flex flex-col bg-white">
+              <MobileMenuDrawerItem
+                title="Language Setting"
+                icon={<EarthIcon strokeWidth={1} className="w-5 h-5 text-gray-600" />}
+              />
+              <MobileMenuDrawerItem
+                title="Cart"
+                icon={<ShoppingCart strokeWidth={1} className="w-5 h-5 text-gray-600" />}
+              />
+              <MobileMenuDrawerItem
+                title="Account"
+                icon={<CircleUserRound strokeWidth={1} className="w-5 h-5 text-gray-600" />}
+              />
+            </div>
           </div>
-        </>
+        </div>
       )}
     </>
   );
@@ -85,14 +74,14 @@ export function MobileMenuDrawer() {
 
 interface MobileMenuDrawerItemProps {
   title: string;
-  icon?: ReactNode; // 可以传 svg 或组件
+  icon?: ReactNode;
   onClick?: () => void;
 }
 
 export function MobileMenuDrawerItem({ title, icon, onClick }: MobileMenuDrawerItemProps) {
   return (
     <div
-      className="flex items-center justify-between  h-14 px-4 cursor-pointer border-t border-border"
+      className="flex items-center justify-between h-14 px-4 cursor-pointer border-t border-border"
       onClick={onClick}
     >
       <span>{title}</span>
