@@ -21,7 +21,7 @@ import { TranslationProvider } from "./lib/i18n/translation-context";
 import { getLocaleFromRequest } from "./lib/locale-from-request";
 import tailwindCss from "./styles/tailwind.css?url";
 import { getCountries, getCountriesByContinent } from "./lib/get-countries";
-import { Omnisend } from "./components/omnisend";
+import { Omnisend } from "./components/common/plug/omnisend";
 
 export type RootLoader = typeof loader;
 
