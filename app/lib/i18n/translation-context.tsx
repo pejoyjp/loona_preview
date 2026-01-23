@@ -1,10 +1,10 @@
 import type { I18nBase } from "@shopify/hydrogen";
 import { createContext, useMemo } from "react";
-import type { Translation } from "~/lib/i18n";
 import { useTranslation } from "~/lib/i18n";
+import type { TranslateFn } from "~/lib/i18n";
 
 type TranslationContextValue = {
-  t: Translation;
+  t: TranslateFn;
 };
 
 export const TranslationContext = createContext<TranslationContextValue | null>(null);

@@ -25,6 +25,10 @@ export default async function handleRequest(
       "https://cdn-static.okendo.io",
       "https://surveys.okendo.io",
       "https://api.okendo.io",
+      "https://omnisnippet1.com/",
+      "https://formsv2.soundestlink.com",
+      "https://forms.soundestlink.com",
+      "https://app.omnisend.com",
       "data:",
     ],
     styleSrc: [
@@ -33,6 +37,7 @@ export default async function handleRequest(
       "https://d3hw6dc1ow8pp2.cloudfront.net",
       "https://cdn-static.okendo.io",
       "https://surveys.okendo.io",
+      "https://fonts.soundestlink.com",
     ],
     connectSrc: [
       "https://api.okendo.io",
@@ -41,6 +46,9 @@ export default async function handleRequest(
       "https://api.raygun.com",
       "https://www.google.com",
       "https://www.gstatic.com",
+      "https://omnisnippet1.com",
+      "https://wt.omnisendlink.com",
+      "https://forms.soundestlink.com",
     ],
     frameSrc: ["https://www.google.com", "https://www.gstatic.com"],
   });

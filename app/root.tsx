@@ -21,6 +21,7 @@ import { TranslationProvider } from "./lib/i18n/translation-context";
 import { getLocaleFromRequest } from "./lib/locale-from-request";
 import tailwindCss from "./styles/tailwind.css?url";
 import { getCountries, getCountriesByContinent } from "./lib/get-countries";
+import { Omnisend } from "./components/omnisend";
 
 export type RootLoader = typeof loader;
 
@@ -168,6 +169,7 @@ export function Layout({ children }: { children?: React.ReactNode }) {
       <body>
         {children}
         <ScrollRestoration nonce={nonce} />
+
         <Scripts nonce={nonce} />
       </body>
     </html>
@@ -194,6 +196,7 @@ export default function App() {
             country: data.selectedCountry.country,
           }}
         >
+          <Omnisend />
           <PageLayout {...data}>
             <Outlet />
           </PageLayout>

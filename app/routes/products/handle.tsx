@@ -4,14 +4,17 @@ import {
   getAdjacentAndFirstAvailableVariants,
   getProductOptions,
   getSelectedProductOptions,
+  Image,
   useOptimisticVariant,
   useSelectedOptionInUrlParam,
 } from "@shopify/hydrogen";
 import { type LoaderFunctionArgs, type MetaFunction, redirect, useLoaderData } from "react-router";
 import type { ProductFragment } from "storefrontapi.generated";
+import { AddToCartButton } from "~/components/common/add-to-cart-button";
 import { ProductForm } from "~/components/product/product-form";
 import { ProductImage } from "~/components/product/product-image";
 import { ProductPrice } from "~/components/product/product-price";
+import { MediaModal } from "~/components/ui/media-modal";
 import {
   OKENDO_PRODUCT_REVIEWS_FRAGMENT,
   OKENDO_PRODUCT_STAR_RATING_FRAGMENT,
@@ -119,9 +122,11 @@ export default function Product() {
               compareAtPrice={selectedVariant?.compareAtPrice}
             />
           </div>
+
           <div className="mb-6">
             <ProductForm productOptions={productOptions} selectedVariant={selectedVariant} />
           </div>
+
           <div className="mt-6">
             <p className="text-lg font-semibold text-gray-900">Description</p>
             <div
@@ -131,8 +136,52 @@ export default function Product() {
           </div>
         </div>
       </div>
+
+      <p>Accessory</p>
+      <div className="flex flex-col gap-2">
+        {productOptions.map((productOption) => {
+          if (productOption.optionValues.length === 1) return null;
+          return productOption.optionValues.map(
+            (value, index) =>
+              value.available && (
+                <div
+                  key={value.variant.id}
+                  className="border flex items-center justify-between p-2"
+                >
+                  <div className="flex items-center gap-2">
+                    <div className="w-12 h-12 ">
+                      {value.variant?.image && (
+                        <MediaModal image={value.variant.image} size="48px" />
+                      )}
+                    </div>
+
+                    <div>
+                      <div>{value.name}</div>
+                      <p>{value.variant.price.amount}</p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <AddToCartButton
+                      variant={"outline"}
+                      lines={[
+                        {
+                          merchandiseId: value.variant.id,
+                          quantity: 1,
+                        },
+                      ]}
+                    >
+                      Add
+                    </AddToCartButton>
+                  </div>
+                </div>
+              ),
+          );
+        })}
+      </div>
+
       <div className="w-full">
-        <OkendoStarRating
+        {/* <OkendoStarRating
           className="mb-2"
           productId={product.id}
           okendoStarRatingSnippet={(product as ProductFragment).okendoStarRatingSnippet}
@@ -141,8 +190,9 @@ export default function Product() {
           className="mb-2 bg-red-200"
           productId={product.id}
           okendoReviewsSnippet={(product as ProductFragment).okendoReviewsSnippet}
-        />
+        /> */}
       </div>
+
       <Analytics.ProductView
         data={{
           products: [

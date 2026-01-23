@@ -1,6 +1,6 @@
 import { useAnalytics, useOptimisticCart } from "@shopify/hydrogen";
 import { MenuIcon, ShoppingBagIcon, Menu } from "lucide-react";
-import { startTransition, Suspense, useState } from "react";
+import { startTransition, Suspense, useEffect, useState } from "react";
 import { Await, NavLink, useAsyncValue, type LoaderFunctionArgs } from "react-router";
 import type { HeaderQuery } from "storefrontapi.generated";
 import { useCartStore } from "~/hooks/store/use-cart-store";
@@ -23,11 +23,28 @@ export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderPr
   const { shop, menu } = header;
 
   const { setOpen: setMobileMenuOpen } = useMobileMenuDrawerStore();
+  // useEffect(() => {
+  //   (window as any).omnisend = (window as any).omnisend || [];
+  //   (window as any).omnisend.push(["brandID", "6805f076aae9d7bc6fdc2d8f"]);
+  //   (window as any).omnisend.push(["track", "$pageViewed"]);
+  //   (function () {
+  //     var e = document.createElement("script");
+  //     ((e.type = "text/javascript"),
+  //       (e.async = !0),
+  //       (e.src = "https://omnisnippet1.com/inshop/launcher-v2.js"));
+  //     var t = document.getElementsByTagName("script")[0];
+  //     t.parentNode.insertBefore(e, t);
+  //   })();
+  // }, []);
 
   // const optimisticCart = useOptimisticCart(cart);
-
+  // 6805f076aae9d7bc6fdc2d8f-utBoZkdnEkeyCA3Ses3tG16YE9O2Sjm5k7hyxlZHz2LHX0k142
   return (
     <>
+      {/* <div
+        id="omnisend-embedded-v2-6971ebb973065ef99f63bf3a"
+        className="text-sm bg-amber-300"
+        /> */}
       <header className="flex flex-col ">
         <NavLink className="text-center" prefetch="intent" to="/" end>
           <strong>{shop.name}</strong>
