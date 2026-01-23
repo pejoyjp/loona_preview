@@ -21,8 +21,7 @@ interface HeaderProps {
 
 export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderProps) {
   const { shop, menu } = header;
-
-  const { setOpen: setMobileMenuOpen } = useMobileMenuDrawerStore();
+  const { setOpen: setMobileMenuOpen, open: mobileMenuOpen } = useMobileMenuDrawerStore();
 
   return (
     <>
@@ -30,24 +29,18 @@ export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderPr
         id="omnisend-embedded-v2-6971ebb973065ef99f63bf3a"
         className="text-sm bg-amber-300"
         /> */}
-      <header className="flex flex-col ">
+      <header className="flex flex-col" onClick={() => mobileMenuOpen && setMobileMenuOpen(false)}>
         {/* <NavLink className="text-center" prefetch="intent" to="/" end>
           <strong>{shop.name}</strong>
         </NavLink> */}
         <div className="h-14 flex items-center justify-between px-4 sm:px-8 flex-none relative">
-          {/* <Menu
-            // size={24}
-            onClick={() => setMobileMenuOpen(true)}
-            className=" block sm:hidden  w-6 h-6"
-          /> */}
           <MobileMenuDrawer />
-
           <HeaderMenu
             menu={menu}
             primaryDomainUrl={header.shop.primaryDomain.url}
             publicStoreDomain={publicStoreDomain}
           />
-          <div className="flex items-center justify-center ">
+          <div className="flex items-center justify-center">
             <div className="flex items-center justify-center space-x-2  sm:space-x-6 sm:mr-6 ">
               <SearchButton />
               <NavLink to="/account" prefetch="intent">
