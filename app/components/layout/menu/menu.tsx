@@ -71,7 +71,19 @@ export function HeaderMenu({
             ? new URL(item.url).pathname
             : item.url;
         return (
-          <NavLink className="header-menu-item" end key={item.id} prefetch="intent" to={url}>
+          <NavLink
+            className="header-menu-item text-base text-foreground relative inline-block py-2  font-normal
+            hover:text-primary
+         after:absolute after:left-0 after:bottom-0
+         after:h-[2px] after:w-full after:bg-primary after:rounded-full
+         after:scale-x-0 after:origin-left
+         after:transition-transform after:duration-300
+         hover:after:scale-x-100"
+            end
+            key={item.id}
+            prefetch="intent"
+            to={url}
+          >
             {item.title}
           </NavLink>
         );

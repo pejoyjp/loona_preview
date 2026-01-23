@@ -87,7 +87,7 @@
 }
 @layer components {
   .header-btn {
-    @apply w-6 h-6 flex items-center justify-center [&>svg]:w-full [&>svg]:h-full;
+    @apply w-6 h-6 cursor-pointer;
   }
 }
 /* =========================================================

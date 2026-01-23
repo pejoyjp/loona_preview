@@ -1,6 +1,6 @@
 import { useAnalytics, useOptimisticCart } from "@shopify/hydrogen";
-import { MenuIcon, ShoppingBagIcon, Menu } from "lucide-react";
-import { startTransition, Suspense, useEffect, useState } from "react";
+import { MenuIcon, ShoppingBagIcon, Menu, CircleUserRound } from "lucide-react";
+import { startTransition, Suspense, useState } from "react";
 import { Await, NavLink, useAsyncValue, type LoaderFunctionArgs } from "react-router";
 import type { HeaderQuery } from "storefrontapi.generated";
 import { useCartStore } from "~/hooks/store/use-cart-store";
@@ -10,7 +10,7 @@ import { CountrySelectorModal } from "../../modal/country-selector-modal";
 import { HeaderMenu } from "../menu/menu";
 import { HamburgerButton, Shopping, Me, Search } from "@icon-park/react";
 import type { CartApiQueryFragment } from "storefrontapi.generated";
-import { SeachButton } from "./search-button";
+import { SearchButton } from "./search-button";
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -46,35 +46,34 @@ export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderPr
         className="text-sm bg-amber-300"
         /> */}
       <header className="flex flex-col ">
-        <NavLink className="text-center" prefetch="intent" to="/" end>
+        {/* <NavLink className="text-center" prefetch="intent" to="/" end>
           <strong>{shop.name}</strong>
-        </NavLink>
-        <div className="flex items-center justify-between px-4 sm:px-8 flex-none">
-          <Menu
+        </NavLink> */}
+        <div className="h-14 flex items-center justify-between px-4 sm:px-8 flex-none relative">
+          {/* <Menu
             // size={24}
             onClick={() => setMobileMenuOpen(true)}
             className=" block sm:hidden  w-6 h-6"
-          />
+          /> */}
+          <MobileMenuDrawer />
 
           <HeaderMenu
             menu={menu}
             primaryDomainUrl={header.shop.primaryDomain.url}
             publicStoreDomain={publicStoreDomain}
           />
-          <div className="flex items-center justify-center gap-2 sm:gap-6 flex-none">
-            <SeachButton />
-
-            <NavLink to="/account" prefetch="intent">
-              <Me className="header-btn text-foreground" strokeWidth={1}></Me>
-            </NavLink>
-            <CartBadge cart={cart} />
+          <div className="flex items-center justify-center ">
+            <div className="flex items-center justify-center space-x-2  sm:space-x-6 sm:mr-6 ">
+              <SearchButton />
+              <NavLink to="/account" prefetch="intent">
+                <CircleUserRound className="header-btn text-foreground" strokeWidth={1} />
+              </NavLink>
+              <CartBadge cart={cart} />
+            </div>
             <CountrySelectorModal />
           </div>
-          <MobileMenuDrawer
-            menu={menu}
-            primaryDomainUrl={header.shop.primaryDomain.url}
-            publicStoreDomain={publicStoreDomain}
-          />
+
+          {/* <MobileMenuDrawer /> */}
         </div>
 
         {/* <MenuIcon
