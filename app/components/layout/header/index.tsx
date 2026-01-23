@@ -30,11 +30,19 @@ export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderPr
         className="text-sm bg-amber-300"
         /> */}
       <header className="flex flex-col" onClick={() => mobileMenuOpen && setMobileMenuOpen(false)}>
+        <MobileMenuDrawer />
         {/* <NavLink className="text-center" prefetch="intent" to="/" end>
           <strong>{shop.name}</strong>
         </NavLink> */}
         <div className="h-14 flex items-center justify-between px-4 sm:px-8 flex-none relative">
-          <MobileMenuDrawer />
+          <Menu
+            strokeWidth={1}
+            onClick={(e) => {
+              e.stopPropagation();
+              setMobileMenuOpen(true);
+            }}
+            className="sm:hidden header-btn"
+          />
           <HeaderMenu
             menu={menu}
             primaryDomainUrl={header.shop.primaryDomain.url}
