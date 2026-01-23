@@ -26,17 +26,26 @@ export function CartMain({ cart: originalCart }: CartMainProps) {
   const cartHasItems = cart?.totalQuantity ? cart.totalQuantity > 0 : false;
 
   return (
-    <div className="w-full">
+    <div className="flex flex-col h-full min-h-0 w-full">
       <CartEmpty hidden={linesCount} />
-      <div className="cart-details">
-        <div aria-labelledby="cart-lines">
-          <ul className="divide-y divide-gray-200">
+
+      {/* 主体区域 */}
+      <div className="flex flex-col flex-1 min-h-0">
+        {/* 商品列表（可滚动） */}
+        <div className="flex-1 min-h-0 overflow-y-auto">
+          <ul aria-labelledby="cart-lines" className="divide-y divide-gray-200">
             {(cart?.lines?.nodes ?? []).map((line) => (
               <CartLineItem key={line.id} line={line} />
             ))}
           </ul>
         </div>
-        {cartHasItems && <CartSummary cart={cart} />}
+
+        {/* 底部汇总（固定） */}
+        {cartHasItems && (
+          <div className="shrink-0 border-t bg-white">
+            <CartSummary cart={cart} />
+          </div>
+        )}
       </div>
     </div>
   );

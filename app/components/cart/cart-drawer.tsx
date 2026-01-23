@@ -23,22 +23,17 @@ export function CartDrawer({ cart }: CartDrawerProps) {
 
   return (
     <Drawer direction="right" open={open} onOpenChange={setOpen}>
-      <DrawerContent className="overflow-y-auto overflow-x-hidden">
-        <DrawerHeader>
+      <DrawerContent className="flex flex-col h-dvh">
+        <DrawerHeader className="shrink-0">
           <DrawerTitle>Your Cart</DrawerTitle>
           <DrawerDescription>Review your items before checkout</DrawerDescription>
         </DrawerHeader>
-        <div>
+
+        <div className="flex-1 min-h-0 overflow-y-auto">
           <Suspense fallback={<div>Loading cart...</div>}>
             <Await resolve={cart}>{(cart) => <CartMain cart={cart} />}</Await>
           </Suspense>
         </div>
-        <DrawerFooter>
-          <Button>Submit</Button>
-          <DrawerClose asChild>
-            <Button variant="outline">Cancel</Button>
-          </DrawerClose>
-        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   );
