@@ -45,16 +45,19 @@ export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderPr
             primaryDomainUrl={header.shop.primaryDomain.url}
             publicStoreDomain={publicStoreDomain}
           />
-          <div className="flex items-center justify-center space-x-2 sm:space-x-6 flex-none">
-            <SearchButton />
-            <NavLink to="/account" prefetch="intent">
-              <CircleUserRound className="header-btn text-foreground" strokeWidth={1} />
-            </NavLink>
-            <CartBadge cart={cart} />
+          <div className="flex items-center justify-center ">
+            <div className="flex items-center justify-center space-x-2  sm:space-x-6 sm:mr-6 ">
+              <SearchButton />
+              <NavLink to="/account" prefetch="intent">
+                <CircleUserRound className="header-btn text-foreground" strokeWidth={1} />
+              </NavLink>
+              <CartBadge cart={cart} />
+            </div>
+            <CountrySelectorModal />
           </div>
+
           {/* <MobileMenuDrawer /> */}
         </div>
-        <CountrySelectorModal />
 
         {/* <MenuIcon
           onClick={() => setMobileMenuOpen(true)}

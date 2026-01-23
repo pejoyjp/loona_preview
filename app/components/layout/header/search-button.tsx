@@ -1,5 +1,6 @@
 import { Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useFetcher } from "react-router";
 import {
   Drawer,
   DrawerContent,
@@ -9,7 +10,18 @@ import {
 } from "~/components/ui/drawer";
 
 export function SearchButton() {
+  const fetcher = useFetcher();
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // 监听输入变化，调用 API
+  useEffect(() => {
+    if (!searchTerm.trim()) return;
+
+    // 异步请求 api/predictive-search?q=...
+    fetcher.load(`/api/predictive-search?q=${encodeURIComponent(searchTerm)}`);
+  }, [searchTerm]);
   // return <HeaderSearch />;
+  const showResults = searchTerm.trim() !== "" && fetcher.data;
   return (
     <Drawer direction="top">
       <DrawerTrigger>
@@ -30,9 +42,22 @@ export function SearchButton() {
               className="bg-[#F5F5F5] w-full h-8 rounded-full pl-4 pr-12 focus:outline-none"
               type="search"
               placeholder="搜索商品"
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
             <Search className="cursor-pointer text-foreground absolute right-8" strokeWidth={1} />
           </div>
+          {showResults && (
+            <ul className="search-results mb-4 px-4">
+              <p className="text-black text-xl mt-4 mb-4">Search Result</p>
+              {/* {fetcher.state === "loading" && <p>加载中...</p>} */}
+              {fetcher.data.products.map((product: any) => (
+                <li key={product.id}>
+                  <img src={product.variants.nodes[0]?.image?.url} width="40" />
+                  <span>{product.title}</span>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </DrawerContent>
     </Drawer>

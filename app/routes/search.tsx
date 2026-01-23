@@ -63,6 +63,7 @@ export default function SearchPage() {
         <SearchResults result={result} term={term}>
           {({ articles, pages, products, term }) => (
             <div>
+              <h1>Search Results for "{term}"</h1>
               <SearchResults.Products products={products} term={term} />
               <SearchResults.Pages pages={pages} term={term} />
               <SearchResults.Articles articles={articles} term={term} />
@@ -70,7 +71,7 @@ export default function SearchPage() {
           )}
         </SearchResults>
       )}
-      <div>{JSON.stringify(result)}</div>
+      {/* <div>{JSON.stringify(result)}</div> */}
       <Analytics.SearchView data={{ searchTerm: term, searchResults: result }} />
     </div>
   );
