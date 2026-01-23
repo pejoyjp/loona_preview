@@ -1,5 +1,5 @@
 import { getSeoMeta, Image } from "@shopify/hydrogen";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import { Await, Link, useLoaderData } from "react-router";
 import type { FeaturedCollectionFragment, RecommendedProductsQuery } from "storefrontapi.generated";

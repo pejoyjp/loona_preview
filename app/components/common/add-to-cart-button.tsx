@@ -7,12 +7,21 @@ export function AddToCartButton({
   children,
   disabled,
   lines,
-
+  variant,
   onClick,
 }: {
   analytics?: unknown;
   children: React.ReactNode;
   disabled?: boolean;
+  variant?:
+    | "default"
+    | "secondary"
+    | "outline"
+    | "link"
+    | "destructive"
+    | "ghost"
+    | null
+    | undefined;
   lines: Array<OptimisticCartLineInput>;
   onClick?: () => void;
 }) {
@@ -21,7 +30,12 @@ export function AddToCartButton({
       {(fetcher: FetcherWithComponents<any>) => (
         <>
           <input name="analytics" type="hidden" value={JSON.stringify(analytics)} />
-          <Button type="submit" onClick={onClick} disabled={disabled ?? fetcher.state !== "idle"}>
+          <Button
+            type="submit"
+            variant={variant}
+            onClick={onClick}
+            disabled={disabled ?? fetcher.state !== "idle"}
+          >
             {children}
           </Button>
         </>

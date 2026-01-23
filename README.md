@@ -1,5 +1,3 @@
-# Hydrogen template: Skeleton
-
                                             '
                                          __,▄▄▄,
                                       ,▓█████████▓╓

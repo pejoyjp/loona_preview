@@ -17,38 +17,40 @@ interface IMediaModal {
   videoSrc?: string;
   image?: ImageType;
   className?: string;
+  size?: string;
 }
 
-export function MediaModal({ imgSrc, videoSrc, image, className }: IMediaModal) {
+export function MediaModal({ imgSrc, videoSrc, image, className, size }: IMediaModal) {
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false);
   const uniqueId = useId();
 
-  useEffect(() => {
-    if (isMediaModalOpen) {
-      document.body.classList.add("overflow-hidden");
-    } else {
-      document.body.classList.remove("overflow-hidden");
-    }
+  // useEffect(() => {
+  //   if (isMediaModalOpen) {
+  //     document.body.classList.add("overflow-hidden");
+  //   } else {
+  //     document.body.classList.remove("overflow-hidden");
+  //   }
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setIsMediaModalOpen(false);
-      }
-    };
+  //   const handleKeyDown = (event: KeyboardEvent) => {
+  //     if (event.key === "Escape") {
+  //       setIsMediaModalOpen(false);
+  //     }
+  //   };
 
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isMediaModalOpen]);
+  //   document.addEventListener("keydown", handleKeyDown);
+  //   return () => {
+  //     document.removeEventListener("keydown", handleKeyDown);
+  //   };
+  // }, [isMediaModalOpen]);
+
+  // 6805f076aae9d7bc6fdc2d8f
+  // 6805f076aae9d7bc6fdc2d8f-DcInAhZr72tzj7RLJ3qusEouwc66YbYD2IGF4uN2P9Tw5g5G3r
+
   return (
     <MotionConfig transition={transition}>
       <motion.div
         className="w-full h-full flex relative flex-col overflow-hidden border cursor-zoom-in dark:bg-black bg-gray-300 hover:bg-gray-200 dark:hover:bg-gray-950"
         layoutId={`dialog-${uniqueId}`}
-        style={{
-          borderRadius: "12px",
-        }}
         onClick={() => {
           setIsMediaModalOpen(true);
         }}
@@ -69,7 +71,7 @@ export function MediaModal({ imgSrc, videoSrc, image, className }: IMediaModal) 
               aspectRatio="1/1"
               data={image}
               loading="eager"
-              sizes="(min-width: 45em) 400px, 100vw"
+              sizes={size}
               className="w-full h-full object-cover"
             />
           </motion.div>
@@ -120,6 +122,24 @@ export function MediaModal({ imgSrc, videoSrc, image, className }: IMediaModal) 
                     onClick={() => setIsMediaModalOpen(false)}
                   >
                     <img src={imgSrc} alt="" className="h-full w-full object-cover" />
+                    <button
+                      onClick={() => setIsMediaModalOpen(false)}
+                      className="absolute right-6 top-6 p-3 text-zinc-50 cursor-pointer dark:bg-gray-900 bg-gray-400 hover:bg-gray-500 rounded-xl dark:hover:bg-gray-800"
+                      type="button"
+                      aria-label="Close dialog"
+                    >
+                      <Close size={"24"} />
+                    </button>
+                  </motion.div>
+                )}
+                {image && (
+                  <motion.div layoutId={`dialog-image-${uniqueId}`} className="w-full h-full">
+                    <Image
+                      alt=""
+                      data={image}
+                      sizes="(min-width: 45em) 400px, 100vw"
+                      className="object-cover"
+                    />
                     <button
                       onClick={() => setIsMediaModalOpen(false)}
                       className="absolute right-6 top-6 p-3 text-zinc-50 cursor-pointer dark:bg-gray-900 bg-gray-400 hover:bg-gray-500 rounded-xl dark:hover:bg-gray-800"

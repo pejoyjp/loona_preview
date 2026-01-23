@@ -24,10 +24,12 @@ export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderPr
 
   const { setOpen: setMobileMenuOpen } = useMobileMenuDrawerStore();
 
-  // const optimisticCart = useOptimisticCart(cart);
-
   return (
     <>
+      {/* <div
+        id="omnisend-embedded-v2-6971ebb973065ef99f63bf3a"
+        className="text-sm bg-amber-300"
+        /> */}
       <header className="flex flex-col ">
         {/* <NavLink className="text-center" prefetch="intent" to="/" end>
           <strong>{shop.name}</strong>

@@ -7,7 +7,7 @@ export default function AllProducts() {
 
   return (
     <div className=" h-[300px]">
-      <h1 className="text-3xl">{t["home.hero.cta"]}</h1>
+      <h1 className="text-3xl">{t("loona.desc", { test: "game", desc: "cool" })}</h1>
     </div>
   );
 }
