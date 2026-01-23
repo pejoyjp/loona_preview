@@ -4,7 +4,7 @@ import { useNonce } from "@shopify/hydrogen";
 
 declare global {
   interface Window {
-    omnisend?: any[];
+    omnisend?: unknown[];
   }
 }
 

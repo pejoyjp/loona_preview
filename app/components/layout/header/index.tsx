@@ -23,22 +23,7 @@ export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderPr
   const { shop, menu } = header;
 
   const { setOpen: setMobileMenuOpen } = useMobileMenuDrawerStore();
-  // useEffect(() => {
-  //   (window as any).omnisend = (window as any).omnisend || [];
-  //   (window as any).omnisend.push(["brandID", "6805f076aae9d7bc6fdc2d8f"]);
-  //   (window as any).omnisend.push(["track", "$pageViewed"]);
-  //   (function () {
-  //     var e = document.createElement("script");
-  //     ((e.type = "text/javascript"),
-  //       (e.async = !0),
-  //       (e.src = "https://omnisnippet1.com/inshop/launcher-v2.js"));
-  //     var t = document.getElementsByTagName("script")[0];
-  //     t.parentNode.insertBefore(e, t);
-  //   })();
-  // }, []);
 
-  // const optimisticCart = useOptimisticCart(cart);
-  // 6805f076aae9d7bc6fdc2d8f-utBoZkdnEkeyCA3Ses3tG16YE9O2Sjm5k7hyxlZHz2LHX0k142
   return (
     <>
       {/* <div
