@@ -4,11 +4,9 @@ import { startTransition, Suspense, useState } from "react";
 import { Await, NavLink, useAsyncValue, type LoaderFunctionArgs } from "react-router";
 import type { HeaderQuery } from "storefrontapi.generated";
 import { useCartStore } from "~/hooks/store/use-cart-store";
-import { useMobileMenuDrawerStore } from "~/hooks/store/use-mobile-menu-store";
 import { MobileMenuDrawer } from "./mobile-menu-drawer";
 import { CountrySelectorModal } from "../../modal/country-selector-modal";
 import { HeaderMenu } from "../menu/menu";
-import { HamburgerButton, Shopping, Me, Search } from "@icon-park/react";
 import type { CartApiQueryFragment } from "storefrontapi.generated";
 import { SearchButton } from "./search-button";
 
@@ -21,7 +19,7 @@ interface HeaderProps {
 
 export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderProps) {
   const { shop, menu } = header;
-  const { setOpen: setMobileMenuOpen, open: mobileMenuOpen } = useMobileMenuDrawerStore();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   return (
     <>
@@ -30,7 +28,6 @@ export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderPr
         className="text-sm bg-amber-300"
         /> */}
       <header className="flex flex-col" onClick={() => mobileMenuOpen && setMobileMenuOpen(false)}>
-        <MobileMenuDrawer />
         {/* <NavLink className="text-center" prefetch="intent" to="/" end>
           <strong>{shop.name}</strong>
         </NavLink> */}
@@ -58,21 +55,9 @@ export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderPr
             </div>
             <CountrySelectorModal />
           </div>
-
-          {/* <MobileMenuDrawer /> */}
         </div>
-
-        {/* <MenuIcon
-          onClick={() => setMobileMenuOpen(true)}
-          className="block lg:hidden"
-        /> */}
+        <MobileMenuDrawer mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />
       </header>
-
-      {/* <MobileMenu
-        menu={menu}
-        primaryDomainUrl={header.shop.primaryDomain.url}
-        publicStoreDomain={publicStoreDomain}
-      /> */}
     </>
   );
 }
