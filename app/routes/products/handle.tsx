@@ -11,6 +11,7 @@ import {
 import { type LoaderFunctionArgs, type MetaFunction, redirect, useLoaderData } from "react-router";
 import type { ProductFragment } from "storefrontapi.generated";
 import { AddToCartButton } from "~/components/common/add-to-cart-button";
+import { StoryCarousel } from "~/components/common/carousel/story-carousel";
 import { ProductForm } from "~/components/product/product-form";
 import { ProductImage } from "~/components/product/product-image";
 import { ProductPrice } from "~/components/product/product-price";
@@ -137,6 +138,7 @@ export default function Product() {
         </div>
       </div>
 
+      {/* TODO:这应该是一个组件 */}
       <p>Accessory</p>
       <div className="flex flex-col gap-2">
         {productOptions.map((productOption) => {
@@ -180,6 +182,10 @@ export default function Product() {
         })}
       </div>
 
+      <div>
+        <StoryCarousel />
+      </div>
+
       <div className="w-full">
         {/* <OkendoStarRating
           className="mb-2"
@@ -192,6 +198,8 @@ export default function Product() {
           okendoReviewsSnippet={(product as ProductFragment).okendoReviewsSnippet}
         /> */}
       </div>
+
+      <div className="h-[1000px] w-full bg-blue-200"></div>
 
       <Analytics.ProductView
         data={{
