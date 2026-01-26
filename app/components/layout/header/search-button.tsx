@@ -1,3 +1,4 @@
+import type { Product } from "@shopify/hydrogen/storefront-api-types";
 import { Search } from "lucide-react";
 import { useFetcher } from "react-router";
 import {
@@ -50,7 +51,7 @@ export function SearchButton() {
             <ul className="search-results mb-4 px-4">
               <p className="text-black text-xl mt-4 mb-4">Search Result</p>
 
-              {products.map((product: any) => (
+              {products.map((product: Product) => (
                 <li key={product.id} className="flex items-center gap-2 mb-2">
                   <img src={product.variants.nodes[0]?.image?.url} width="40" alt={product.title} />
                   <span>{product.title}</span>
