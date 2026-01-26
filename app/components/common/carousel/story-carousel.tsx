@@ -10,13 +10,15 @@ import {
   CarouselContent,
   CarouselItem,
 } from "~/components/ui/carousel";
+import { useClientMobile } from "~/hooks/use-client-mobile";
 
-export function CarouselDemo() {
+export function StoryCarousel() {
   const autoplayDelay = 5000;
-
   const [api, setApi] = useState<CarouselApi | null>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+
+  const { canRender } = useClientMobile();
 
   useEffect(() => {
     if (!api) return;
@@ -69,7 +71,7 @@ export function CarouselDemo() {
 
   return (
     <Carousel
-      orientation="vertical"
+      orientation={canRender ? "horizontal" : "vertical"}
       className="w-full bg-gray-500 pr-10"
       opts={{
         align: "start",
@@ -96,10 +98,9 @@ export function CarouselDemo() {
         ))}
       </CarouselContent>
 
-      <div className="absolute right-2 top-1/2 flex -translate-y-1/2 flex-col gap-3">
+      <div className="absolute bottom-2 left-1/2 -translate-x-1/2  lg:right-2 lg:top-1/2 flex lg:-translate-y-1/2 lg:flex-col lg:bottom-auto lg:left-auto lg:translate-x-0 gap-3">
         {scrollSnaps.map((_, index) => {
           const isActive = index === selectedIndex;
-
           return (
             <button
               key={index}
@@ -111,19 +112,34 @@ export function CarouselDemo() {
                 api?.scrollTo(index);
               }}
             >
-              <span className="relative h-14 w-1 overflow-hidden rounded-full bg-white shadow-sm">
+              <span className="relative overflow-hidden rounded-full bg-white shadow-sm h-1 w-14 lg:h-14 lg:w-1">
                 {isActive && (
-                  <motion.span
-                    className="absolute inset-x-0 bottom-0 bg-gray-800"
-                    initial={{ height: "100%" }}
-                    animate={{ height: "0%" }}
-                    transition={{
-                      duration: autoplayDelay / 1000,
-                      ease: "linear",
-                    }}
-                  />
+                  <>
+                    {/* mobile: horizontal progress */}
+                    <motion.span
+                      className="absolute left-0 top-0 h-full bg-gray-800 lg:hidden"
+                      initial={{ width: "0%" }}
+                      animate={{ width: "100%" }}
+                      transition={{
+                        duration: autoplayDelay / 1000,
+                        ease: "linear",
+                      }}
+                    />
+
+                    {/* desktop: vertical progress */}
+                    <motion.span
+                      className="absolute bottom-0 left-0 w-full bg-gray-800 hidden lg:block"
+                      initial={{ height: "100%" }}
+                      animate={{ height: "0%" }}
+                      transition={{
+                        duration: autoplayDelay / 1000,
+                        ease: "linear",
+                      }}
+                    />
+                  </>
                 )}
               </span>
+
               <span className="sr-only">{`Slide ${index + 1}`}</span>
             </button>
           );

@@ -6,7 +6,7 @@ import { SearchResultsPredictive } from "~/components/search/search-results-pred
 import { CartDrawer } from "../cart/cart-drawer";
 import { Footer } from "./footer";
 import { Header } from "./header";
-import { CountdownTimer } from "./countdown-timer";
+import { CountdownTimer } from "../common/plug/countdown-timer";
 
 interface PageLayoutProps {
   cart: Promise<CartApiQueryFragment | null>;

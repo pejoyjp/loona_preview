@@ -11,7 +11,7 @@ import {
 import { type LoaderFunctionArgs, type MetaFunction, redirect, useLoaderData } from "react-router";
 import type { ProductFragment } from "storefrontapi.generated";
 import { AddToCartButton } from "~/components/common/add-to-cart-button";
-import { CarouselDemo } from "~/components/common/carousel/carousel-demo";
+import { StoryCarousel } from "~/components/common/carousel/story-carousel";
 import { ProductForm } from "~/components/product/product-form";
 import { ProductImage } from "~/components/product/product-image";
 import { ProductPrice } from "~/components/product/product-price";
@@ -183,7 +183,7 @@ export default function Product() {
       </div>
 
       <div>
-        <CarouselDemo />
+        <StoryCarousel />
       </div>
 
       <div className="w-full">
