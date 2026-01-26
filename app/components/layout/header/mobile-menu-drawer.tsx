@@ -66,7 +66,7 @@ interface MobileMenuDrawerItemProps {
   onClick?: () => void;
 }
 
-export function MobileMenuDrawerItem({ title, icon, onClick }: MobileMenuDrawerItemProps) {
+function MobileMenuDrawerItem({ title, icon, onClick }: MobileMenuDrawerItemProps) {
   return (
     <div
       className="flex items-center justify-between h-14 px-4 cursor-pointer border-t border-border"
