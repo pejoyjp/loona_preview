@@ -21,6 +21,7 @@ export default async function handleRequest(
       "https://www.gstatic.com",
       "https://d3hw6dc1ow8pp2.cloudfront.net",
       "https://d3g5hqndtiniji.cloudfront.net",
+      "https://app.powr.io/",
       "https://dov7r31oq5dkj.cloudfront.net",
       "https://cdn-static.okendo.io",
       "https://surveys.okendo.io",
@@ -42,6 +43,7 @@ export default async function handleRequest(
     connectSrc: [
       "https://api.okendo.io",
       "https://cdn-static.okendo.io",
+      "https://app.powr.io/",
       "https://surveys.okendo.io",
       "https://api.raygun.com",
       "https://www.google.com",
