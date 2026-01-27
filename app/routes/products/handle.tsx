@@ -1,4 +1,5 @@
 import { OkendoReviews, OkendoStarRating } from "@okendo/shopify-hydrogen";
+
 import {
   Analytics,
   getAdjacentAndFirstAvailableVariants,
@@ -21,6 +22,7 @@ import {
   OKENDO_PRODUCT_STAR_RATING_FRAGMENT,
 } from "~/graphql/fragments";
 import { redirectIfHandleIsLocalized } from "~/lib/redirect";
+import { seoPayload } from "~/.server/seo/index";
 
 export const meta: MetaFunction = ({ params }) => {
   return [
@@ -73,6 +75,7 @@ async function loadCriticalData({ context, params, request }: LoaderFunctionArgs
 
   return {
     product,
+    seo: seoPayload.product({ product, url: request.url }),
   };
 }
 
@@ -89,7 +92,9 @@ function loadDeferredData({ context, params }: LoaderFunctionArgs) {
 }
 
 export default function Product() {
-  const { product } = useLoaderData<typeof loader>();
+  const { product, seo } = useLoaderData<typeof loader>();
+  const jsonLd = seo?.jsonLd;
+  const jsonLdEntries = Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [];
 
   // Optimistically selects a variant with given available variant information
   const selectedVariant = useOptimisticVariant(
@@ -111,6 +116,13 @@ export default function Product() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {jsonLdEntries.map((entry, index) => (
+        <script
+          key={`product-jsonld-${index}`}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(entry) }}
+        />
+      ))}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="w-full">
           <ProductImage image={selectedVariant?.image} />
@@ -187,19 +199,11 @@ export default function Product() {
       </div>
 
       <div className="w-full">
-        {/* <OkendoStarRating
-          className="mb-2"
-          productId={product.id}
-          okendoStarRatingSnippet={(product as ProductFragment).okendoStarRatingSnippet}
-        />
         <OkendoReviews
-          className="mb-2 bg-red-200"
           productId={product.id}
           okendoReviewsSnippet={(product as ProductFragment).okendoReviewsSnippet}
-        /> */}
+        />
       </div>
-
-      <div className="h-[1000px] w-full bg-blue-200"></div>
 
       <Analytics.ProductView
         data={{
@@ -295,6 +299,15 @@ const PRODUCT_FRAGMENT = `#graphql
     seo {
       description
       title
+    }
+    okendoSummaryData: metafield(namespace: "okendo", key: "summaryData") {
+      value
+    }
+    okendoReviewCount: metafield(namespace: "okendo", key: "ReviewCount") {
+      value
+    }
+    okendoReviewAverageValue: metafield(namespace: "okendo", key: "ReviewAverageValue") {
+      value
     }
     ...OkendoStarRatingSnippet
     ...OkendoReviewsSnippet

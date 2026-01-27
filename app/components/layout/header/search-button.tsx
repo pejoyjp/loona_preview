@@ -1,5 +1,6 @@
 import type { Product } from "@shopify/hydrogen/storefront-api-types";
 import { Search } from "lucide-react";
+import { useDebouncedCallback } from "@mantine/hooks";
 import { useFetcher } from "react-router";
 import {
   Drawer,
@@ -8,16 +9,39 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "~/components/ui/drawer";
+import { useState, useEffect } from "react";
 
 export function SearchButton() {
-  const fetcher = useFetcher();
+  const fetcher = useFetcher<{ products?: Product[] }>();
+  const [open, setOpen] = useState(false);
+  const [q, setQ] = useState("");
+  const [products, setProducts] = useState<Product[]>([]);
 
-  const products = fetcher.data?.products ?? [];
   const isLoading = fetcher.state !== "idle";
   const showResults = products.length > 0;
 
+  useEffect(() => {
+    if (!fetcher.data?.products) return;
+    if (!q.trim()) {
+      return;
+    }
+    setProducts(fetcher.data.products);
+  }, [fetcher.data, q]);
+
+  const handleSubmit = useDebouncedCallback((form: HTMLFormElement) => {
+    fetcher.submit(form);
+  }, 300);
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    setOpen(nextOpen);
+    if (!nextOpen) {
+      setQ("");
+      setProducts([]);
+    }
+  };
+
   return (
-    <Drawer direction="top">
+    <Drawer direction="top" open={open} onOpenChange={handleOpenChange}>
       <DrawerTrigger>
         <Search className="header-btn cursor-pointer text-foreground" strokeWidth={1} />
       </DrawerTrigger>
@@ -35,11 +59,21 @@ export function SearchButton() {
           >
             <input
               autoFocus
-              type="search"
               name="q"
+              type="search"
+              value={q}
               placeholder="搜索商品"
               className="bg-[#F5F5F5] w-full h-8 rounded-full pl-4 pr-12 focus:outline-none"
-              onChange={(e) => fetcher.submit(e.currentTarget.form)}
+              onChange={(e) => {
+                const nextQ = e.currentTarget.value;
+                setQ(nextQ);
+                if (!nextQ.trim()) {
+                  setProducts([]);
+                  return;
+                }
+                const form = e.currentTarget.form;
+                if (form) handleSubmit(form);
+              }}
             />
 
             <Search className="cursor-pointer text-foreground absolute right-8" strokeWidth={1} />
@@ -51,7 +85,7 @@ export function SearchButton() {
             <ul className="search-results mb-4 px-4">
               <p className="text-black text-xl mt-4 mb-4">Search Result</p>
 
-              {products.map((product: Product) => (
+              {products.map((product) => (
                 <li key={product.id} className="flex items-center gap-2 mb-2">
                   <img src={product.variants.nodes[0]?.image?.url} width="40" alt={product.title} />
                   <span>{product.title}</span>
