@@ -149,7 +149,7 @@ function loadDeferredData({ context, request }: LoaderFunctionArgs) {
     footer,
     okendoProviderData: getOkendoProviderData({
       context,
-      subscriberId: "63676b51-1ecc-4241-95b8-1e4c501bc9fb",
+      subscriberId: "9205d233-2f03-40f3-a04c-bd57cf3a8b80",
     }),
   };
 }
