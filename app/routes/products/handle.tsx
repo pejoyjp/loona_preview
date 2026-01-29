@@ -12,7 +12,6 @@ import {
 import { type LoaderFunctionArgs, type MetaFunction, redirect, useLoaderData } from "react-router";
 import type { ProductFragment } from "storefrontapi.generated";
 import { AddToCartButton } from "~/components/common/add-to-cart-button";
-import { StoryCarousel } from "~/components/common/carousel/story-carousel";
 import { ProductForm } from "~/components/product/product-form";
 import { ProductImage } from "~/components/product/product-image";
 import { ProductPrice } from "~/components/product/product-price";
@@ -23,6 +22,8 @@ import {
 } from "~/graphql/fragments";
 import { redirectIfHandleIsLocalized } from "~/lib/redirect";
 import { seoPayload } from "~/.server/seo/index";
+import { StoryCarousel } from "~/components/common/carousel/story-carousel";
+import { ProductCarousel } from "~/components/product/product-carousel";
 
 export const meta: MetaFunction = ({ params }) => {
   return [
@@ -116,6 +117,7 @@ export default function Product() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {/* 暂时先这样写script， 后面需要改成组件或者函数 */}
       {jsonLdEntries.map((entry, index) => (
         <script
           key={`product-jsonld-${index}`}
@@ -123,6 +125,7 @@ export default function Product() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(entry) }}
         />
       ))}
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="w-full">
           <ProductImage image={selectedVariant?.image} />
