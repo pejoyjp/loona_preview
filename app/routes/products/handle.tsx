@@ -17,8 +17,6 @@ import type {
 } from "storefrontapi.generated";
 import { AddToCartButton } from "~/components/common/add-to-cart-button";
 import { ProductForm } from "~/components/product/product-form";
-import { ProductImage } from "~/components/product/product-image";
-import { ProductPrice } from "~/components/product/product-price";
 import { MediaModal } from "~/components/ui/media-modal";
 import {
   OKENDO_PRODUCT_REVIEWS_FRAGMENT,
@@ -40,19 +38,13 @@ export const meta: MetaFunction = ({ params }) => {
 };
 
 export async function loader(args: LoaderFunctionArgs) {
-  // Start fetching non-critical data without blocking time to first byte
   const deferredData = loadDeferredData(args);
 
-  // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
 
   return { ...deferredData, ...criticalData };
 }
 
-/**
- * Load data necessary for rendering content above the fold. This is the critical data
- * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
- */
 async function loadCriticalData({ context, params, request }: LoaderFunctionArgs) {
   const { handle } = params;
   const { storefront } = context;
@@ -68,14 +60,12 @@ async function loadCriticalData({ context, params, request }: LoaderFunctionArgs
         selectedOptions: getSelectedProductOptions(request),
       },
     }),
-    // Add other queries here, so that they are loaded in parallel
   ]);
 
   if (!product?.id) {
     throw new Response(null, { status: 404 });
   }
 
-  // The API handle might be localized, so redirect to the localized handle
   redirectIfHandleIsLocalized(request, { handle, data: product });
 
   return {
@@ -84,15 +74,7 @@ async function loadCriticalData({ context, params, request }: LoaderFunctionArgs
   };
 }
 
-/**
- * Load data for rendering content below the fold. This data is deferred and will be
- * fetched after the initial page load. If it's unavailable, the page should still 200.
- * Make sure to not throw any errors here, as it will cause the page to 500.
- */
 function loadDeferredData({ context, params }: LoaderFunctionArgs) {
-  // Put any API calls that is not critical to be available on first page render
-  // For example: product reviews, product recommendations, social feeds.
-
   return {};
 }
 
@@ -125,6 +107,17 @@ export default function Product() {
     }),
   }));
 
+  const galleriesByOption = productOptions.map((option) => {
+    const galleries: Record<string, any[]> = {};
+    option.optionValues.forEach((value) => {
+      const variant = value.variant as ProductVariantForProductPageFragment;
+      if (variant?.gallery?.reference?.media?.references?.nodes) {
+        galleries[value.name] = variant.gallery.reference.media.references.nodes;
+      }
+    });
+    return galleries;
+  });
+
   const { title, descriptionHtml } = product;
 
   return (
@@ -138,10 +131,16 @@ export default function Product() {
         />
       ))}
 
-      <ProductForm productOptions={filteredProductOptions} selectedVariant={selectedVariant} />
+      <ProductCarousel galleriesByOption={galleriesByOption} selectedVariant={selectedVariant} />
+
+      <ProductForm
+        productOptions={filteredProductOptions}
+        selectedVariant={selectedVariant}
+        productID={product.id}
+      />
 
       {/* TODO:这应该是一个组件 */}
-      <p>Accessory</p>
+      {/* <p>Accessory</p>
       <div className="flex flex-col gap-2">
         {productOptions.map((productOption) => {
           if (productOption.optionValues.length === 1) return null;
@@ -149,7 +148,7 @@ export default function Product() {
             (value, index) =>
               value.available && (
                 <div
-                  key={value.variant.id}
+                  key={value.variant.id} 
                   className="border flex items-center justify-between p-2"
                 >
                   <div className="flex items-center gap-2">
@@ -182,7 +181,7 @@ export default function Product() {
               ),
           );
         })}
-      </div>
+      </div> */}
 
       <div>
         <StoryCarousel />
@@ -227,11 +226,6 @@ const PRODUCT_VARIANT_FRAGMENT = `#graphql
     gallery: metafield(namespace: "custom", key: "variant_gallery") {
       reference {
         ... on Metaobject {
-
-          title: field(key: "variant_title") {
-            value
-          }
-
           media: field(key: "gallery_media") {
             references(first: 20) {
               nodes {
