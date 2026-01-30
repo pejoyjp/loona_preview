@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { cn } from "~/lib/utils";
+import { cn } from "~/lib/utils/cn";
 import { useThrottledCallback } from "@mantine/hooks";
 import { motion, LayoutGroup } from "motion/react";
 
@@ -106,7 +106,7 @@ export function ScrollspyNav({ sections, className }: ScrollspyNavProps) {
                     layoutId="scrollspy-underline"
                     className="absolute bottom-0 left-0 right-0 h-0.5 bg-neutral-900 dark:bg-neutral-50"
                     transition={{
-                      type: "spring",
+                      type: "tween",
                       stiffness: 500,
                       damping: 30,
                     }}

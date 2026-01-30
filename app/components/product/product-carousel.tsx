@@ -4,34 +4,39 @@ import { Carousel, Slider, SliderContainer, ThumbsSlider } from "~/components/ui
 
 import Autoplay from "embla-carousel-autoplay";
 import { Button } from "../ui/button";
+import { useClientMobile } from "~/hooks/use-client-mobile";
+import { cn } from "~/lib/utils/cn";
 
 export function ProductCarousel() {
-  const OPTIONS: EmblaOptionsType = {
-    loop: false,
-    axis: "y",
-  };
   const [emblaApi, setEmblaApi] = useState<EmblaCarouselType | undefined>(undefined);
+  const { isMobile } = useClientMobile();
+
   const scrollTo = (index: number) => {
     if (!emblaApi) return;
     emblaApi.scrollTo(index);
   };
 
+  const OPTIONS: EmblaOptionsType = {
+    loop: false,
+    axis: isMobile ? "x" : "y",
+  };
+
   const data = [
-    "https://cdn.shopify.com/s/files/1/0737/1194/3957/files/loona_petbot.png?v=1728545260",
-    "https://cdn.shopify.com/s/files/1/0737/1194/3957/files/loona_robot_petbot_1.jpg?v=1728542645",
-    "https://cdn.shopify.com/s/files/1/0737/1194/3957/files/loona_robot_petbot.jpg?v=1728542761",
-    "https://cdn.shopify.com/s/files/1/0737/1194/3957/files/loona_robot_petbot_2.jpg?v=1728542776",
-    "https://cdn.shopify.com/s/files/1/0737/1194/3957/files/LoonaCollarV1-1.png?v=1769483172",
-    "https://cdn.shopify.com/s/files/1/0737/1194/3957/files/LoonaCollarV1-2.png?v=1769483172",
-    "https://cdn.shopify.com/s/files/1/0737/1194/3957/files/2026_newyear_loona_can_do_hero.webp?v=1766056558",
-    "https://cdn.shopify.com/s/files/1/0737/1194/3957/files/2026_newyear_loona_can_do_PC.webp?v=1765937149",
+    "https://cdn.shopify.com/s/files/1/0737/1194/3957/files/how-to-choose-an-intelligent-robot-dog-toy.webp?v=1769584757",
+    "https://cdn.shopify.com/s/files/1/0737/1194/3957/files/intelligent-robot-dog-toy.webp?v=1769584395",
+    "https://cdn.shopify.com/s/files/1/0737/1194/3957/files/intelligent-robot-dog-toy-loona.webp?v=1769584395",
+    "https://cdn.shopify.com/s/files/1/0737/1194/3957/files/ai-robot-for-companionship.webp?v=1769157836",
+    "https://cdn.shopify.com/s/files/1/0737/1194/3957/files/how-we-chose-toy-robot-dogs.webp?v=1769062270",
+    "https://cdn.shopify.com/s/files/1/0737/1194/3957/files/8-best-toy-robot-dogs.webp?v=1769062270",
+    "https://cdn.shopify.com/s/files/1/0737/1194/3957/files/how-ai-fits-into-a-robot.webp?v=1768985696",
+    "https://cdn.shopify.com/s/files/1/0737/1194/3957/files/realistic-robotic-dog-toy.webp?v=1768978859",
   ];
 
   return (
-    <div>
+    <div className="pl-4 ">
       <Carousel
         options={OPTIONS}
-        className="relative flex gap-2"
+        className="relative flex "
         plugins={[Autoplay({ delay: 2000 })]}
         onApi={setEmblaApi}
       >
@@ -40,16 +45,24 @@ export function ProductCarousel() {
           thumbsClassName="h-[400px]"
           thumbsSliderClassName="border-black"
         />
-        <SliderContainer className="gap-2 h-[400px] w-full">
+        <SliderContainer className="h-58 w-full">
           {data.map((item, index) => (
-            <Slider className="h-full w-full" key={index} thumbnailSrc={item}>
-              <img src={item} alt="image" className="h-full object-cover rounded-lg w-full" />
+            <Slider
+              className="h-full w-[calc(100%-1rem)] xl:w-full"
+              key={index}
+              thumbnailSrc={item}
+            >
+              <img
+                src={item}
+                alt="image"
+                className={cn("h-full object-cover w-full", index > 0 ? "pl-1" : "pl-0")}
+              />
             </Slider>
           ))}
         </SliderContainer>
       </Carousel>
 
-      <div className="bg-red-200">
+      <div className="">
         <Button onClick={() => scrollTo(4)}>Click 4</Button>
       </div>
     </div>

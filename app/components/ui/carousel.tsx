@@ -11,7 +11,7 @@ import React, {
 import { motion, AnimatePresence } from "motion/react";
 import type { EmblaCarouselType, EmblaEventType, EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
-import { cn } from "~/lib/utils";
+import { cn } from "~/lib/utils/cn";
 
 // ============= TYPES =============
 interface CarouselProps extends React.HTMLAttributes<HTMLDivElement> {

@@ -10,9 +10,9 @@ export default function Products() {
 
   return (
     <div className="">
-      <div>
+      {/* <div>
         <h1 className="text-3xl">{t("loona.desc", { test: "game", desc: "cool" })}</h1>
-      </div>
+      </div> */}
       <ProductCarousel />
       <ProductDesc />
     </div>

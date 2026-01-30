@@ -10,7 +10,11 @@ import {
   useSelectedOptionInUrlParam,
 } from "@shopify/hydrogen";
 import { type LoaderFunctionArgs, type MetaFunction, redirect, useLoaderData } from "react-router";
-import type { ProductFragment } from "storefrontapi.generated";
+import type {
+  ProductFragment,
+  ProductVariantFragment,
+  ProductVariantForProductPageFragment,
+} from "storefrontapi.generated";
 import { AddToCartButton } from "~/components/common/add-to-cart-button";
 import { ProductForm } from "~/components/product/product-form";
 import { ProductImage } from "~/components/product/product-image";
@@ -113,6 +117,14 @@ export default function Product() {
     selectedOrFirstAvailableVariant: selectedVariant,
   });
 
+  const filteredProductOptions = productOptions.map((option) => ({
+    ...option,
+    optionValues: option.optionValues.filter((value) => {
+      const variant = value.variant as ProductVariantForProductPageFragment;
+      return variant?.showInProduct?.value === "true";
+    }),
+  }));
+
   const { title, descriptionHtml } = product;
 
   return (
@@ -126,32 +138,7 @@ export default function Product() {
         />
       ))}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="w-full">
-          <ProductImage image={selectedVariant?.image} />
-        </div>
-        <div className="flex flex-col">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">{title}</h1>
-          <div className="mb-6">
-            <ProductPrice
-              price={selectedVariant?.price}
-              compareAtPrice={selectedVariant?.compareAtPrice}
-            />
-          </div>
-
-          <div className="mb-6">
-            <ProductForm productOptions={productOptions} selectedVariant={selectedVariant} />
-          </div>
-
-          <div className="mt-6">
-            <p className="text-lg font-semibold text-gray-900">Description</p>
-            <div
-              className="prose prose-sm max-w-none text-gray-600 mt-2"
-              dangerouslySetInnerHTML={{ __html: descriptionHtml }}
-            />
-          </div>
-        </div>
-      </div>
+      <ProductForm productOptions={filteredProductOptions} selectedVariant={selectedVariant} />
 
       {/* TODO:这应该是一个组件 */}
       <p>Accessory</p>
@@ -228,8 +215,46 @@ export default function Product() {
 }
 
 const PRODUCT_VARIANT_FRAGMENT = `#graphql
-  fragment ProductVariantProductPage on ProductVariant {
+  fragment ProductVariantForProductPage on ProductVariant {
     availableForSale
+    showInProduct: metafield(
+      namespace: "custom"
+      key: "show_in_product"
+    ) {
+      value
+      type
+    }
+    gallery: metafield(namespace: "custom", key: "variant_gallery") {
+      reference {
+        ... on Metaobject {
+
+          title: field(key: "variant_title") {
+            value
+          }
+
+          media: field(key: "gallery_media") {
+            references(first: 20) {
+              nodes {
+                __typename
+                ... on MediaImage {
+                  image {
+                    url
+                    altText
+                    width
+                    height
+                  }
+                }
+                ... on Video {
+                  previewImage { url }
+                  sources { url mimeType }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
     compareAtPrice {
       amount
       currencyCode
@@ -281,7 +306,7 @@ const PRODUCT_FRAGMENT = `#graphql
       optionValues {
         name
         firstSelectableVariant {
-          ...ProductVariantProductPage
+          ...ProductVariantForProductPage
         }
         swatch {
           color
@@ -294,10 +319,10 @@ const PRODUCT_FRAGMENT = `#graphql
       }
     }
     selectedOrFirstAvailableVariant(selectedOptions: $selectedOptions, ignoreUnknownOptions: true, caseInsensitiveMatch: true) {
-      ...ProductVariantProductPage
+      ...ProductVariantForProductPage
     }
     adjacentVariants (selectedOptions: $selectedOptions) {
-      ...ProductVariantProductPage
+      ...ProductVariantForProductPage
     }
     seo {
       description

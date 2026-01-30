@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router";
 import type { ProductCardFragment } from "storefrontapi.generated";
 import { useCartStore } from "~/hooks/store/use-cart-store";
 import { AddToCartButton } from "../common/add-to-cart-button";
+import { ProductImage } from "./product-image";
+import { ProductPrice } from "./product-price";
 
 export function ProductForm({
   productOptions,
@@ -16,13 +18,21 @@ export function ProductForm({
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col gap-4">
-      {productOptions.map((option) => {
-        if (option.optionValues.length === 1) return null;
+    <div className="flex flex-col gap-4 ">
+      <ProductImage image={selectedVariant?.image} />
+      <h1 className="text-3xl font-bold text-gray-900 mb-4">{selectedVariant?.title}</h1>
+      <div className="mb-6">
+        <ProductPrice
+          price={selectedVariant?.price}
+          compareAtPrice={selectedVariant?.compareAtPrice}
+        />
+      </div>
 
+      {productOptions.map((option) => {
         return (
           <div className="flex flex-col gap-2" key={option.name}>
             <h5 className="text-sm font-medium">{option.name}</h5>
+
             <div className="grid grid-cols-4 gap-2">
               {option.optionValues.map((value) => {
                 const {

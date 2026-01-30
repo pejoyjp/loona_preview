@@ -1,7 +1,7 @@
 import { type ReactNode } from "react";
 import { useClientMobile } from "~/hooks/use-client-mobile";
 import { CircleUserRound, EarthIcon, ShoppingCart } from "lucide-react";
-import { cn } from "~/lib/utils";
+import { cn } from "~/lib/utils/cn";
 interface MobileMenuDrawerProps {
   setMobileMenuOpen: (value: boolean) => void;
   mobileMenuOpen: boolean;
