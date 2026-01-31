@@ -122,6 +122,7 @@
   --text-xxs: 0.25rem; /* 4px */
   --text-xs: 0.5rem; /* 8px */
   --text-sm: 0.75rem; /* 12px */
+  --text-sm: 0.875rem; /* 14px */
   --text-base: 1rem; /* 16px */
   --text-md: 1.25rem; /* 20px */
   --text-lg: 1.5rem; /* 24px */

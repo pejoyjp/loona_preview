@@ -81,11 +81,11 @@ export function ProductCarousel({
     <Carousel
       options={OPTIONS}
       className="relative flex"
-      plugins={[Autoplay({ delay: 2000 })]}
+      plugins={[Autoplay({ delay: 5000 })]}
       onApi={setEmblaApi}
     >
       <ThumbsSlider
-        className="w-20 hidden md:block"
+        className="w-20 hidden xl:block"
         thumbsClassName="h-[400px]"
         thumbsSliderClassName="border-black"
       />

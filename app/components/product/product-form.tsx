@@ -1,15 +1,15 @@
 import type { MappedProductOptions } from "@shopify/hydrogen";
 import type { Maybe, ProductOptionValueSwatch } from "@shopify/hydrogen/storefront-api-types";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import type { ProductCardFragment, ProductOptionFragment } from "storefrontapi.generated";
 import { useCartStore } from "~/hooks/store/use-cart-store";
 import { AddToCartButton } from "../common/add-to-cart-button";
-import { ProductImage } from "./product-image";
 import { ProductPrice } from "./product-price";
 import { OkendoStarRating } from "@okendo/shopify-hydrogen";
 import { BadgeCheck, PackageCheck } from "lucide-react";
 import { Image } from "@shopify/hydrogen";
 import { cn } from "~/lib/utils/cn";
+import { useTranslationContext } from "~/hooks/use-translation-context";
 
 export function ProductForm({
   productOptions,
@@ -21,7 +21,7 @@ export function ProductForm({
   productID: string;
 }) {
   const { setOpen } = useCartStore();
-  const navigate = useNavigate();
+  const { t } = useTranslationContext();
 
   return (
     <div className="">
@@ -40,28 +40,23 @@ export function ProductForm({
         />
       </div>
 
-      <div className="flex items-center justify-between pb-4">
-        <div className="flex gap-1">
+      <div className="flex items-center justify-between pb-4 text-foreground leading-5">
+        <div className="flex gap-1 items-center">
           <BadgeCheck />
           <p>1-Year Warranty</p>
         </div>
-        <div className="flex gap-1">
+        <div className="flex gap-1 items-center">
           <PackageCheck />
           <p>Dispatch within 3 business days.</p>
         </div>
       </div>
 
-      <p className="pb-6">
-        Loona is the ideal companion for families with kids, offering nonstop games, a lively
-        personality, and smart AI interactions. Kids can ask questions, play, and even see their
-        words come to life with AI-generated visuals, all controlled by simple voice commands for a
-        fun and engaging experience.
-      </p>
+      <p className="pb-6 text-sm text-muted-foreground leading-4.5">{t("petbot.product.desc")}</p>
 
       {productOptions.map((option) => {
         return (
           <div key={option.name}>
-            <div className="flex gap-3">
+            <div className="flex gap-3 overflow-hidden  bg-red-100">
               {option.optionValues.map((value) => {
                 const {
                   name,
@@ -75,30 +70,25 @@ export function ProductForm({
 
                 return (
                   <div key={option.name + name}>
-                    <button
-                      type="button"
+                    <Link
+                      to={`?${variantUriQuery}`}
+                      replace
+                      preventScrollReset
+                      aria-current={selected ? "true" : undefined}
                       className={cn(
-                        "flex items-center justify-center transition-colors border-2 border-transparent disabled:opacity-30 disabled:cursor-not-allowed",
-                        selected && "border-primary ",
-                        available ? " opacity-100" : "opacity-30",
+                        "flex items-center justify-center border-2 border-transparent transition-colors  min-w-40 aspect-square shrink-0 ",
+                        selected && "border-primary",
+                        available ? "opacity-100" : "opacity-30",
+                        !exists && "pointer-events-none opacity-30",
                       )}
-                      disabled={!exists}
-                      onClick={() => {
-                        if (!selected) {
-                          void navigate(`?${variantUriQuery}`, {
-                            replace: true,
-                            preventScrollReset: true,
-                          });
-                        }
-                      }}
                     >
                       <ProductOptionSwatch
                         swatch={swatch}
                         name={name}
                         firstSelectableVariant={firstSelectableVariant}
                       />
-                    </button>
-                    <p className="text-center text-muted-foreground text-[14px] leading-4.5 px-0.5">
+                    </Link>
+                    <p className="text-center text-muted-foreground text-sm leading-4.5 px-0.5">
                       {name}
                     </p>
                   </div>
@@ -138,14 +128,14 @@ function ProductOptionSwatch({
   name: string;
   firstSelectableVariant: ProductOptionFragment["optionValues"][0]["firstSelectableVariant"];
 }) {
-  const image = swatch?.image?.previewImage?.url;
-
   return (
-    <div aria-label={name} className="w-40 h-40  border-gray-200">
+    <div aria-label={name} className=" border-gray-200 w-full h-full">
       {firstSelectableVariant && firstSelectableVariant.image && (
         <Image
           data={firstSelectableVariant.image}
           sizes="(min-width: 768px) 200px, 160px"
+          loading="lazy"
+          decoding="async"
           className="h-full w-full object-cover"
         />
       )}
