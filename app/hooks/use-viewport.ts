@@ -1,11 +1,11 @@
 import { useEffect, useState, useRef } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 
-interface UseClientMobileProps {
+interface UseViewportProps {
   onExitMobile?: () => void;
 }
 
-export function useClientMobile({ onExitMobile }: UseClientMobileProps = {}) {
+export function useViewport({ onExitMobile }: UseViewportProps = {}) {
   const [mounted, setMounted] = useState(false);
   const onExitMobileRef = useRef(onExitMobile);
 
@@ -14,6 +14,7 @@ export function useClientMobile({ onExitMobile }: UseClientMobileProps = {}) {
   }, []);
 
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const isDesktop = useMediaQuery("(min-width: 1280px)");
 
   useEffect(() => {
     onExitMobileRef.current = onExitMobile;
@@ -29,6 +30,7 @@ export function useClientMobile({ onExitMobile }: UseClientMobileProps = {}) {
   return {
     mounted,
     isMobile,
+    isDesktop,
     canRender: mounted && isMobile,
   };
 }

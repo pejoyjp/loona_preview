@@ -41,6 +41,9 @@
   --text-7xl: var(--text-7xl);
   --text-8xl: var(--text-8xl);
 
+  /* 字重 */
+  --font-semibold: 500;
+
   /* 圆角系统（统一尺度，便于整体调整） */
   --radius-sm: calc(var(--radius) - 4px); /* 小组件 */
   --radius-md: calc(var(--radius) - 2px); /* 表单 / 次级组件 */
@@ -134,6 +137,8 @@
   --text-6xl: 3rem; /* 48px */
   --text-7xl: 3.5rem; /* 56px */
   --text-8xl: 4rem; /* 64px */
+
+  /* 字重 */
 
   /* 页面基础 */
   --background: #ffffff; /* 页面背景（白） */

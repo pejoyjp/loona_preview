@@ -33,7 +33,6 @@ interface CarouselContextType {
   selectedIndex: number;
   scrollSnaps: number[];
   onDotButtonClick: (index: number) => void;
-  scrollProgress: number;
   selectedSnap: number;
   snapCount: number;
   isScale: boolean;
@@ -97,7 +96,6 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps>(
     const [nextBtnDisabled, setNextBtnDisabled] = useState(true);
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
-    const [scrollProgress, setScrollProgress] = useState(0);
     const [snapCount, setSnapCount] = useState(0);
 
     // Navigation callbacks
@@ -162,12 +160,6 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps>(
       setNextBtnDisabled(!emblaApi.canScrollNext());
       emblaThumbsApi?.scrollTo(emblaApi.selectedScrollSnap());
     }, [emblaApi, emblaThumbsApi]);
-
-    // Scroll progress handler
-    const onScroll = useCallback((emblaApi: EmblaCarouselType) => {
-      const progress = Math.max(0, Math.min(1, emblaApi.scrollProgress()));
-      setScrollProgress(progress * 100);
-    }, []);
 
     // Scale animation for isScale mode
     const tweenFactor = useRef(0);
@@ -239,13 +231,8 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps>(
       setScrollSnaps(emblaApi.scrollSnapList());
       setSnapCount(emblaApi.scrollSnapList().length);
       onSelect();
-      onScroll(emblaApi);
 
-      emblaApi
-        .on("reInit", onSelect)
-        .on("select", onSelect)
-        .on("reInit", onScroll)
-        .on("scroll", onScroll);
+      emblaApi.on("reInit", onSelect).on("select", onSelect);
 
       if (isScale) {
         setTweenNodes(emblaApi);
@@ -257,7 +244,17 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps>(
           .on("reInit", tweenScale)
           .on("scroll", tweenScale);
       }
-    }, [emblaApi, onSelect, onScroll, isScale, setTweenNodes, setTweenFactor, tweenScale]);
+      return () => {
+        emblaApi.off("reInit", onSelect).off("select", onSelect);
+        if (isScale) {
+          emblaApi
+            .off("reInit", setTweenNodes)
+            .off("reInit", setTweenFactor)
+            .off("reInit", tweenScale)
+            .off("scroll", tweenScale);
+        }
+      };
+    }, [emblaApi, onSelect, isScale, setTweenNodes, setTweenFactor, tweenScale]);
 
     useEffect(() => {
       if (!onApi) return;
@@ -281,7 +278,6 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps>(
           selectedIndex,
           scrollSnaps,
           onDotButtonClick,
-          scrollProgress,
           selectedSnap: selectedIndex,
           snapCount,
           isScale,
@@ -418,7 +414,41 @@ SliderNextButton.displayName = "SliderNextButton";
 // ============= PROGRESS BAR =============
 export const SliderProgress = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => {
-    const { scrollProgress } = useCarousel();
+    const { emblaApi } = useCarousel();
+    const [scrollProgress, setScrollProgress] = useState(0);
+    const scrollRafId = useRef<number | null>(null);
+    const pendingScrollProgress = useRef<number>(0);
+
+    const updateScrollProgress = useCallback((api: EmblaCarouselType) => {
+      const progress = Math.max(0, Math.min(1, api.scrollProgress()));
+      pendingScrollProgress.current = progress * 100;
+      if (scrollRafId.current !== null) return;
+      scrollRafId.current = requestAnimationFrame(() => {
+        scrollRafId.current = null;
+        setScrollProgress((prev) => {
+          const next = pendingScrollProgress.current;
+          return prev === next ? prev : next;
+        });
+      });
+    }, []);
+
+    useEffect(() => {
+      if (!emblaApi) return;
+      updateScrollProgress(emblaApi);
+      emblaApi.on("reInit", updateScrollProgress).on("scroll", updateScrollProgress);
+      return () => {
+        emblaApi.off("reInit", updateScrollProgress).off("scroll", updateScrollProgress);
+      };
+    }, [emblaApi, updateScrollProgress]);
+
+    useEffect(
+      () => () => {
+        if (scrollRafId.current !== null) {
+          cancelAnimationFrame(scrollRafId.current);
+        }
+      },
+      [],
+    );
 
     return (
       <div
@@ -565,6 +595,45 @@ export const CarouselIndicator = forwardRef<HTMLButtonElement, CarouselIndicator
 
 CarouselIndicator.displayName = "CarouselIndicator";
 
+const ThumbItem = React.memo(function ThumbItem({
+  src,
+  index,
+  isActive,
+  onClick,
+  className,
+}: {
+  src: string;
+  index: number;
+  isActive: boolean;
+  onClick: (index: number) => void;
+  className?: string;
+}) {
+  const handleClick = useCallback(() => onClick(index), [onClick, index]);
+
+  return (
+    <div
+      onClick={handleClick}
+      className={cn(
+        "shrink-0 cursor-pointer transition-opacity",
+        "border-2 rounded-md",
+        isActive ? "opacity-100 border-primary" : "opacity-30 border-transparent",
+        className,
+      )}
+      style={{ contentVisibility: "auto" }}
+    >
+      <img
+        src={src}
+        alt={`Thumbnail ${index + 1}`}
+        width={96}
+        height={96}
+        loading="lazy"
+        decoding="async"
+        className="w-full h-full object-cover rounded-md"
+      />
+    </div>
+  );
+});
+
 // Auto-generate thumbnails from slides
 export const ThumbsSlider = forwardRef<
   HTMLDivElement,
@@ -582,31 +651,20 @@ export const ThumbsSlider = forwardRef<
       <div
         ref={ref}
         className={cn(
-          "flex gap-2 h-[300px]",
+          "flex gap-2 h-full",
           orientation === "vertical" ? "flex-col" : "flex-row",
           thumbsClassName,
         )}
       >
         {slidesArr.map((src, index) => (
-          <div
+          <ThumbItem
             key={index}
-            onClick={() => onThumbClick(index)}
-            className={cn(
-              "shrink-0 cursor-pointer transition-opacity",
-              "border-2 rounded-md",
-              orientation === "vertical" ? "basis-[15%] h-20" : "basis-[15%] h-24",
-              selectedIndex === index
-                ? "opacity-100 border-primary"
-                : "opacity-30 border-transparent",
-              thumbsSliderClassName,
-            )}
-          >
-            <img
-              src={src}
-              alt={`Thumbnail ${index + 1}`}
-              className="w-full h-full object-cover rounded-md"
-            />
-          </div>
+            src={src}
+            index={index}
+            isActive={selectedIndex === index}
+            onClick={onThumbClick}
+            className={thumbsSliderClassName}
+          />
         ))}
       </div>
     </div>

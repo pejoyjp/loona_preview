@@ -15,9 +15,7 @@ import type {
   ProductVariantFragment,
   ProductVariantForProductPageFragment,
 } from "storefrontapi.generated";
-import { AddToCartButton } from "~/components/common/add-to-cart-button";
 import { ProductForm } from "~/components/product/product-form";
-import { MediaModal } from "~/components/ui/media-modal";
 import {
   OKENDO_PRODUCT_REVIEWS_FRAGMENT,
   OKENDO_PRODUCT_STAR_RATING_FRAGMENT,
@@ -26,6 +24,7 @@ import { redirectIfHandleIsLocalized } from "~/lib/redirect";
 import { seoPayload } from "~/.server/seo/index";
 import { StoryCarousel } from "~/components/common/carousel/story-carousel";
 import { ProductCarousel } from "~/components/product/product-carousel";
+import { ProductAccessory } from "~/components/product/product-accessory";
 
 export const meta: MetaFunction = ({ params }) => {
   return [
@@ -121,7 +120,7 @@ export default function Product() {
   const { title, descriptionHtml } = product;
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className=" max-w-7xl mx-auto">
       {/* 暂时先这样写script， 后面需要改成组件或者函数 */}
       {jsonLdEntries.map((entry, index) => (
         <script
@@ -131,67 +130,35 @@ export default function Product() {
         />
       ))}
 
-      <ProductCarousel galleriesByOption={galleriesByOption} selectedVariant={selectedVariant} />
+      <div className="flex flex-col xl:flex-row w-full gap-1.5">
+        <div className="flex-1">
+          <ProductCarousel
+            galleriesByOption={galleriesByOption}
+            selectedVariant={selectedVariant}
+          />
+        </div>
 
-      <ProductForm
-        productOptions={filteredProductOptions}
-        selectedVariant={selectedVariant}
-        productID={product.id}
-      />
+        <div className="pl-4 flex-1 ">
+          <ProductForm
+            productOptions={filteredProductOptions}
+            selectedVariant={selectedVariant}
+            productID={product.id}
+          />
+          <div className="px-4">
+            <ProductAccessory productOptions={productOptions} />
+          </div>
 
-      {/* TODO:这应该是一个组件 */}
-      {/* <p>Accessory</p>
-      <div className="flex flex-col gap-2">
-        {productOptions.map((productOption) => {
-          if (productOption.optionValues.length === 1) return null;
-          return productOption.optionValues.map(
-            (value, index) =>
-              value.available && (
-                <div
-                  key={value.variant.id} 
-                  className="border flex items-center justify-between p-2"
-                >
-                  <div className="flex items-center gap-2">
-                    <div className="w-12 h-12 ">
-                      {value.variant?.image && (
-                        <MediaModal image={value.variant.image} size="48px" />
-                      )}
-                    </div>
+          <div>
+            <StoryCarousel />
+          </div>
 
-                    <div>
-                      <div>{value.name}</div>
-                      <p>{value.variant.price.amount}</p>
-                    </div>
-                  </div>
-
-                  <div>
-                    <AddToCartButton
-                      variant={"outline"}
-                      lines={[
-                        {
-                          merchandiseId: value.variant.id,
-                          quantity: 1,
-                        },
-                      ]}
-                    >
-                      Add
-                    </AddToCartButton>
-                  </div>
-                </div>
-              ),
-          );
-        })}
-      </div> */}
-
-      <div>
-        <StoryCarousel />
-      </div>
-
-      <div className="w-full">
-        <OkendoReviews
-          productId={product.id}
-          okendoReviewsSnippet={(product as ProductFragment).okendoReviewsSnippet}
-        />
+          <div className="w-full">
+            <OkendoReviews
+              productId={product.id}
+              okendoReviewsSnippet={(product as ProductFragment).okendoReviewsSnippet}
+            />
+          </div>
+        </div>
       </div>
 
       <Analytics.ProductView

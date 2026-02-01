@@ -156,7 +156,7 @@ import {
   SliderContent,
   SliderWrapper,
 } from "~/components/ui/progressive-carousel";
-import { useClientMobile } from "~/hooks/use-client-mobile";
+import { useViewportStore } from "~/hooks/store/use-viewport-store";
 
 const items = [
   {
@@ -186,7 +186,7 @@ const items = [
 ];
 
 export function StoryCarousel() {
-  const { isMobile } = useClientMobile();
+  const isMobile = useViewportStore((state) => state.isMobile);
   return (
     <ProgressSlider
       duration={4000}

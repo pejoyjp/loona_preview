@@ -4,7 +4,7 @@ import Autoplay from "embla-carousel-autoplay";
 import { Image } from "@shopify/hydrogen";
 
 import { Carousel, Slider, SliderContainer, ThumbsSlider } from "~/components/ui/carousel";
-import { useClientMobile } from "~/hooks/use-client-mobile";
+import { useViewportStore } from "~/hooks/store/use-viewport-store";
 import { cn } from "~/lib/utils/cn";
 
 type GalleryMedia =
@@ -29,15 +29,15 @@ export function ProductCarousel({
     selectedOptions?: { name: string; value: string }[];
   };
 }) {
-  const { isMobile } = useClientMobile();
+  const isDesktop = useViewportStore((state) => state.isDesktop);
   const [emblaApi, setEmblaApi] = useState<EmblaCarouselType>();
 
   const OPTIONS: EmblaOptionsType = useMemo(
     () => ({
       loop: false,
-      axis: isMobile ? "x" : "y",
+      axis: isDesktop ? "y" : "x",
     }),
-    [isMobile],
+    [isDesktop],
   );
 
   const { slides, optionIndexMap } = useMemo(() => {

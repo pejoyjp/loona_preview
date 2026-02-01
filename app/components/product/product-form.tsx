@@ -1,6 +1,6 @@
 import type { MappedProductOptions } from "@shopify/hydrogen";
 import type { Maybe, ProductOptionValueSwatch } from "@shopify/hydrogen/storefront-api-types";
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
 import type { ProductCardFragment, ProductOptionFragment } from "storefrontapi.generated";
 import { useCartStore } from "~/hooks/store/use-cart-store";
 import { AddToCartButton } from "../common/add-to-cart-button";
@@ -10,6 +10,8 @@ import { BadgeCheck, PackageCheck } from "lucide-react";
 import { Image } from "@shopify/hydrogen";
 import { cn } from "~/lib/utils/cn";
 import { useTranslationContext } from "~/hooks/use-translation-context";
+import { Carousel, Slider, SliderContainer } from "~/components/ui/carousel";
+import { useViewportStore } from "~/hooks/store/use-viewport-store";
 
 export function ProductForm({
   productOptions,
@@ -22,100 +24,122 @@ export function ProductForm({
 }) {
   const { setOpen } = useCartStore();
   const { t } = useTranslationContext();
+  const isMobile = useViewportStore((state) => state.isMobile);
+  const navigate = useNavigate();
+
+  const handleVariantSelect = (variantUriQuery: string) => {
+    if (!variantUriQuery) return;
+    navigate(`?${variantUriQuery}`, { replace: true, preventScrollReset: true });
+  };
 
   return (
-    <div className="">
-      <h1 className="text-xl font-bold text-gray-900 leading-none pt-4 pb-0.5">
-        {selectedVariant?.title}
-      </h1>
+    <>
+      <div>
+        <div className="pr-4">
+          <h1 className="text-xl font-bold text-gray-900 leading-none pt-4 pb-0.5">
+            {selectedVariant?.title}
+          </h1>
 
-      <div className="h-6">
-        <OkendoStarRating productId={productID} />
-      </div>
+          <div className="h-6">
+            <OkendoStarRating productId={productID} />
+          </div>
 
-      <div className="pt-4 pb-6">
-        <ProductPrice
-          price={selectedVariant?.price}
-          compareAtPrice={selectedVariant?.compareAtPrice}
-        />
-      </div>
+          <div className="pt-4 pb-6">
+            <ProductPrice
+              price={selectedVariant?.price}
+              compareAtPrice={selectedVariant?.compareAtPrice}
+            />
+          </div>
 
-      <div className="flex items-center justify-between pb-4 text-foreground leading-5">
-        <div className="flex gap-1 items-center">
-          <BadgeCheck />
-          <p>1-Year Warranty</p>
-        </div>
-        <div className="flex gap-1 items-center">
-          <PackageCheck />
-          <p>Dispatch within 3 business days.</p>
-        </div>
-      </div>
-
-      <p className="pb-6 text-sm text-muted-foreground leading-4.5">{t("petbot.product.desc")}</p>
-
-      {productOptions.map((option) => {
-        return (
-          <div key={option.name}>
-            <div className="flex gap-3 overflow-hidden  bg-red-100">
-              {option.optionValues.map((value) => {
-                const {
-                  name,
-                  variantUriQuery,
-                  selected,
-                  available,
-                  exists,
-                  firstSelectableVariant,
-                  swatch,
-                } = value;
-
-                return (
-                  <div key={option.name + name}>
-                    <Link
-                      to={`?${variantUriQuery}`}
-                      replace
-                      preventScrollReset
-                      aria-current={selected ? "true" : undefined}
-                      className={cn(
-                        "flex items-center justify-center border-2 border-transparent transition-colors  min-w-40 aspect-square shrink-0 ",
-                        selected && "border-primary",
-                        available ? "opacity-100" : "opacity-30",
-                        !exists && "pointer-events-none opacity-30",
-                      )}
-                    >
-                      <ProductOptionSwatch
-                        swatch={swatch}
-                        name={name}
-                        firstSelectableVariant={firstSelectableVariant}
-                      />
-                    </Link>
-                    <p className="text-center text-muted-foreground text-sm leading-4.5 px-0.5">
-                      {name}
-                    </p>
-                  </div>
-                );
-              })}
+          <div className="flex items-center justify-between pb-4 text-foreground leading-5">
+            <div className="flex gap-1 items-center">
+              <BadgeCheck />
+              <p>1-Year Warranty</p>
+            </div>
+            <div className="flex gap-1 items-center">
+              <PackageCheck />
+              <p>Dispatch within 3 business days.</p>
             </div>
           </div>
-        );
-      })}
-      <AddToCartButton
-        disabled={!selectedVariant || !selectedVariant.availableForSale}
-        onClick={() => setOpen(true)}
-        lines={
-          selectedVariant
-            ? [
-                {
-                  merchandiseId: selectedVariant.id,
-                  quantity: 1,
-                  selectedVariant,
-                },
-              ]
-            : []
-        }
-      >
-        {selectedVariant?.availableForSale ? "Add to cart" : "Sold out"}
-      </AddToCartButton>
-    </div>
+
+          <p className="pb-6 text-sm text-muted-foreground leading-4.5">
+            {t("petbot.product.desc")}
+          </p>
+        </div>
+
+        <div>
+          {productOptions.map((option) => {
+            return (
+              <div key={option.name}>
+                <Carousel options={{ dragFree: isMobile ? true : false }}>
+                  <SliderContainer className="gap-3">
+                    {option.optionValues.map((value) => {
+                      const {
+                        name,
+                        variantUriQuery,
+                        selected,
+                        available,
+                        exists,
+                        firstSelectableVariant,
+                        swatch,
+                      } = value;
+
+                      return (
+                        <Slider
+                          key={option.name + name}
+                          className="flex-1 basis-[calc((100%-24px)/3)] min-w-40"
+                        >
+                          <button
+                            type="button"
+                            onClick={() => handleVariantSelect(variantUriQuery)}
+                            aria-current={selected ? "true" : undefined}
+                            className={cn(
+                              "flex items-center justify-center border-2 border-transparent transition-colors aspect-square w-full",
+                              selected && "border-primary",
+                              available ? "opacity-100" : "opacity-30",
+                              !exists && "pointer-events-none opacity-30",
+                            )}
+                          >
+                            <ProductOptionSwatch
+                              swatch={swatch}
+                              name={name}
+                              firstSelectableVariant={firstSelectableVariant}
+                            />
+                          </button>
+                          <p className="text-center text-muted-foreground text-sm leading-4.5 px-0.5">
+                            {name}
+                          </p>
+                        </Slider>
+                      );
+                    })}
+                  </SliderContainer>
+                </Carousel>
+              </div>
+            );
+          })}
+          <div className="py-6 pr-4">
+            <AddToCartButton
+              disabled={!selectedVariant || !selectedVariant.availableForSale}
+              onClick={() => setOpen(true)}
+              className="w-full h-13 text-lg"
+              lines={
+                selectedVariant
+                  ? [
+                      {
+                        merchandiseId: selectedVariant.id,
+                        quantity: 1,
+                        selectedVariant,
+                      },
+                    ]
+                  : []
+              }
+            >
+              {selectedVariant?.availableForSale ? "Add to cart" : "Sold out"}
+            </AddToCartButton>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 

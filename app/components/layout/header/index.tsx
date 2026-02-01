@@ -1,9 +1,11 @@
 import { useAnalytics, useOptimisticCart } from "@shopify/hydrogen";
 import { MenuIcon, ShoppingBagIcon, Menu, CircleUserRound } from "lucide-react";
-import { startTransition, Suspense, useState } from "react";
+import { startTransition, Suspense, useState, useEffect } from "react";
 import { Await, NavLink, useAsyncValue, type LoaderFunctionArgs } from "react-router";
 import type { HeaderQuery } from "storefrontapi.generated";
 import { useCartStore } from "~/hooks/store/use-cart-store";
+import { useViewportStore } from "~/hooks/store/use-viewport-store";
+import { useViewport } from "~/hooks/use-viewport";
 import { MobileMenuDrawer } from "./mobile-menu-drawer";
 import { CountrySelectorModal } from "../../modal/country-selector-modal";
 import { HeaderMenu } from "../menu/menu";
@@ -20,6 +22,18 @@ interface HeaderProps {
 export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderProps) {
   const { shop, menu } = header;
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+  const { isMobile, isDesktop, canRender } = useViewport({
+    onExitMobile: () => setMobileMenuOpen(false),
+  });
+  const setIsMobile = useViewportStore((state) => state.setIsMobile);
+  const setIsDesktop = useViewportStore((state) => state.setIsDesktop);
+  const setCanRender = useViewportStore((state) => state.setCanRender);
+
+  useEffect(() => {
+    setIsMobile(isMobile);
+    setIsDesktop(isDesktop);
+    setCanRender(canRender);
+  }, [isMobile, isDesktop, canRender, setIsMobile, setIsDesktop, setCanRender]);
 
   return (
     <>

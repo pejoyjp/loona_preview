@@ -1,6 +1,6 @@
 import { ProductCarousel } from "~/components/product/product-carousel";
-import { ProductDesc } from "~/components/product/product-desc/index";
-import { ProductFaq } from "~/components/product/product-desc/product-faq";
+import { ProductDesc } from "~/components/product/product-landing/index";
+import { ProductFaq } from "~/components/product/product-landing/product-faq";
 import { useTranslationContext } from "~/hooks/use-translation-context";
 
 export async function loader() {}

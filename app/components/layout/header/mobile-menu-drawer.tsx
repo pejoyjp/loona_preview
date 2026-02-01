@@ -1,5 +1,5 @@
 import { type ReactNode } from "react";
-import { useClientMobile } from "~/hooks/use-client-mobile";
+import { useViewportStore } from "~/hooks/store/use-viewport-store";
 import { CircleUserRound, EarthIcon, ShoppingCart } from "lucide-react";
 import { cn } from "~/lib/utils/cn";
 interface MobileMenuDrawerProps {
@@ -8,9 +8,7 @@ interface MobileMenuDrawerProps {
 }
 
 export function MobileMenuDrawer({ setMobileMenuOpen, mobileMenuOpen }: MobileMenuDrawerProps) {
-  const { canRender } = useClientMobile({
-    onExitMobile: () => setMobileMenuOpen(false),
-  });
+  const canRender = useViewportStore((state) => state.canRender);
 
   const closeMenu = () => {
     setMobileMenuOpen(false);
