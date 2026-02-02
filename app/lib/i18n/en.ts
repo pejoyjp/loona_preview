@@ -10,7 +10,7 @@ const en = {
   "petbot.accessory.charging.title": "",
   "petbot.accessory.outfit.title": "",
   "petbot.accessory.bag.title": "",
-  "petbot.banner.title": "Meet your Loona!",
+  "petbot.banner.title": "Meet your petbot Loona!",
   "petbot.banner.subtitle":
     "The cutest way for kids to have fun, enjoy learning and make new friends",
   "petbot.brand.techCrunch.title":

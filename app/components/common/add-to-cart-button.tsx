@@ -36,7 +36,7 @@ export function AddToCartButton({
             type="submit"
             variant={variant}
             onClick={onClick}
-            disabled={disabled ?? fetcher.state !== "idle"}
+            disabled={disabled || fetcher.state !== "idle"}
             className={className}
           >
             {children}

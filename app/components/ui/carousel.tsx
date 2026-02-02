@@ -513,51 +513,64 @@ SliderSnapDisplay.displayName = "SliderSnapDisplay";
 // ============= DOT BUTTONS =============
 interface SliderDotButtonProps extends React.HTMLAttributes<HTMLDivElement> {
   activeClass?: string;
+  variant?: "dot" | "bar";
 }
 
+const DOT_SIZE = "w-2.5 h-2.5";
+const BAR_SIZE = "w-6 h-1";
+
 export const SliderDotButton = forwardRef<HTMLDivElement, SliderDotButtonProps>(
-  ({ className, activeClass, ...props }, ref) => {
-    const { selectedIndex, scrollSnaps, orientation, onDotButtonClick, carouselId } = useCarousel();
+  ({ className, activeClass, variant = "bar", ...props }, ref) => {
+    const { selectedIndex, scrollSnaps, onDotButtonClick, carouselId } = useCarousel();
+
+    const isDot = variant === "dot";
 
     return (
-      <div ref={ref} className={cn("flex gap-2", className)} {...props}>
-        {scrollSnaps.map((_, index) => (
-          <button
-            key={index}
-            type="button"
-            onClick={() => onDotButtonClick(index)}
-            className={cn(
-              "relative inline-flex p-0 m-0",
-              orientation === "vertical" ? "h-6 w-1" : "w-6 h-1",
-            )}
-          >
-            <div
+      <div ref={ref} className={cn("flex items-center gap-2", className)} {...props}>
+        {scrollSnaps.map((_, index) => {
+          const isActive = index === selectedIndex;
+
+          return (
+            <button
+              key={index}
+              type="button"
+              onClick={() => onDotButtonClick(index)}
               className={cn(
-                "bg-neutral-500/40 rounded-full ",
-                orientation === "vertical" ? "h-6 w-1" : "w-6 h-1",
+                "relative flex items-center justify-center",
+                isDot ? "w-3 h-3" : "w-6 h-1.5",
               )}
-            />
-            {index === selectedIndex && (
-              <AnimatePresence mode="wait">
-                <motion.div
-                  transition={{
-                    layout: {
-                      duration: 0.4,
-                      ease: "easeInOut",
-                      delay: 0.04,
-                    },
-                  }}
-                  layoutId={`hover-${carouselId}`}
-                  className={cn(
-                    "absolute z-3 w-full h-full left-0 top-0 dark:bg-white bg-black rounded-full",
-                    orientation === "vertical" ? "h-6 w-1" : "w-6 h-1",
-                    activeClass,
-                  )}
-                />
-              </AnimatePresence>
-            )}
-          </button>
-        ))}
+              aria-label={`Go to slide ${index + 1}`}
+            >
+              {/* base */}
+              <span
+                className={cn(
+                  "block bg-neutral-500/40 transition-all",
+                  isDot ? DOT_SIZE : BAR_SIZE,
+                  "rounded-full",
+                )}
+              />
+
+              {isActive && (
+                <AnimatePresence>
+                  <motion.span
+                    layoutId={`indicator-${carouselId}`}
+                    className={cn(
+                      "absolute bg-primary dark:bg-white rounded-full",
+                      isDot ? "w-3 h-3" : BAR_SIZE,
+                      activeClass,
+                    )}
+                    transition={{
+                      layout: {
+                        duration: 0.35,
+                        ease: "easeInOut",
+                      },
+                    }}
+                  />
+                </AnimatePresence>
+              )}
+            </button>
+          );
+        })}
       </div>
     );
   },

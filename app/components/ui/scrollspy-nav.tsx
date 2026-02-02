@@ -14,13 +14,11 @@ interface ScrollspyNavProps {
 export function ScrollspyNav({ sections, className }: ScrollspyNavProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // 标记是否是点击触发的滚动
   const isManualScrolling = useRef(false);
   const scrollTimer = useRef<number | null>(null);
 
   const OFFSET = 100;
 
-  // 滚动监听（节流）
   const throttledScroll = useThrottledCallback(() => {
     if (isManualScrolling.current) return;
 
@@ -83,12 +81,12 @@ export function ScrollspyNav({ sections, className }: ScrollspyNavProps) {
   return (
     <nav
       className={cn(
-        "sticky top-0 z-10 bg-white/80 backdrop-blur-md dark:bg-neutral-950/80",
+        "sticky top-0 z-10 bg-foreground/10 flex justify-center h-9.5 xl:h-13.5 items-center",
         className,
       )}
     >
       <LayoutGroup id="scrollspy-nav">
-        <ul className="flex gap-2 p-2">
+        <ul className="flex gap-2 ">
           {sections.map((section, index) => (
             <li key={index}>
               <button

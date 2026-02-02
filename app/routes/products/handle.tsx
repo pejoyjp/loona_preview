@@ -1,18 +1,25 @@
-import { OkendoReviews, OkendoStarRating } from "@okendo/shopify-hydrogen";
+import { OkendoReviews } from "@okendo/shopify-hydrogen";
 
 import {
   Analytics,
   getAdjacentAndFirstAvailableVariants,
   getProductOptions,
+  getSeoMeta,
   getSelectedProductOptions,
-  Image,
   useOptimisticVariant,
   useSelectedOptionInUrlParam,
 } from "@shopify/hydrogen";
-import { type LoaderFunctionArgs, type MetaFunction, redirect, useLoaderData } from "react-router";
+import {
+  Await,
+  type LoaderFunctionArgs,
+  type MetaFunction,
+  redirect,
+  useLoaderData,
+} from "react-router";
+import { Suspense, useState } from "react";
+import type { Product } from "@shopify/hydrogen/storefront-api-types";
 import type {
   ProductFragment,
-  ProductVariantFragment,
   ProductVariantForProductPageFragment,
 } from "storefrontapi.generated";
 import { ProductForm } from "~/components/product/product-form";
@@ -25,22 +32,24 @@ import { seoPayload } from "~/.server/seo/index";
 import { StoryCarousel } from "~/components/common/carousel/story-carousel";
 import { ProductCarousel } from "~/components/product/product-carousel";
 import { ProductAccessory } from "~/components/product/product-accessory";
+import { COLLECTION_QUERY } from "~/graphql/query";
+import { useTranslationContext } from "~/hooks/use-translation-context";
+import { AddToCartButton } from "~/components/common/add-to-cart-button";
+import { COLLECTION_HANDLES } from "~/data/handles";
+import { PaymentIcons } from "~/components/common/payment/payment-icons";
+import { PaymentWarrant } from "~/components/common/payment/payment-warrant";
+import { ProductLanding } from "~/components/product/product-landing";
 
-export const meta: MetaFunction = ({ params }) => {
-  return [
-    { title: `Hydrogen | ${params?.title ?? ""}` },
-    {
-      rel: "canonical",
-      href: `/products/${params?.handle}`,
-    },
-  ];
+export const meta: MetaFunction<typeof loader> = ({ loaderData }) => {
+  if (!loaderData?.seo) {
+    return [{ title: "Product | Loona" }, { name: "description", content: "" }];
+  }
+  return getSeoMeta(loaderData.seo);
 };
 
 export async function loader(args: LoaderFunctionArgs) {
   const deferredData = loadDeferredData(args);
-
   const criticalData = await loadCriticalData(args);
-
   return { ...deferredData, ...criticalData };
 }
 
@@ -52,11 +61,18 @@ async function loadCriticalData({ context, params, request }: LoaderFunctionArgs
     throw new Error("Expected product handle to be defined");
   }
 
-  const [{ product }] = await Promise.all([
+  const [{ product }, outfit] = await Promise.all([
     storefront.query(PRODUCT_QUERY, {
       variables: {
         handle,
         selectedOptions: getSelectedProductOptions(request),
+      },
+    }),
+    storefront.query(COLLECTION_QUERY, {
+      variables: {
+        handle: COLLECTION_HANDLES.PETBOT_OUTFIT,
+        first: 20,
+        sortKey: "BEST_SELLING",
       },
     }),
   ]);
@@ -69,30 +85,41 @@ async function loadCriticalData({ context, params, request }: LoaderFunctionArgs
 
   return {
     product,
+    outfit: outfit.collection,
     seo: seoPayload.product({ product, url: request.url }),
   };
 }
 
-function loadDeferredData({ context, params }: LoaderFunctionArgs) {
-  return {};
+function loadDeferredData({ context }: LoaderFunctionArgs) {
+  const { storefront } = context;
+
+  const ipProduct = storefront
+    .query(COLLECTION_QUERY, {
+      variables: {
+        handle: COLLECTION_HANDLES.IP_PRODUCT,
+        first: 10,
+        sortKey: "BEST_SELLING",
+      },
+    })
+    .then((response) => response.collection);
+
+  return {
+    ipProduct,
+  };
 }
 
 export default function Product() {
-  const { product, seo } = useLoaderData<typeof loader>();
-  const jsonLd = seo?.jsonLd;
-  const jsonLdEntries = Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [];
+  const { product, outfit, ipProduct } = useLoaderData<typeof loader>();
+  const { t } = useTranslationContext();
+  const [selectedOutfit, setSelectedOutfit] = useState<Product | null>(null);
 
-  // Optimistically selects a variant with given available variant information
   const selectedVariant = useOptimisticVariant(
     product.selectedOrFirstAvailableVariant,
     getAdjacentAndFirstAvailableVariants(product),
   );
 
-  // Sets the search param to the selected variant without navigation
-  // only when no search params are set in the url
   useSelectedOptionInUrlParam(selectedVariant.selectedOptions);
 
-  // Get the product options array
   const productOptions = getProductOptions({
     ...product,
     selectedOrFirstAvailableVariant: selectedVariant,
@@ -117,20 +144,30 @@ export default function Product() {
     return galleries;
   });
 
-  const { title, descriptionHtml } = product;
+  const cartLines = selectedVariant
+    ? [
+        {
+          merchandiseId: selectedVariant.id,
+          quantity: 1,
+          selectedVariant,
+        },
+      ]
+    : [];
+
+  if (selectedOutfit) {
+    const outfitVariant = selectedOutfit.selectedOrFirstAvailableVariant;
+    if (outfitVariant) {
+      cartLines.push({
+        merchandiseId: outfitVariant.id,
+        quantity: 1,
+        selectedVariant: outfitVariant,
+      });
+    }
+  }
 
   return (
-    <div className=" max-w-7xl mx-auto">
-      {/* 暂时先这样写script， 后面需要改成组件或者函数 */}
-      {jsonLdEntries.map((entry, index) => (
-        <script
-          key={`product-jsonld-${index}`}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(entry) }}
-        />
-      ))}
-
-      <div className="flex flex-col xl:flex-row w-full gap-1.5">
+    <div className="">
+      <div className="flex flex-col xl:flex-row w-full gap-1.5  max-w-7xl mx-auto">
         <div className="flex-1">
           <ProductCarousel
             galleriesByOption={galleriesByOption}
@@ -144,22 +181,55 @@ export default function Product() {
             selectedVariant={selectedVariant}
             productID={product.id}
           />
-          <div className="px-4">
-            <ProductAccessory productOptions={productOptions} />
-          </div>
 
-          <div>
-            <StoryCarousel />
-          </div>
-
-          <div className="w-full">
-            <OkendoReviews
-              productId={product.id}
-              okendoReviewsSnippet={(product as ProductFragment).okendoReviewsSnippet}
+          <div className="px-4 ">
+            <ProductAccessory
+              collection={outfit}
+              type="radio"
+              onSelect={setSelectedOutfit}
+              title={t("petbot.buy.title")}
             />
+
+            <AddToCartButton
+              disabled={!selectedVariant || !selectedVariant.availableForSale}
+              className="w-full h-13 text-lg"
+              lines={cartLines}
+            >
+              {selectedVariant?.availableForSale ? "Add to cart" : "Sold out"}
+            </AddToCartButton>
+
+            <Suspense fallback={null}>
+              <Await resolve={ipProduct}>
+                {(resolvedIpProduct) => (
+                  <ProductAccessory
+                    collection={resolvedIpProduct}
+                    type="button"
+                    title={t("petbot.accessory.title")}
+                  />
+                )}
+              </Await>
+            </Suspense>
+
+            <PaymentIcons />
+            <PaymentWarrant />
           </div>
         </div>
       </div>
+
+      <div className="pt-24 md:pt-10">
+        <ProductLanding />
+      </div>
+
+      {/* <div>
+        <StoryCarousel />
+      </div>
+
+      <div className="w-full">
+        <OkendoReviews
+          productId={product.id}
+          okendoReviewsSnippet={(product as ProductFragment).okendoReviewsSnippet}
+        />
+      </div> */}
 
       <Analytics.ProductView
         data={{
@@ -310,7 +380,7 @@ const PRODUCT_QUERY = `#graphql
     $country: CountryCode
     $handle: String!
     $language: LanguageCode
-    $selectedOptions: [SelectedOptionInput!]!
+    $selectedOptions: [SelectedOptionInput!]
   ) @inContext(country: $country, language: $language) {
     product(handle: $handle) {
       ...Product

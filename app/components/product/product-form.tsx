@@ -32,6 +32,8 @@ export function ProductForm({
     navigate(`?${variantUriQuery}`, { replace: true, preventScrollReset: true });
   };
 
+  console.log(selectedVariant?.id);
+
   return (
     <>
       <div>
@@ -117,26 +119,6 @@ export function ProductForm({
               </div>
             );
           })}
-          <div className="py-6 pr-4">
-            <AddToCartButton
-              disabled={!selectedVariant || !selectedVariant.availableForSale}
-              onClick={() => setOpen(true)}
-              className="w-full h-13 text-lg"
-              lines={
-                selectedVariant
-                  ? [
-                      {
-                        merchandiseId: selectedVariant.id,
-                        quantity: 1,
-                        selectedVariant,
-                      },
-                    ]
-                  : []
-              }
-            >
-              {selectedVariant?.availableForSale ? "Add to cart" : "Sold out"}
-            </AddToCartButton>
-          </div>
         </div>
       </div>
     </>

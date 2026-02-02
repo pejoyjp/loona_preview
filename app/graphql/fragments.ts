@@ -2,7 +2,6 @@ export const PRODUCT_VARIANT_FRAGMENT = `#graphql
   fragment ProductVariant on ProductVariant {
     id
     availableForSale
-    quantityAvailable
     selectedOptions {
       name
       value
@@ -123,12 +122,7 @@ export const PRODUCT_CARD_FRAGMENT = `#graphql
     ) {
       ...ProductVariant
     }
-    # Check if the product is a bundle
-    isBundle: selectedOrFirstAvailableVariant(ignoreUnknownOptions: true, selectedOptions: { name: "", value: ""}) {
-      ...on ProductVariant {
-        requiresComponents
-      }
-    }
+   
   }
   ${PRODUCT_OPTION_FRAGMENT}
 `;

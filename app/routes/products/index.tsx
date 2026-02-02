@@ -1,5 +1,5 @@
 import { ProductCarousel } from "~/components/product/product-carousel";
-import { ProductDesc } from "~/components/product/product-landing/index";
+import { ProductLanding } from "~/components/product/product-landing/index";
 import { ProductFaq } from "~/components/product/product-landing/product-faq";
 import { useTranslationContext } from "~/hooks/use-translation-context";
 
@@ -14,7 +14,7 @@ export default function Products() {
         <h1 className="text-3xl">{t("loona.desc", { test: "game", desc: "cool" })}</h1>
       </div> */}
       <ProductCarousel />
-      <ProductDesc />
+      <ProductLanding />
     </div>
   );
 }
