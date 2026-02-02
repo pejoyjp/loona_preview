@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from "motion/react";
 import type { EmblaCarouselType, EmblaEventType, EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
 import { cn } from "~/lib/utils/cn";
+import { Image } from "@shopify/hydrogen";
 
 // ============= TYPES =============
 interface CarouselProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -621,14 +622,15 @@ const ThumbItem = React.memo(function ThumbItem({
       )}
       style={{ contentVisibility: "auto" }}
     >
-      <img
+      <Image
         src={src}
         alt={`Thumbnail ${index + 1}`}
         width={96}
         height={96}
         loading="lazy"
         decoding="async"
-        className="w-full h-full object-cover rounded-md"
+        className="w-full h-full object-cover"
+        sizes="96px"
       />
     </div>
   );
@@ -658,7 +660,7 @@ export const ThumbsSlider = forwardRef<
       >
         {slidesArr.map((src, index) => (
           <ThumbItem
-            key={index}
+            key={src}
             src={src}
             index={index}
             isActive={selectedIndex === index}

@@ -80,17 +80,17 @@ export function ProductCarousel({
   return (
     <Carousel
       options={OPTIONS}
-      className="relative flex"
+      className="relative flex h-141.5 w-full"
       plugins={[Autoplay({ delay: 5000 })]}
       onApi={setEmblaApi}
     >
       <ThumbsSlider
-        className="w-20 hidden xl:block"
-        thumbsClassName="h-[400px]"
-        thumbsSliderClassName="border-black"
+        className=" hidden xl:block"
+        thumbsClassName=""
+        thumbsSliderClassName="border-black "
       />
 
-      <SliderContainer className="h-58 w-full">
+      <SliderContainer className="h-full w-full">
         {slides.map((image, index) => (
           <Slider
             key={index}
