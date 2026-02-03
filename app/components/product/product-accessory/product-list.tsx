@@ -1,23 +1,16 @@
 import { Image, Money } from "@shopify/hydrogen";
-import type { Product } from "@shopify/hydrogen/storefront-api-types";
+import type { ProductCardFragment } from "storefrontapi.generated";
 import { AddToCartButton } from "~/components/common/add-to-cart-button";
 import { Carousel, SliderContainer, Slider, SliderDotButton } from "~/components/ui/carousel";
-import {
-  Field,
-  FieldContent,
-  FieldDescription,
-  FieldLabel,
-  FieldTitle,
-} from "~/components/ui/field";
+import { Field, FieldContent, FieldLabel, FieldTitle } from "~/components/ui/field";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 
 interface ProductItemProps {
-  product: Product;
+  product: ProductCardFragment;
   type: "radio" | "button";
-  name: string;
 }
 
-function ProductItem({ product, type, name }: ProductItemProps) {
+function ProductItem({ product, type }: ProductItemProps) {
   const selectedVariant = product?.selectedOrFirstAvailableVariant;
   const image = product?.selectedOrFirstAvailableVariant?.image;
   const productTitle = product?.title ?? "";
@@ -81,10 +74,10 @@ function ProductItem({ product, type, name }: ProductItemProps) {
 }
 
 interface ProductListProps {
-  products: Product[];
+  products: ProductCardFragment[];
   title: string;
   type: "radio" | "button";
-  onSelect?: (product: Product | null) => void;
+  onSelect?: (product: ProductCardFragment | null) => void;
 }
 
 export function ProductList({ products, title, type, onSelect }: ProductListProps) {
@@ -96,8 +89,8 @@ export function ProductList({ products, title, type, onSelect }: ProductListProp
       onSelect?.(selectedProduct);
     };
 
-    const renderRadioProductItem = (product: Product) => (
-      <ProductItem key={product.id} product={product} type={type} name={title} />
+    const renderRadioProductItem = (product: ProductCardFragment) => (
+      <ProductItem key={product.id} product={product} type={type} />
     );
 
     if (products.length <= 3) {
@@ -112,7 +105,7 @@ export function ProductList({ products, title, type, onSelect }: ProductListProp
       );
     }
 
-    const productGroups: Product[][] = [];
+    const productGroups: ProductCardFragment[][] = [];
     for (let i = 0; i < products.length; i += 3) {
       productGroups.push(products.slice(i, i + 3));
     }
@@ -125,7 +118,7 @@ export function ProductList({ products, title, type, onSelect }: ProductListProp
               <Slider key={groupIndex} className="flex-[0_0_100%] min-w-0 w-full">
                 <div className="flex flex-col gap-2 w-full">
                   {group.map((product) => (
-                    <ProductItem key={product.id} product={product} type={type} name={title} />
+                    <ProductItem key={product.id} product={product} type={type} />
                   ))}
                 </div>
               </Slider>
@@ -140,8 +133,8 @@ export function ProductList({ products, title, type, onSelect }: ProductListProp
     );
   }
 
-  const renderProductItem = (product: Product) => (
-    <ProductItem key={product.id} product={product} type={type} name={title} />
+  const renderProductItem = (product: ProductCardFragment) => (
+    <ProductItem key={product.id} product={product} type={type} />
   );
 
   if (products.length <= 3) {
@@ -152,7 +145,7 @@ export function ProductList({ products, title, type, onSelect }: ProductListProp
     );
   }
 
-  const productGroups: Product[][] = [];
+  const productGroups: ProductCardFragment[][] = [];
   for (let i = 0; i < products.length; i += 3) {
     productGroups.push(products.slice(i, i + 3));
   }

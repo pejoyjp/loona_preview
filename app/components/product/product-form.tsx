@@ -1,9 +1,12 @@
 import type { MappedProductOptions } from "@shopify/hydrogen";
-import type { Maybe, ProductOptionValueSwatch } from "@shopify/hydrogen/storefront-api-types";
+import type {
+  Maybe,
+  ProductOptionValueSwatch,
+  ProductVariant,
+} from "@shopify/hydrogen/storefront-api-types";
 import { useNavigate } from "react-router";
-import type { ProductCardFragment, ProductOptionFragment } from "storefrontapi.generated";
+import type { ProductCardFragment } from "storefrontapi.generated";
 import { useCartStore } from "~/hooks/store/use-cart-store";
-import { AddToCartButton } from "../common/add-to-cart-button";
 import { ProductPrice } from "./product-price";
 import { OkendoStarRating } from "@okendo/shopify-hydrogen";
 import { BadgeCheck, PackageCheck } from "lucide-react";
@@ -33,93 +36,86 @@ export function ProductForm({
   };
 
   return (
-    <>
-      <div>
-        <div className="pr-4">
-          <h1 className="text-xl font-bold text-gray-900 leading-none pt-4 pb-0.5">
-            {selectedVariant?.title}
-          </h1>
+    <div>
+      <div className="pr-4 xl:pr-0">
+        <h1 className="text-xl font-bold text-gray-900 leading-none pt-4 pb-0.5">
+          {selectedVariant?.title}
+        </h1>
 
-          <div className="h-6">
-            <OkendoStarRating productId={productID} />
-          </div>
-
-          <div className="pt-4 pb-6">
-            <ProductPrice
-              price={selectedVariant?.price}
-              compareAtPrice={selectedVariant?.compareAtPrice}
-            />
-          </div>
-
-          <div className="flex items-center justify-between pb-4 text-foreground leading-5">
-            <div className="flex gap-1 items-center">
-              <BadgeCheck />
-              <p>1-Year Warranty</p>
-            </div>
-            <div className="flex gap-1 items-center">
-              <PackageCheck />
-              <p>Dispatch within 3 business days.</p>
-            </div>
-          </div>
-
-          <p className="pb-6 text-sm text-muted-foreground leading-4.5">
-            {t("petbot.product.desc")}
-          </p>
+        <div className="h-6">
+          <OkendoStarRating productId={productID} />
         </div>
 
-        <div>
-          {productOptions.map((option) => {
-            return (
-              <div key={option.name}>
-                <Carousel options={{ watchDrag: isMobile ? true : false }}>
-                  <SliderContainer className="gap-3">
-                    {option.optionValues.map((value) => {
-                      const {
-                        name,
-                        variantUriQuery,
-                        selected,
-                        available,
-                        exists,
-                        firstSelectableVariant,
-                        swatch,
-                      } = value;
-
-                      return (
-                        <Slider
-                          key={option.name + name}
-                          className="flex-1 basis-[calc((100%-24px)/3)] min-w-40"
-                        >
-                          <button
-                            type="button"
-                            onClick={() => handleVariantSelect(variantUriQuery)}
-                            aria-current={selected ? "true" : undefined}
-                            className={cn(
-                              "flex items-center justify-center border-2 border-transparent transition-colors aspect-square w-full",
-                              selected && "border-primary",
-                              available ? "opacity-100" : "opacity-30",
-                              !exists && "pointer-events-none opacity-30",
-                            )}
-                          >
-                            <ProductOptionSwatch
-                              swatch={swatch}
-                              name={name}
-                              firstSelectableVariant={firstSelectableVariant}
-                            />
-                          </button>
-                          <p className="text-center text-muted-foreground text-sm leading-4.5 px-0.5">
-                            {name}
-                          </p>
-                        </Slider>
-                      );
-                    })}
-                  </SliderContainer>
-                </Carousel>
-              </div>
-            );
-          })}
+        <div className="pt-4 pb-6">
+          <ProductPrice
+            price={selectedVariant?.price}
+            compareAtPrice={selectedVariant?.compareAtPrice}
+          />
         </div>
+
+        <div className="flex items-center justify-between pb-4 text-foreground leading-5">
+          <div className="flex gap-1 items-center">
+            <BadgeCheck />
+            <p>1-Year Warranty</p>
+          </div>
+          <div className="flex gap-1 items-center">
+            <PackageCheck />
+            <p>Dispatch within 3 business days.</p>
+          </div>
+        </div>
+
+        <p className="pb-6 text-sm text-muted-foreground leading-4.5">{t("petbot.product.desc")}</p>
       </div>
-    </>
+
+      <div>
+        {productOptions.map((option) => {
+          return (
+            <div key={option.name}>
+              <Carousel options={{ watchDrag: isMobile ? true : false }} className="pr-4 xl:pr-0">
+                <SliderContainer className="gap-3">
+                  {option.optionValues.map((value) => {
+                    const {
+                      name,
+                      variantUriQuery,
+                      selected,
+                      available,
+                      exists,
+                      firstSelectableVariant,
+                      swatch,
+                    } = value;
+
+                    return (
+                      <Slider key={option.name + name} className="flex-1 min-w-40 ">
+                        <button
+                          type="button"
+                          onClick={() => handleVariantSelect(variantUriQuery)}
+                          aria-current={selected ? "true" : undefined}
+                          className={cn(
+                            "flex items-center justify-center border-2 border-transparent transition-colors aspect-square w-full",
+                            selected && "border-primary",
+                            available ? "opacity-100" : "opacity-30",
+                            !exists && "pointer-events-none opacity-30",
+                          )}
+                        >
+                          <ProductOptionSwatch
+                            swatch={swatch}
+                            name={name}
+                            firstSelectableVariant={firstSelectableVariant}
+                          />
+                        </button>
+                        <p className="text-center text-muted-foreground text-sm leading-4.5 px-0.5">
+                          {name}
+                        </p>
+                      </Slider>
+                    );
+                  })}
+                </SliderContainer>
+              </Carousel>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
@@ -130,7 +126,7 @@ function ProductOptionSwatch({
 }: {
   swatch?: Maybe<ProductOptionValueSwatch> | undefined;
   name: string;
-  firstSelectableVariant: ProductOptionFragment["optionValues"][0]["firstSelectableVariant"];
+  firstSelectableVariant: Maybe<ProductVariant> | undefined;
 }) {
   return (
     <div aria-label={name} className=" border-gray-200 w-full h-full">

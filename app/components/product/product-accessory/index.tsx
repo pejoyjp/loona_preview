@@ -1,4 +1,4 @@
-import type { Collection, Product } from "@shopify/hydrogen/storefront-api-types";
+import type { CollectionQuery, ProductCardFragment } from "storefrontapi.generated";
 import { ProductList } from "./product-list";
 
 export function ProductAccessory({
@@ -7,11 +7,12 @@ export function ProductAccessory({
   onSelect,
   title,
 }: {
-  collection: Collection;
+  collection: CollectionQuery["collection"];
   type: "button" | "radio";
-  onSelect?: (product: Product | null) => void;
+  onSelect?: (product: ProductCardFragment | null) => void;
   title: string;
 }) {
+  if (!collection) return null;
   const filterProducts = collection.products.nodes;
   if (filterProducts.length === 0) return null;
   return (

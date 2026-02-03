@@ -1,4 +1,4 @@
-import { PRODUCT_CARD_FRAGMENT } from "../fragments";
+import { PRODUCT_CARD_FRAGMENT, PRODUCT_VARIANT_FRAGMENT } from "../fragments";
 
 export const COLLECTION_QUERY = `#graphql
   query collection(

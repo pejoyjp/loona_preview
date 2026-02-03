@@ -16,10 +16,10 @@ import {
   useLoaderData,
 } from "react-router";
 import { Suspense, useState } from "react";
-import type { Product } from "@shopify/hydrogen/storefront-api-types";
 import type {
   ProductFragment,
   ProductVariantForProductPageFragment,
+  ProductCardFragment,
 } from "storefrontapi.generated";
 import { ProductForm } from "~/components/product/product-form";
 import { redirectIfHandleIsLocalized } from "~/lib/redirect";
@@ -104,7 +104,7 @@ function loadDeferredData({ context }: LoaderFunctionArgs) {
 export default function Product() {
   const { product, outfit, ipProduct } = useLoaderData<typeof loader>();
   const { t } = useTranslationContext();
-  const [selectedOutfit, setSelectedOutfit] = useState<Product | null>(null);
+  const [selectedOutfit, setSelectedOutfit] = useState<ProductCardFragment | null>(null);
 
   const selectedVariant = useOptimisticVariant(
     product.selectedOrFirstAvailableVariant,
@@ -160,29 +160,28 @@ export default function Product() {
 
   return (
     <div className="">
-      <div className="flex flex-col xl:flex-row w-full gap-1.5  max-w-7xl mx-auto">
-        <div className="flex-1">
+      <div className="flex flex-col xl:flex-row w-full gap-5 xl:w-300 xl: mx-auto">
+        <div className="xl:flex-1 xl:basis-0 min-w-0">
           <ProductCarousel
             galleriesByOption={galleriesByOption}
             selectedVariant={selectedVariant}
           />
         </div>
 
-        <div className="pl-4 flex-1 ">
+        <div className="xl:flex-1 xl:basis-0 min-w-0 pl-4">
           <ProductForm
             productOptions={filteredProductOptions}
             selectedVariant={selectedVariant}
             productID={product.id}
           />
 
-          <div className="px-4 ">
+          <div className="pr-4 xl:pr-0">
             <ProductAccessory
               collection={outfit}
               type="radio"
               onSelect={setSelectedOutfit}
               title={t("petbot.buy.title")}
             />
-
             <AddToCartButton
               disabled={!selectedVariant || !selectedVariant.availableForSale}
               className="w-full h-13 text-lg"
