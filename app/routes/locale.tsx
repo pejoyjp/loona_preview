@@ -6,7 +6,7 @@ import type {
 } from "@shopify/hydrogen/storefront-api-types";
 import { type ActionFunction, type AppLoadContext, redirect } from "react-router";
 import invariant from "tiny-invariant";
-import { LOCALIZATION_OPTIONS_QUERY } from "~/graphql/query";
+import { LOCALIZATION_OPTIONS_QUERY } from "~/graphql/queries";
 import { getCountries } from "~/lib/get-countries";
 
 export const action: ActionFunction = async ({ request, context }) => {

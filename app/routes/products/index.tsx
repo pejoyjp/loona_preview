@@ -14,7 +14,7 @@ export default function Products() {
         <h1 className="text-3xl">{t("loona.desc", { test: "game", desc: "cool" })}</h1>
       </div> */}
       <ProductCarousel />
-      <ProductLanding />
+      {/* <ProductLanding /> */}
     </div>
   );
 }

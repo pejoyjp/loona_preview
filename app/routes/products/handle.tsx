@@ -1,5 +1,3 @@
-import { OkendoReviews } from "@okendo/shopify-hydrogen";
-
 import {
   Analytics,
   getAdjacentAndFirstAvailableVariants,
@@ -8,6 +6,7 @@ import {
   getSelectedProductOptions,
   useOptimisticVariant,
   useSelectedOptionInUrlParam,
+  type OptimisticCartLineInput,
 } from "@shopify/hydrogen";
 import {
   Await,
@@ -23,22 +22,18 @@ import type {
   ProductVariantForProductPageFragment,
 } from "storefrontapi.generated";
 import { ProductForm } from "~/components/product/product-form";
-import {
-  OKENDO_PRODUCT_REVIEWS_FRAGMENT,
-  OKENDO_PRODUCT_STAR_RATING_FRAGMENT,
-} from "~/graphql/fragments";
 import { redirectIfHandleIsLocalized } from "~/lib/redirect";
 import { seoPayload } from "~/.server/seo/index";
-import { StoryCarousel } from "~/components/common/carousel/story-carousel";
 import { ProductCarousel } from "~/components/product/product-carousel";
 import { ProductAccessory } from "~/components/product/product-accessory";
-import { COLLECTION_QUERY } from "~/graphql/query";
+import { COLLECTION_QUERY } from "~/graphql/queries/collection";
 import { useTranslationContext } from "~/hooks/use-translation-context";
 import { AddToCartButton } from "~/components/common/add-to-cart-button";
 import { COLLECTION_HANDLES } from "~/data/handles";
 import { PaymentIcons } from "~/components/common/payment/payment-icons";
 import { PaymentWarrant } from "~/components/common/payment/payment-warrant";
 import { ProductLanding } from "~/components/product/product-landing";
+import { PRODUCT_QUERY } from "~/graphql/queries/product";
 
 export const meta: MetaFunction<typeof loader> = ({ loaderData }) => {
   if (!loaderData?.seo) {
@@ -72,7 +67,6 @@ async function loadCriticalData({ context, params, request }: LoaderFunctionArgs
       variables: {
         handle: COLLECTION_HANDLES.PETBOT_OUTFIT,
         first: 20,
-        sortKey: "BEST_SELLING",
       },
     }),
   ]);
@@ -98,7 +92,6 @@ function loadDeferredData({ context }: LoaderFunctionArgs) {
       variables: {
         handle: COLLECTION_HANDLES.IP_PRODUCT,
         first: 10,
-        sortKey: "BEST_SELLING",
       },
     })
     .then((response) => response.collection);
@@ -144,7 +137,7 @@ export default function Product() {
     return galleries;
   });
 
-  const cartLines = selectedVariant
+  const cartLines: OptimisticCartLineInput[] = selectedVariant
     ? [
         {
           merchandiseId: selectedVariant.id,
@@ -217,19 +210,8 @@ export default function Product() {
       </div>
 
       <div className="pt-24 md:pt-10">
-        <ProductLanding />
+        <ProductLanding product={product as ProductFragment} />
       </div>
-
-      {/* <div>
-        <StoryCarousel />
-      </div>
-
-      <div className="w-full">
-        <OkendoReviews
-          productId={product.id}
-          okendoReviewsSnippet={(product as ProductFragment).okendoReviewsSnippet}
-        />
-      </div> */}
 
       <Analytics.ProductView
         data={{
@@ -249,142 +231,3 @@ export default function Product() {
     </div>
   );
 }
-
-const PRODUCT_VARIANT_FRAGMENT = `#graphql
-  fragment ProductVariantForProductPage on ProductVariant {
-    availableForSale
-    showInProduct: metafield(
-      namespace: "custom"
-      key: "show_in_product"
-    ) {
-      value
-      type
-    }
-    gallery: metafield(namespace: "custom", key: "variant_gallery") {
-      reference {
-        ... on Metaobject {
-          media: field(key: "gallery_media") {
-            references(first: 20) {
-              nodes {
-                __typename
-                ... on MediaImage {
-                  image {
-                    url
-                    altText
-                    width
-                    height
-                  }
-                }
-                ... on Video {
-                  previewImage { url }
-                  sources { url mimeType }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-
-    compareAtPrice {
-      amount
-      currencyCode
-    }
-    id
-    image {
-      __typename
-      id
-      url
-      altText
-      width
-      height
-    }
-    price {
-      amount
-      currencyCode
-    }
-    product {
-      title
-      handle
-    }
-    selectedOptions {
-      name
-      value
-    }
-    sku
-    title
-    unitPrice {
-      amount
-      currencyCode
-    }
-  }
-` as const;
-
-const PRODUCT_FRAGMENT = `#graphql
-  ${OKENDO_PRODUCT_STAR_RATING_FRAGMENT}
-  ${OKENDO_PRODUCT_REVIEWS_FRAGMENT}
-  fragment Product on Product {
-    id
-    title
-    vendor
-    handle
-    descriptionHtml
-    description
-    encodedVariantExistence
-    encodedVariantAvailability
-    options {
-      name
-      optionValues {
-        name
-        firstSelectableVariant {
-          ...ProductVariantForProductPage
-        }
-        swatch {
-          color
-          image {
-            previewImage {
-              url
-            }
-          }
-        }
-      }
-    }
-    selectedOrFirstAvailableVariant(selectedOptions: $selectedOptions, ignoreUnknownOptions: true, caseInsensitiveMatch: true) {
-      ...ProductVariantForProductPage
-    }
-    adjacentVariants (selectedOptions: $selectedOptions) {
-      ...ProductVariantForProductPage
-    }
-    seo {
-      description
-      title
-    }
-    okendoSummaryData: metafield(namespace: "okendo", key: "summaryData") {
-      value
-    }
-    okendoReviewCount: metafield(namespace: "okendo", key: "ReviewCount") {
-      value
-    }
-    okendoReviewAverageValue: metafield(namespace: "okendo", key: "ReviewAverageValue") {
-      value
-    }
-    ...OkendoStarRatingSnippet
-    ...OkendoReviewsSnippet
-  }
-  ${PRODUCT_VARIANT_FRAGMENT}
-` as const;
-
-const PRODUCT_QUERY = `#graphql
-  ${PRODUCT_FRAGMENT}
-  query Product(
-    $country: CountryCode
-    $handle: String!
-    $language: LanguageCode
-    $selectedOptions: [SelectedOptionInput!]
-  ) @inContext(country: $country, language: $language) {
-    product(handle: $handle) {
-      ...Product
-    }
-  }
-
-` as const;

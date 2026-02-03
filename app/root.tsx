@@ -15,8 +15,7 @@ import {
 import favicon from "~/assets/favicon.svg";
 import type { Route } from "./+types/root";
 import { PageLayout } from "./components/layout/layout";
-import { FOOTER_QUERY, HEADER_QUERY } from "./graphql/fragments";
-import { LOCALIZATION_OPTIONS_QUERY } from "./graphql/query";
+import { FOOTER_QUERY, HEADER_QUERY, LOCALIZATION_OPTIONS_QUERY } from "./graphql/queries";
 import { TranslationProvider } from "./lib/i18n/translation-context";
 import { getLocaleFromRequest } from "./lib/locale-from-request";
 import tailwindCss from "./styles/tailwind.css?url";

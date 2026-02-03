@@ -4,8 +4,10 @@ import { ProductFaq } from "../product-landing/product-faq";
 import { ProductReviews } from "../product-landing/product-reviews";
 import { ProductSpecs } from "../product-landing/product-specs";
 import { ScrollspyNav } from "~/components/ui/scrollspy-nav";
+import type { ProductFragment, ProductQuery } from "storefrontapi.generated";
+import type { Product } from "@shopify/hydrogen/storefront-api-types";
 
-export function ProductLanding() {
+export function ProductLanding({ product }: { product: ProductFragment }) {
   const detailsRef = useRef<HTMLDivElement>(null);
   const specsRef = useRef<HTMLDivElement>(null);
   const reviewsRef = useRef<HTMLDivElement>(null);
@@ -21,16 +23,15 @@ export function ProductLanding() {
   return (
     <div>
       <ScrollspyNav sections={sections} />
-
       <div className="">
-        <div ref={detailsRef} className="">
+        <div ref={detailsRef} id="landing" className="">
           <ProductDetails />
         </div>
         <div ref={specsRef}>
           <ProductSpecs />
         </div>
         <div ref={reviewsRef}>
-          <ProductReviews />
+          <ProductReviews product={product} />
         </div>
         <div ref={faqRef}>
           <ProductFaq />

@@ -32,8 +32,6 @@ export function ProductForm({
     navigate(`?${variantUriQuery}`, { replace: true, preventScrollReset: true });
   };
 
-  console.log(selectedVariant?.id);
-
   return (
     <>
       <div>
@@ -73,7 +71,7 @@ export function ProductForm({
           {productOptions.map((option) => {
             return (
               <div key={option.name}>
-                <Carousel options={{ dragFree: isMobile ? true : false }}>
+                <Carousel options={{ watchDrag: isMobile ? true : false }}>
                   <SliderContainer className="gap-3">
                     {option.optionValues.map((value) => {
                       const {

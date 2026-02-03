@@ -1,7 +1,7 @@
 import { useAnalytics, useOptimisticCart } from "@shopify/hydrogen";
 import { MenuIcon, ShoppingBagIcon, Menu, CircleUserRound } from "lucide-react";
 import { startTransition, Suspense, useState, useEffect } from "react";
-import { Await, NavLink, useAsyncValue, type LoaderFunctionArgs } from "react-router";
+import { Await, Link, NavLink, useAsyncValue, type LoaderFunctionArgs } from "react-router";
 import type { HeaderQuery } from "storefrontapi.generated";
 import { useCartStore } from "~/hooks/store/use-cart-store";
 import { useViewportStore } from "~/hooks/store/use-viewport-store";
@@ -54,6 +54,7 @@ export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderPr
             }}
             className="sm:hidden header-btn"
           />
+          <Link to="/products/loona#landing">Landing</Link>
           <HeaderMenu
             menu={menu}
             primaryDomainUrl={header.shop.primaryDomain.url}
@@ -63,7 +64,7 @@ export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderPr
             <div className="flex items-center justify-center space-x-2  sm:space-x-6 sm:mr-6 ">
               <SearchButton />
               <NavLink to="/account" prefetch="intent">
-                <CircleUserRound className="header-btn text-foreground" strokeWidth={1} />
+                <CircleUserRound className="header-btn text-foreground" />
               </NavLink>
               <CartBadge cart={cart} />
             </div>
