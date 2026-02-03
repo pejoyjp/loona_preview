@@ -23,7 +23,7 @@ export function ProductLanding() {
       <ScrollspyNav sections={sections} />
 
       <div className="">
-        <div ref={detailsRef} className="w-full h-screen">
+        <div ref={detailsRef} className="">
           <ProductDetails />
         </div>
         <div ref={specsRef}>

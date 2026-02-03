@@ -193,7 +193,7 @@ export function StoryCarousel() {
       fastDuration={300}
       activeSlider="bridge"
       vertical={isMobile ? false : true}
-      className="relative w-full h-[500px]"
+      className="relative w-full h-105 md:h-141 xl:h-110 xl:max-w-300 m-auto"
     >
       <SliderContent className="w-full h-full">
         {items.map((item) => (

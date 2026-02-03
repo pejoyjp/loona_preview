@@ -7,7 +7,7 @@ import {
 
 export function ProductFaq() {
   return (
-    <div className="h-screen bg-purple-50 p-6">
+    <div className="">
       <h2 className="text-xl font-semibold mb-4">Frequently Asked Questions</h2>
       <Accordion type="single" collapsible defaultValue="shipping" className="max-w-lg">
         <AccordionItem value="shipping">
