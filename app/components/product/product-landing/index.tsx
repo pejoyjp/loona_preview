@@ -21,20 +21,27 @@ export function ProductLanding({ product }: { product: ProductFragment }) {
   ];
 
   return (
-    <div>
-      <ScrollspyNav sections={sections} />
-      <div className="">
-        <div ref={detailsRef} id="landing" className="">
-          <ProductDetails />
-        </div>
-        <div ref={specsRef}>
-          <ProductSpecs />
-        </div>
-        <div ref={reviewsRef}>
-          <ProductReviews product={product} />
-        </div>
-        <div ref={faqRef}>
-          <ProductFaq />
+    <div className="">
+      <ScrollspyNav
+        sections={sections}
+        className="top-14 left-0 right-0 sticky bg-black/20 text-white z-10 backdrop-blur-md"
+      />
+
+      <div ref={detailsRef} id="landing">
+        <ProductDetails />
+      </div>
+
+      <div className="bg-black ">
+        <div className="xl:w-300 m-auto">
+          <div ref={specsRef}>
+            <ProductSpecs />
+          </div>
+          <div ref={reviewsRef}>
+            <ProductReviews product={product} />
+          </div>
+          <div ref={faqRef}>
+            <ProductFaq />
+          </div>
         </div>
       </div>
     </div>

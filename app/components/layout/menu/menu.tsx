@@ -8,15 +8,6 @@ interface HeaderProps {
   publicStoreDomain: string;
 }
 
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "~/components/ui/navigation-menu";
-
 export function HeaderMenu({
   menu,
   primaryDomainUrl,

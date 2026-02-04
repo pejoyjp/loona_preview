@@ -63,7 +63,7 @@ export function FactsCarousel() {
           align: "start",
           loop: false,
           dragFree: false,
-          slidesToScroll: 1,
+          slidesToScroll: "auto",
           containScroll: false,
         }}
       >

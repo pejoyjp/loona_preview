@@ -42,7 +42,7 @@ export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderPr
         className="text-sm bg-amber-300"
         /> */}
       <header
-        className="fixed top-0 left-0 right-0 z-20 bg-amber-200"
+        className="fixed top-0 left-0 right-0 z-20 bg-white"
         onClick={() => mobileMenuOpen && setMobileMenuOpen(false)}
       >
         {/* <NavLink className="text-center" prefetch="intent" to="/" end>

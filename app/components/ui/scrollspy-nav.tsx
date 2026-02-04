@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { cn } from "~/lib/utils/cn";
 import { useThrottledCallback } from "@mantine/hooks";
 import { motion, LayoutGroup } from "motion/react";
+import { Button } from "./button";
 
 interface ScrollspyNavProps {
   sections: Array<{
@@ -13,7 +14,6 @@ interface ScrollspyNavProps {
 
 export function ScrollspyNav({ sections, className }: ScrollspyNavProps) {
   const [activeIndex, setActiveIndex] = useState(0);
-
   const isManualScrolling = useRef(false);
   const scrollTimer = useRef<number | null>(null);
 
@@ -79,30 +79,21 @@ export function ScrollspyNav({ sections, className }: ScrollspyNavProps) {
   };
 
   return (
-    <nav
-      className={cn(
-        "sticky top-0 z-10 bg-foreground/10 flex justify-center h-9.5 xl:h-13.5 items-center",
-        className,
-      )}
-    >
+    <nav className={cn("flex justify-center h-9.5 xl:h-13.5 items-center relative", className)}>
       <LayoutGroup id="scrollspy-nav">
-        <ul className="flex gap-2 ">
+        <ul className="flex gap-3 md:gap-6 text-base leading-5.5 ">
           {sections.map((section, index) => (
             <li key={index}>
               <button
                 onClick={() => handleClick(index)}
-                className={cn(
-                  "px-4 py-2 text-sm font-medium whitespace-nowrap relative",
-                  "text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-50",
-                  activeIndex === index && "text-neutral-900 dark:text-neutral-50",
-                )}
+                className={cn("relative  py-2 px-4", " hover:text-primary ")}
               >
                 {section.label}
 
                 {activeIndex === index && (
                   <motion.span
                     layoutId="scrollspy-underline"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-neutral-900 dark:bg-neutral-50"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-white"
                     transition={{
                       type: "tween",
                       stiffness: 500,
@@ -113,6 +104,14 @@ export function ScrollspyNav({ sections, className }: ScrollspyNavProps) {
               </button>
             </li>
           ))}
+          <li className="absolute right-6 top-1/2 -translate-y-1/2 hidden xl:block">
+            <Button
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="rounded-full px-10 xl:px-6"
+            >
+              Buy Now
+            </Button>
+          </li>
         </ul>
       </LayoutGroup>
     </nav>

@@ -40,8 +40,6 @@ const featuresData = [
 export function ProductIntelligence() {
   return (
     <section className=" text-white relative">
-      {/* Hero Section with Video */}
-
       <div className="absolute inset-0 w-full h-150">
         <video autoPlay muted loop playsInline className="w-full h-full object-cover ">
           <source
@@ -51,13 +49,12 @@ export function ProductIntelligence() {
         </video>
       </div>
       <div className="h-92" />
-
-      <div className="relative ">
+      <div className="relative flex flex-col items-center ">
         <div className="absolute top-0 h-57.5 w-full bg-linear-to-t from-black to-transparent "></div>
         <div className="absolute top-57.5 bottom-0 bg-black w-full  h-full"></div>
 
-        <div className="h-full px-4 relative space-y-10">
-          <h2 className="text-xl leading-8 md:text-4xl xl:text-5xl font-bold text-center">
+        <div className="h-full px-4 md:px-10 xl:px-0   relative space-y-10 md:space-y-11.5 xl:space-y-20 xl:max-w-300">
+          <h2 className="text-xl leading-8 md:text-4xl xl:text-6xl font-bold text-center">
             Intelligence Made Alive
           </h2>
 
@@ -73,17 +70,17 @@ export function ProductIntelligence() {
             ))}
           </div>
 
-          <div>
-            <h3 className="text-xl leading-8 md:text-4xl xl:text-5xl font-bold text-center pb-4">
+          <div className="flex flex-col items-center">
+            <h3 className="text-md leading-6 md:text-lg md:leading-7 xl:text-4xl xl:leading-11 font-bold text-center pb-5 md:pb-6">
               Interactive Nature Powered by GPT
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 xl:max-w-198.5">
               {featuresData.map((feature) => {
                 const IconComponent = feature.icon;
                 return (
                   <div
                     key={feature.title}
-                    className="border border-muted-foreground border-0.25 rounded-2xl p-4 flex flex-col gap-3 items-center "
+                    className="border border-muted-foreground border-0.25 rounded-sm p-4 flex flex-col gap-3 items-center"
                   >
                     <IconComponent className={`w-8 h-8  ${feature.color} `} />
                     <h4 className="text-lg leading-6">{feature.title}</h4>
@@ -96,14 +93,14 @@ export function ProductIntelligence() {
             </div>
           </div>
 
-          <div className=" ">
-            <h3 className="text-xl leading-8 md:text-4xl xl:text-5xl font-bold text-center pb-4">
+          <div className="flex flex-col  items-center ">
+            <h3 className="text-md leading-6 md:text-lg md:leading-7 xl:text-4xl xl:leading-11 font-bold text-center pb-5 md:pb-6">
               Technology That Understands
             </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 xl:max-w-230">
               <div className="flex flex-col">
-                <div className="aspect-[4/3] overflow-hidden rounded-2xl">
+                <div className="aspect-square overflow-hidden rounded-lg">
                   <img
                     src="https://cdn.shopify.com/s/files/1/0737/1194/3957/files/valentine-gift.webp?v=1770084429"
                     alt="Child playing with Loona"
@@ -120,7 +117,7 @@ export function ProductIntelligence() {
               </div>
 
               <div className="flex flex-col">
-                <div className="aspect-[4/3] overflow-hidden rounded-2xl">
+                <div className="aspect-square overflow-hidden rounded-lg">
                   <img
                     src="https://cdn.shopify.com/s/files/1/0737/1194/3957/files/how-we-ranked-these-valentine-gifts.webp?v=1770087499"
                     alt="Face recognition technology"

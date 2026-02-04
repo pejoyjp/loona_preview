@@ -51,7 +51,7 @@ const desktopGroups = groupSpecs(specsData, 6);
 
 export function ProductSpecs() {
   return (
-    <div className="bg-black text-white py-12 md:py-16 xl:py-20">
+    <div className=" py-12 md:py-16 xl:py-20">
       <div className="px-4 md:px-8 xl:px-16 max-w-7xl mx-auto">
         {/* 移动端 Carousel */}
         <div className="md:hidden">
