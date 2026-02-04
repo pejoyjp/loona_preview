@@ -266,6 +266,7 @@
   body {
     @apply bg-background text-foreground; /* 页面基础视觉 */
     font-family: var(--font-display);
+    scrollbar-gutter: stable; /* 预留滚动条空间，防止抽屉打开时布局闪烁 */
   }
 }
 

@@ -80,7 +80,7 @@ export function ProductCarousel({
   return (
     <Carousel
       options={OPTIONS}
-      className="relative flex h-90 md:h-88 xl:h-141.5 w-full justify-between"
+      className="relative flex h-58 md:h-88 xl:h-141.5 w-full justify-between"
       plugins={[Autoplay({ delay: 5000 })]}
       onApi={setEmblaApi}
     >

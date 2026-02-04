@@ -37,8 +37,8 @@ export function ProductForm({
 
   return (
     <div>
-      <div className="pr-4 xl:pr-0">
-        <h1 className="text-xl font-bold text-gray-900 leading-none pt-4 pb-0.5">
+      <div className="pr-4 md:pr-10 xl:pr-0 ">
+        <h1 className="text-xl md:text-2xl md:leading-9 font-bold text-foreground leading-none pb-2 md:pb-4 xl:pb-2">
           {selectedVariant?.title}
         </h1>
 
@@ -46,7 +46,7 @@ export function ProductForm({
           <OkendoStarRating productId={productID} />
         </div>
 
-        <div className="pt-4 pb-6">
+        <div className="pt-4 pb-6 md:pb-4 xl:pb-6">
           <ProductPrice
             price={selectedVariant?.price}
             compareAtPrice={selectedVariant?.compareAtPrice}
@@ -71,7 +71,10 @@ export function ProductForm({
         {productOptions.map((option) => {
           return (
             <div key={option.name}>
-              <Carousel options={{ watchDrag: isMobile ? true : false }} className="pr-4 xl:pr-0">
+              <Carousel
+                options={{ watchDrag: isMobile ? true : false }}
+                className="pr-0 md:pr-10 xl:pr-0"
+              >
                 <SliderContainer className="gap-3">
                   {option.optionValues.map((value) => {
                     const {

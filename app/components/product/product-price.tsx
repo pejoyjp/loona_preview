@@ -12,23 +12,19 @@ export function ProductPrice({
   return (
     <div className="flex justify-between items-center bg-linear-to-r from-white to-muted h-15.5">
       <div className="flex h-full items-center">
-        {compareAtPrice ? (
-          <div className="flex flex-col md:flex-row xl:flex-col">
-            {price ? (
-              <Money
-                data={price}
-                className="text-price text-xl tracking-tight leading-8 md:font-bold"
-              />
-            ) : null}
+        <div className="flex flex-col md:flex-row xl:flex-col md:items-end md:gap-1 xl:items-start">
+          {price ? (
+            <Money
+              data={price}
+              className="text-price text-xl tracking-tight leading-8 font-medium md:font-bold"
+            />
+          ) : null}
+          {compareAtPrice && (
             <s className="text-muted-foreground">
               <Money data={compareAtPrice} />
             </s>
-          </div>
-        ) : price ? (
-          <Money data={price} />
-        ) : (
-          <span>&nbsp;</span>
-        )}
+          )}
+        </div>
 
         <div className="h-1/2">
           <Separator orientation="vertical" className="h-8 ml-4" />

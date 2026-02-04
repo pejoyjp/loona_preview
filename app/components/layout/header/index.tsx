@@ -41,11 +41,14 @@ export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderPr
         id="omnisend-embedded-v2-6971ebb973065ef99f63bf3a"
         className="text-sm bg-amber-300"
         /> */}
-      <header className="flex flex-col" onClick={() => mobileMenuOpen && setMobileMenuOpen(false)}>
+      <header
+        className="fixed top-0 left-0 right-0 z-20 bg-amber-200"
+        onClick={() => mobileMenuOpen && setMobileMenuOpen(false)}
+      >
         {/* <NavLink className="text-center" prefetch="intent" to="/" end>
           <strong>{shop.name}</strong>
         </NavLink> */}
-        <div className="h-14 flex items-center justify-between px-4 sm:px-8 flex-none relative">
+        <div className="h-14 md:h-14.5  flex items-center justify-between px-4 sm:px-8 flex-none relative">
           <Menu
             strokeWidth={1}
             onClick={(e) => {

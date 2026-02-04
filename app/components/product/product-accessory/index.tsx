@@ -16,8 +16,10 @@ export function ProductAccessory({
   const filterProducts = collection.products.nodes;
   if (filterProducts.length === 0) return null;
   return (
-    <div className="pt-4 pb-6">
-      <h2 className="text-foreground text-md font-medium learing-6">{title}</h2>
+    <div className="py-6">
+      <h2 className="text-foreground text-md font-medium learing-6 xl:text-lg xl:leading-7 pb-4">
+        {title}
+      </h2>
       <ProductList
         products={filterProducts}
         title={collection.title}

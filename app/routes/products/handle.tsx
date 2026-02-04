@@ -160,22 +160,22 @@ export default function Product() {
 
   return (
     <div className="">
-      <div className="flex flex-col xl:flex-row w-full gap-5 xl:w-300 xl: mx-auto">
-        <div className="xl:flex-1 xl:basis-0 min-w-0">
+      <div className="grid grid-cols-1 xl:grid-cols-2 w-full gap-4 md:gap-6 xl:gap-5 xl:max-w-300 xl:mx-auto xl:items-start">
+        <div className="pl-4 md:pl-10 xl:pl-0 xl:sticky xl:top-14 xl:self-start">
           <ProductCarousel
             galleriesByOption={galleriesByOption}
             selectedVariant={selectedVariant}
           />
         </div>
 
-        <div className="xl:flex-1 xl:basis-0 min-w-0 pl-4">
+        <div className="pl-4 md:pl-10">
           <ProductForm
             productOptions={filteredProductOptions}
             selectedVariant={selectedVariant}
             productID={product.id}
           />
 
-          <div className="pr-4 xl:pr-0">
+          <div className="pr-4 md:pr-10 xl:pr-0">
             <ProductAccessory
               collection={outfit}
               type="radio"

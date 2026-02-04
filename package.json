@@ -21,6 +21,7 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
+    "@base-ui/react": "^1.1.0",
     "@icon-park/react": "^1.4.2",
     "@mantine/hooks": "^8.3.12",
     "@okendo/shopify-hydrogen": "^2.6.1",

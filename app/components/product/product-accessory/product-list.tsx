@@ -97,7 +97,7 @@ export function ProductList({ products, title, type, onSelect }: ProductListProp
       return (
         <RadioGroup
           name={title}
-          className="flex flex-col gap-2 w-full"
+          className="flex flex-col gap-4 w-full"
           onValueChange={handleValueChange}
         >
           {products.map(renderRadioProductItem)}
@@ -116,7 +116,7 @@ export function ProductList({ products, title, type, onSelect }: ProductListProp
           <SliderContainer className="gap-2 w-full ">
             {productGroups.map((group, groupIndex) => (
               <Slider key={groupIndex} className="flex-[0_0_100%] min-w-0 w-full">
-                <div className="flex flex-col gap-2 w-full">
+                <div className="flex flex-col gap-4 w-full">
                   {group.map((product) => (
                     <ProductItem key={product.id} product={product} type={type} />
                   ))}
