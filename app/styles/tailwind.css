@@ -116,6 +116,43 @@
   .header-btn {
     @apply w-6 h-6 cursor-pointer;
   }
+
+  /* 大标题 */
+  .text-display {
+    @apply text-4xl font-bold leading-tight;
+  }
+
+  /* 页面标题 */
+  .text-headline {
+    @apply text-xl leading-8 md:text-2xl md:leading-9;
+  }
+
+  /* 标题 */
+  .text-title {
+    @apply text-xl font-semibold leading-snug;
+  }
+
+  /* 卡片标题 */
+  .text-card-title {
+    @apply text-md leading-6 xl:text-xl xl:leading-8;
+  }
+
+  /* 正文 base */
+  .text-body-base {
+    @apply text-base leading-5 md:text-md md:leading-6 xl:text-xl xl:leading-9;
+  }
+
+  /* 正文 small */
+  .text-body-sm {
+    @apply text-sm leading-4.5;
+  }
+
+  .text-caption {
+    @apply text-sm font-medium leading-normal;
+  } /* 辅助说明 */
+  .text-label {
+    @apply text-xs font-semibold leading-tight uppercase tracking-wide;
+  } /* 标签 */
 }
 /* =========================================================
  * Light theme（默认主题）
@@ -141,6 +178,9 @@
   --text-7xl: 3.5rem; /* 56px */
   --text-8xl: 4rem; /* 64px */
   --text-9xl: 4.5rem; /* 72px */
+
+  /* 行高 */
+  --text-base--line-height: calc(1.25 / 1);
 
   /* 页面基础 */
   --background: #ffffff; /* 页面背景（白） */
@@ -246,7 +286,7 @@
 
   /* Sidebar（深色） */
   --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-foreground: rgb(250, 250, 250);
   --sidebar-primary: oklch(0.488 0.243 264.376);
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.269 0 0);

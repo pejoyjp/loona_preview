@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { cn } from "~/lib/utils/cn";
+import { cn } from "~/lib/cn";
 
 // Define the type for the context value
 interface ProgressSliderContextType {

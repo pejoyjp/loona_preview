@@ -5,7 +5,7 @@ import { Image } from "@shopify/hydrogen";
 
 import { Carousel, Slider, SliderContainer, ThumbsSlider } from "~/components/ui/carousel";
 import { useViewportStore } from "~/hooks/store/use-viewport-store";
-import { cn } from "~/lib/utils/cn";
+import { cn } from "~/lib/cn";
 
 type GalleryMedia =
   | {

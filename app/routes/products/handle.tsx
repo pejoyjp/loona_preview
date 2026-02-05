@@ -208,7 +208,7 @@ export default function Product() {
         </div>
       </div>
 
-      <div className="pt-24 md:pt-10 ">
+      <div className="pt-24 md:pt-10">
         <ProductLanding product={product as ProductFragment} />
       </div>
 

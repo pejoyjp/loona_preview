@@ -68,9 +68,7 @@ export function FactsCarousel() {
         }}
       >
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl text-foreground leading-8 font-semibold md:text-3xl md:leading-9 xl:font-bold xl:text-6xl xl:leading-13">
-            6 fast facts about Loona
-          </h2>
+          <h2 className="text-foreground font-semibold text-headline">6 fast facts about Loona</h2>
 
           <div className="gap-10 hidden xl:flex">
             <SliderPrevButton className="w-15 h-15 rounded-full border  flex items-center justify-center hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
@@ -92,9 +90,7 @@ export function FactsCarousel() {
                   <h3 className="text-lg xl:text-2xl xl:leading-8 text-foreground leading-6 font-medium shrink-0">
                     {fact.title}
                   </h3>
-                  <p className="text-muted-foreground text-base leading-5 flex-1">
-                    {fact.description}
-                  </p>
+                  <p className="text-muted-foreground text-base flex-1">{fact.description}</p>
                 </div>
               </Slider>
             );

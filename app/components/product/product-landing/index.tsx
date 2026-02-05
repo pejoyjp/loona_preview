@@ -4,8 +4,7 @@ import { ProductFaq } from "../product-landing/product-faq";
 import { ProductReviews } from "../product-landing/product-reviews";
 import { ProductSpecs } from "../product-landing/product-specs";
 import { ScrollspyNav } from "~/components/ui/scrollspy-nav";
-import type { ProductFragment, ProductQuery } from "storefrontapi.generated";
-import type { Product } from "@shopify/hydrogen/storefront-api-types";
+import type { ProductFragment } from "storefrontapi.generated";
 
 export function ProductLanding({ product }: { product: ProductFragment }) {
   const detailsRef = useRef<HTMLDivElement>(null);

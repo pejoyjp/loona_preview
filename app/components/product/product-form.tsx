@@ -11,7 +11,7 @@ import { ProductPrice } from "./product-price";
 import { OkendoStarRating } from "@okendo/shopify-hydrogen";
 import { BadgeCheck, PackageCheck } from "lucide-react";
 import { Image } from "@shopify/hydrogen";
-import { cn } from "~/lib/utils/cn";
+import { cn } from "~/lib/cn";
 import { useTranslationContext } from "~/hooks/use-translation-context";
 import { Carousel, Slider, SliderContainer } from "~/components/ui/carousel";
 import { useViewportStore } from "~/hooks/store/use-viewport-store";
@@ -38,9 +38,7 @@ export function ProductForm({
   return (
     <div>
       <div className="pr-4 md:pr-10 xl:pr-0 ">
-        <h1 className="text-xl md:text-2xl md:leading-9 font-bold text-foreground leading-none pb-2 md:pb-4 xl:pb-2">
-          {selectedVariant?.title}
-        </h1>
+        <h1 className="text-headline font-bold pb-2 md:pb-4 xl:pb-2">{selectedVariant?.title}</h1>
 
         <div className="h-6">
           <OkendoStarRating productId={productID} />

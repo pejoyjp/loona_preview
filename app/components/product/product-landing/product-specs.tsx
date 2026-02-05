@@ -8,7 +8,7 @@ import {
   useCarousel,
 } from "~/components/ui/carousel";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { cn } from "~/lib/utils/cn";
+import { cn } from "~/lib/cn";
 
 const specsData = [
   { label: "Dimensions", value: '8.3"L x 68"W x 6.8"H' },

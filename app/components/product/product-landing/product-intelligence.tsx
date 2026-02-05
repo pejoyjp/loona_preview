@@ -54,9 +54,7 @@ export function ProductIntelligence() {
         <div className="absolute top-57.5 bottom-0 bg-black w-full  h-full"></div>
 
         <div className="h-full px-4 md:px-10 xl:px-0   relative space-y-10 md:space-y-11.5 xl:space-y-20 xl:max-w-300">
-          <h2 className="text-xl leading-8 md:text-4xl xl:text-6xl font-bold text-center">
-            Intelligence Made Alive
-          </h2>
+          <h2 className="text-headline font-bold text-center">Intelligence Made Alive</h2>
 
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 ">
@@ -65,7 +63,7 @@ export function ProductIntelligence() {
                 <p className="text-lg leading-7 md:text-3xl xl:text-4xl font-semibold">
                   {stat.value}
                 </p>
-                <p className="text-base leading-5 max-w-48 text-auxiliary">{stat.label}</p>
+                <p className="text-base max-w-48 text-auxiliary">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -83,10 +81,8 @@ export function ProductIntelligence() {
                     className="border border-muted-foreground border-0.25 rounded-sm p-4 flex flex-col gap-3 items-center"
                   >
                     <IconComponent className={`w-8 h-8  ${feature.color} `} />
-                    <h4 className="text-lg leading-6">{feature.title}</h4>
-                    <p className="text-center text-base leading-5 text-auxiliary">
-                      {feature.description}
-                    </p>
+                    <h4 className="text-card-title">{feature.title}</h4>
+                    <p className="text-center text-base text-auxiliary">{feature.description}</p>
                   </div>
                 );
               })}

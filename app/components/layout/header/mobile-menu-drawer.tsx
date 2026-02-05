@@ -1,7 +1,7 @@
 import { type ReactNode } from "react";
 import { useViewportStore } from "~/hooks/store/use-viewport-store";
 import { CircleUserRound, EarthIcon, ShoppingCart } from "lucide-react";
-import { cn } from "~/lib/utils/cn";
+import { cn } from "~/lib/cn";
 interface MobileMenuDrawerProps {
   setMobileMenuOpen: (value: boolean) => void;
   mobileMenuOpen: boolean;

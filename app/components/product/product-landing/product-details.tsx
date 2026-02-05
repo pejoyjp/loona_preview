@@ -5,7 +5,7 @@ import { useViewportStore } from "~/hooks/store/use-viewport-store";
 import { useTranslationContext } from "~/hooks/use-translation-context";
 import { Button } from "~/components/ui/button";
 import { ProductIntelligence } from "./product-intelligence";
-import { Separator } from "~/components/ui/separator";
+import { useScrollToTop } from "~/hooks/use-scroll-to-top";
 
 const mediaData = [
   {
@@ -33,7 +33,7 @@ const mediaData = [
 export function ProductDetails() {
   const isDesktop = useViewportStore((state) => state.isDesktop);
   const { t } = useTranslationContext();
-
+  const scrollToTop = useScrollToTop();
   return (
     <section>
       <div className="relative w-full h-svh text-white overflow-hidden">
@@ -56,18 +56,10 @@ export function ProductDetails() {
               {t("petbot.banner.title")}
             </h2>
 
-            <p className="text-base pt-2 xl:pt-6 leading-5 md:text-md md:leading-6 xl:text-xl xl:leading-9 max-w-67 md:max-w-80 xl:max-w-140">
+            <p className="text-body-base pt-2 xl:pt-6  max-w-67 md:max-w-80 xl:max-w-140">
               {t("petbot.banner.subtitle")}
             </p>
-            <Button
-              onClick={() =>
-                window.scrollTo({
-                  top: 0,
-                  behavior: "smooth",
-                })
-              }
-              className="mt-10 px-10 rounded-full block xl:hidden"
-            >
+            <Button onClick={scrollToTop} className="mt-10 px-10 rounded-full block xl:hidden">
               Buy Now
             </Button>
           </div>
@@ -91,7 +83,7 @@ export function ProductDetails() {
                     className="flex items-center gap-3 xl:flex-col xl:text-center"
                   >
                     <img src={item.image} alt={item.quote} className="object-cover h-8 w-20" />
-                    <p className="text-sm max-w-58 leading-4.5">{item.quote}</p>
+                    <p className="text-body-sm max-w-58">{item.quote}</p>
                   </Slider>
                 ))}
               </SliderContainer>
@@ -104,12 +96,7 @@ export function ProductDetails() {
         <StoryCarousel />
         <FactsCarousel />
         <Button
-          onClick={() =>
-            window.scrollTo({
-              top: 0,
-              behavior: "smooth",
-            })
-          }
+          onClick={scrollToTop}
           className="hidden xl:flex text-lg font-medium transition-colors h-11 mt-6 mb-10  justify-center items-center rounded-full w-47.5"
         >
           Buy Now

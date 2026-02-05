@@ -3,7 +3,7 @@ import { Image } from "@shopify/hydrogen";
 import type { Image as ImageType } from "@shopify/hydrogen/storefront-api-types";
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
 import { useEffect, useId, useState } from "react";
-import { cn } from "~/lib/utils/cn";
+import { cn } from "~/lib/cn";
 
 export const transition = {
   type: "spring",

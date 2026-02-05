@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { cn } from "~/lib/utils/cn";
+import { cn } from "~/lib/cn";
 import { useThrottledCallback } from "@mantine/hooks";
 import { motion, LayoutGroup } from "motion/react";
 import { Button } from "./button";
