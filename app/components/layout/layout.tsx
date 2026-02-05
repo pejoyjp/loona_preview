@@ -37,7 +37,7 @@ export function PageLayout({
         />
       )}
       <CartDrawer cart={cart} />
-      <main>{children}</main>
+      <main className="mt-18 md:mt-19.5 xl:24.5  ">{children}</main>
       <Footer footer={footer} header={header} publicStoreDomain={publicStoreDomain} />
     </>
   );

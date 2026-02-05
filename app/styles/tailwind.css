@@ -9,12 +9,12 @@
 
 @font-face {
   font-family: "Afacad";
-  src: url("https://cdn.shopify.com/s/files/1/0737/1194/3957/files/Afacad-VariableFont_wght.woff2?v=1728273679")
+  src: url("https://cdn.shopify.com/s/files/1/0750/4170/2077/files/Afacad-VariableFont_wght.ttf?v=1769766396")
     format("woff2");
   font-weight: 100 200 300 400 500 600 700 800 900;
   font-display: swap;
   font-style: normal;
-  size-adjust: 108%;
+  size-adjust: 100%;
 }
 
 /* =========================================================
@@ -24,6 +24,23 @@
 @theme inline {
   /* 字体系统 */
   --font-display: "Afacad";
+
+  /* 字体大小 */
+  --text-xxs: var(--text-xxs);
+  --text-xs: var(--text-xs);
+  --text-sm: var(--text-sm);
+  --text-base: var(--text-base);
+  --text-md: var(--text-md);
+  --text-lg: var(--text-lg);
+  --text-xl: var(--text-xl);
+  --text-2xl: var(--text-2xl);
+  --text-3xl: var(--text-3xl);
+  --text-4xl: var(--text-4xl);
+  --text-5xl: var(--text-5xl);
+  --text-6xl: var(--text-6xl);
+  --text-7xl: var(--text-7xl);
+  --text-8xl: var(--text-8xl);
+
   /* 圆角系统（统一尺度，便于整体调整） */
   --radius-sm: calc(var(--radius) - 4px); /* 小组件 */
   --radius-md: calc(var(--radius) - 2px); /* 表单 / 次级组件 */
@@ -36,6 +53,9 @@
   /* 页面级 */
   --color-background: var(--background); /* 页面背景 */
   --color-foreground: var(--foreground); /* 主文字 */
+
+  --color-surface: var(--surface); /* carousel表面背景 */
+  --color-icon: var(--icon); /* 图标颜色 */
 
   /* 卡片 / 容器 */
   --color-card: var(--card); /* 卡片背景 */
@@ -84,11 +104,55 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* 价格 */
+  --color-price: var(--price);
+  --color-price-compare: var(--price-compare);
+
+  /* 次要文字 */
+  --color-auxiliary: var(--auxiliary);
 }
 @layer components {
   .header-btn {
     @apply w-6 h-6 cursor-pointer;
   }
+
+  /* 大标题 */
+  .text-display {
+    @apply text-4xl font-bold leading-tight;
+  }
+
+  /* 页面标题 */
+  .text-headline {
+    @apply text-xl leading-8 md:text-2xl md:leading-9;
+  }
+
+  /* 标题 */
+  .text-title {
+    @apply text-xl font-semibold leading-snug;
+  }
+
+  /* 卡片标题 */
+  .text-card-title {
+    @apply text-md leading-6 xl:text-xl xl:leading-8;
+  }
+
+  /* 正文 base */
+  .text-body-base {
+    @apply text-base leading-5 md:text-md md:leading-6 xl:text-xl xl:leading-9;
+  }
+
+  /* 正文 small */
+  .text-body-sm {
+    @apply text-sm leading-4.5;
+  }
+
+  .text-caption {
+    @apply text-sm font-medium leading-normal;
+  } /* 辅助说明 */
+  .text-label {
+    @apply text-xs font-semibold leading-tight uppercase tracking-wide;
+  } /* 标签 */
 }
 /* =========================================================
  * Light theme（默认主题）
@@ -96,6 +160,27 @@
  * ======================================================= */
 :root {
   --radius: 0.625rem; /* 全局圆角基准 */
+
+  /* 字体大小 */
+  --text-xxs: 0.25rem; /* 4px */
+  --text-xs: 0.5rem; /* 8px */
+  --text-sm: 0.75rem; /* 12px */
+  --text-sm: 0.875rem; /* 14px */
+  --text-base: 1rem; /* 16px */
+  --text-md: 1.25rem; /* 20px */
+  --text-lg: 1.5rem; /* 24px */
+  --text-xl: 1.75rem; /* 28px */
+  --text-2xl: 2rem; /* 32px */
+  --text-3xl: 2.25rem; /* 36px */
+  --text-4xl: 2.5rem; /* 40px */
+  --text-5xl: 2.75rem; /* 44px */
+  --text-6xl: 3rem; /* 48px */
+  --text-7xl: 3.5rem; /* 56px */
+  --text-8xl: 4rem; /* 64px */
+  --text-9xl: 4.5rem; /* 72px */
+
+  /* 行高 */
+  --text-base--line-height: calc(1.25 / 1);
 
   /* 页面基础 */
   --background: #ffffff; /* 页面背景（白） */
@@ -119,6 +204,15 @@
   /* 弱语义 */
   --muted: #f5f5f5; /* 弱背景区 */
   --muted-foreground: #808080; /* 注释 / 次要说明 */
+
+  /* carousel的背景色 */
+  --surface: #fafafa;
+
+  /* icon 的颜色 */
+  --icon: #333333;
+
+  /* 次要文字 / 辅助说明 */
+  --auxiliary: #bfbfbf;
 
   /* 强调 */
   --accent: oklch(0.97 0 0);
@@ -152,6 +246,10 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* 价格 */
+  --price: #ff9700;
+  --price-compare: #808080;
 }
 
 /* =========================================================
@@ -188,7 +286,7 @@
 
   /* Sidebar（深色） */
   --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-foreground: rgb(250, 250, 250);
   --sidebar-primary: oklch(0.488 0.243 264.376);
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.269 0 0);
@@ -208,6 +306,7 @@
   body {
     @apply bg-background text-foreground; /* 页面基础视觉 */
     font-family: var(--font-display);
+    scrollbar-gutter: stable; /* 预留滚动条空间，防止抽屉打开时布局闪烁 */
   }
 }
 

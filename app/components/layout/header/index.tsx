@@ -1,9 +1,11 @@
 import { useAnalytics, useOptimisticCart } from "@shopify/hydrogen";
 import { MenuIcon, ShoppingBagIcon, Menu, CircleUserRound } from "lucide-react";
-import { startTransition, Suspense, useState } from "react";
-import { Await, NavLink, useAsyncValue, type LoaderFunctionArgs } from "react-router";
+import { startTransition, Suspense, useState, useEffect } from "react";
+import { Await, Link, NavLink, useAsyncValue, type LoaderFunctionArgs } from "react-router";
 import type { HeaderQuery } from "storefrontapi.generated";
 import { useCartStore } from "~/hooks/store/use-cart-store";
+import { useViewportStore } from "~/hooks/store/use-viewport-store";
+import { useViewport } from "~/hooks/use-viewport";
 import { MobileMenuDrawer } from "./mobile-menu-drawer";
 import { CountrySelectorModal } from "../../modal/country-selector-modal";
 import { HeaderMenu } from "../menu/menu";
@@ -20,6 +22,18 @@ interface HeaderProps {
 export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderProps) {
   const { shop, menu } = header;
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+  const { isMobile, isDesktop, canRender } = useViewport({
+    onExitMobile: () => setMobileMenuOpen(false),
+  });
+  const setIsMobile = useViewportStore((state) => state.setIsMobile);
+  const setIsDesktop = useViewportStore((state) => state.setIsDesktop);
+  const setCanRender = useViewportStore((state) => state.setCanRender);
+
+  useEffect(() => {
+    setIsMobile(isMobile);
+    setIsDesktop(isDesktop);
+    setCanRender(canRender);
+  }, [isMobile, isDesktop, canRender, setIsMobile, setIsDesktop, setCanRender]);
 
   return (
     <>
@@ -27,11 +41,14 @@ export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderPr
         id="omnisend-embedded-v2-6971ebb973065ef99f63bf3a"
         className="text-sm bg-amber-300"
         /> */}
-      <header className="flex flex-col" onClick={() => mobileMenuOpen && setMobileMenuOpen(false)}>
+      <header
+        className="fixed top-0 left-0 right-0 z-20 bg-white"
+        onClick={() => mobileMenuOpen && setMobileMenuOpen(false)}
+      >
         {/* <NavLink className="text-center" prefetch="intent" to="/" end>
           <strong>{shop.name}</strong>
         </NavLink> */}
-        <div className="h-14 flex items-center justify-between px-4 sm:px-8 flex-none relative">
+        <div className="h-14 md:h-14.5  flex items-center justify-between px-4 sm:px-8 flex-none relative">
           <Menu
             strokeWidth={1}
             onClick={(e) => {
@@ -40,6 +57,7 @@ export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderPr
             }}
             className="sm:hidden header-btn"
           />
+          <Link to="/products/loona#landing">Landing</Link>
           <HeaderMenu
             menu={menu}
             primaryDomainUrl={header.shop.primaryDomain.url}
@@ -49,7 +67,7 @@ export function Header({ header, isLoggedIn, publicStoreDomain, cart }: HeaderPr
             <div className="flex items-center justify-center space-x-2  sm:space-x-6 sm:mr-6 ">
               <SearchButton />
               <NavLink to="/account" prefetch="intent">
-                <CircleUserRound className="header-btn text-foreground" strokeWidth={1} />
+                <CircleUserRound className="header-btn text-foreground" />
               </NavLink>
               <CartBadge cart={cart} />
             </div>

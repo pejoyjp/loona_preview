@@ -52,7 +52,15 @@ export default async function handleRequest(
       "https://wt.omnisendlink.com",
       "https://forms.soundestlink.com",
     ],
-    frameSrc: ["https://www.google.com", "https://www.gstatic.com"],
+    fontSrc: [
+      "https://public.powrcdn.com",
+      "https://fonts.gstatic.com",
+      "https://cdn.shopify.com",
+      "https://d3hw6dc1ow8pp2.cloudfront.net",
+      "'self'",
+      "data:",
+    ],
+    frameSrc: ["https://www.google.com", "https://www.gstatic.com", "https://www.powr.io"],
   });
 
   const body = await renderToReadableStream(

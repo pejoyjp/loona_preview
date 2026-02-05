@@ -7,7 +7,7 @@ import React, {
   useMemo,
   useCallback,
 } from "react";
-import { cn } from "~/lib/utils";
+import { cn } from "~/lib/cn";
 import { AnimatePresence, motion } from "motion/react";
 
 // Improved TypeScript interfaces with more specific types
