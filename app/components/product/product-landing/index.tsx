@@ -13,8 +13,8 @@ export function ProductLanding({ product }: { product: ProductFragment }) {
   const faqRef = useRef<HTMLDivElement>(null);
 
   const sections = [
-    { ref: detailsRef, label: "Product Details" },
-    { ref: specsRef, label: "Specifications" },
+    { ref: detailsRef, label: "Details" },
+    { ref: specsRef, label: "Spec" },
     { ref: reviewsRef, label: "Reviews" },
     { ref: faqRef, label: "FAQ" },
   ];

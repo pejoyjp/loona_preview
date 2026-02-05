@@ -36,6 +36,7 @@ export function ProductCarousel({
     () => ({
       loop: false,
       axis: isDesktop ? "y" : "x",
+      containScroll: "trimSnaps",
     }),
     [isDesktop],
   );
@@ -85,19 +86,23 @@ export function ProductCarousel({
       onApi={setEmblaApi}
     >
       <ThumbsSlider
-        className="hidden xl:block"
+        className="hidden xl:block h-full"
         thumbsClassName=""
-        thumbsSliderClassName="w-24 h-24 "
+        thumbsSliderClassName="w-24 h-24"
       />
 
-      <SliderContainer className="h-full w-full">
+      <SliderContainer className="w-full h-full">
         {slides.map((image, index) => (
-          <Slider key={index} className="h-full w-[calc(100%-1rem)]" thumbnailSrc={image.url}>
+          <Slider
+            key={index}
+            className={cn("max-w-11/12 xl:max-w-full h-full")}
+            thumbnailSrc={image.url}
+          >
             <Image
               data={image}
               alt=""
               sizes="(min-width: 45em) 400px, 100vw"
-              className={cn("h-full w-full xl:max-w-122 object-cover", index > 0 && "pl-1")}
+              className={cn("h-full w-full xl:max-w-122 object-cover")}
             />
           </Slider>
         ))}

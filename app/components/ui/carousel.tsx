@@ -659,7 +659,7 @@ export const ThumbsSlider = forwardRef<
 >(({ className, thumbsClassName, thumbsSliderClassName, ...props }, ref) => {
   const { slidesArr, selectedIndex, onThumbClick, orientation, emblaThumbsRef } = useCarousel();
 
-  if (slidesArr.length === 0) return null;
+  if (slidesArr.length === 0) return <div className="min-w-24 h-full"></div>;
 
   return (
     <div ref={emblaThumbsRef} className={cn("overflow-hidden", className)} {...props}>

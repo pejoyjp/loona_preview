@@ -4,6 +4,8 @@ import type {
   ProductOptionValueSwatch,
   ProductVariant,
 } from "@shopify/hydrogen/storefront-api-types";
+import type { EmblaCarouselType } from "embla-carousel";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import type { ProductCardFragment } from "storefrontapi.generated";
 import { useCartStore } from "~/hooks/store/use-cart-store";
@@ -39,7 +41,6 @@ export function ProductForm({
     <div>
       <div className="pr-4 md:pr-10 xl:pr-0 ">
         <h1 className="text-headline font-bold pb-2 md:pb-4 xl:pb-2">{selectedVariant?.title}</h1>
-
         <div className="h-6">
           <OkendoStarRating productId={productID} />
         </div>
@@ -68,54 +69,86 @@ export function ProductForm({
       <div>
         {productOptions.map((option) => {
           return (
-            <div key={option.name}>
-              <Carousel
-                options={{ watchDrag: isMobile ? true : false }}
-                className="pr-0 md:pr-10 xl:pr-0"
-              >
-                <SliderContainer className="gap-3">
-                  {option.optionValues.map((value) => {
-                    const {
-                      name,
-                      variantUriQuery,
-                      selected,
-                      available,
-                      exists,
-                      firstSelectableVariant,
-                      swatch,
-                    } = value;
-
-                    return (
-                      <Slider key={option.name + name} className="flex-1 min-w-40 ">
-                        <button
-                          type="button"
-                          onClick={() => handleVariantSelect(variantUriQuery)}
-                          aria-current={selected ? "true" : undefined}
-                          className={cn(
-                            "flex items-center justify-center border-2 border-transparent transition-colors aspect-square w-full",
-                            selected && "border-primary",
-                            available ? "opacity-100" : "opacity-30",
-                            !exists && "pointer-events-none opacity-30",
-                          )}
-                        >
-                          <ProductOptionSwatch
-                            swatch={swatch}
-                            name={name}
-                            firstSelectableVariant={firstSelectableVariant}
-                          />
-                        </button>
-                        <p className="text-center text-muted-foreground text-sm leading-4.5 px-0.5">
-                          {name}
-                        </p>
-                      </Slider>
-                    );
-                  })}
-                </SliderContainer>
-              </Carousel>
-            </div>
+            <ProductOptionCarousel
+              key={option.name}
+              option={option}
+              isMobile={isMobile}
+              onVariantSelect={handleVariantSelect}
+            />
           );
         })}
       </div>
+    </div>
+  );
+}
+
+function ProductOptionCarousel({
+  option,
+  isMobile,
+  onVariantSelect,
+}: {
+  option: MappedProductOptions;
+  isMobile: boolean;
+  onVariantSelect: (variantUriQuery: string) => void;
+}) {
+  const [emblaApi, setEmblaApi] = useState<EmblaCarouselType | undefined>(undefined);
+
+  return (
+    <div>
+      <Carousel
+        options={{
+          align: "start",
+          dragFree: false,
+          slidesToScroll: "auto",
+          containScroll: "trimSnaps",
+          watchDrag: isMobile ? true : false,
+        }}
+        onApi={setEmblaApi}
+        className="pr-0 md:pr-10 xl:pr-0"
+      >
+        <SliderContainer className="flex gap-3 w-full ">
+          {option.optionValues.map((value, index) => {
+            const {
+              name,
+              variantUriQuery,
+              selected,
+              available,
+              exists,
+              firstSelectableVariant,
+              swatch,
+            } = value;
+
+            return (
+              <Slider key={option.name + name} className={cn("min-w-40 flex-1")}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    emblaApi?.scrollTo(index);
+                    onVariantSelect(variantUriQuery);
+                  }}
+                  aria-current={selected ? "true" : undefined}
+                  className={cn(
+                    "flex items-center justify-center border-2 border-transparent transition-colors aspect-square w-full",
+                    selected && "border-primary",
+                    available ? "opacity-100" : "opacity-30",
+                    !exists && "pointer-events-none opacity-30",
+                  )}
+                >
+                  <ProductOptionSwatch
+                    swatch={swatch}
+                    name={name}
+                    firstSelectableVariant={firstSelectableVariant}
+                  />
+                </button>
+                <p className="text-center text-muted-foreground text-sm leading-4.5 px-0.5">
+                  {name}
+                </p>
+              </Slider>
+            );
+          })}
+          <div className="w-4 md:hidden" aria-hidden />
+        </SliderContainer>
+      </Carousel>
     </div>
   );
 }
@@ -130,7 +163,7 @@ function ProductOptionSwatch({
   firstSelectableVariant: Maybe<ProductVariant> | undefined;
 }) {
   return (
-    <div aria-label={name} className=" border-gray-200 w-full h-full">
+    <div aria-label={name} className=" border w-full h-full">
       {firstSelectableVariant && firstSelectableVariant.image && (
         <Image
           data={firstSelectableVariant.image}

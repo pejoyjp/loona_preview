@@ -64,7 +64,7 @@ export function FactsCarousel() {
           loop: false,
           dragFree: false,
           slidesToScroll: "auto",
-          containScroll: false,
+          containScroll: "trimSnaps",
         }}
       >
         <div className="flex items-center justify-between mb-4">
