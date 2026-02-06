@@ -67,7 +67,7 @@ export function FactsCarousel() {
           containScroll: "trimSnaps",
         }}
       >
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-4 xl:max-w-300 m-auto">
           <h2 className="text-foreground font-semibold text-headline">6 fast facts about Loona</h2>
 
           <div className="gap-10 hidden xl:flex">

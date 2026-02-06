@@ -54,11 +54,11 @@ export function ProductForm({
 
         <div className="flex items-center justify-between pb-4 text-foreground leading-5">
           <div className="flex gap-1 items-center">
-            <BadgeCheck />
+            <BadgeCheck size={16} />
             <p>1-Year Warranty</p>
           </div>
           <div className="flex gap-1 items-center">
-            <PackageCheck />
+            <PackageCheck size={16} />
             <p>Dispatch within 3 business days.</p>
           </div>
         </div>
@@ -146,7 +146,7 @@ function ProductOptionCarousel({
               </Slider>
             );
           })}
-          <div className="w-4 md:hidden" aria-hidden />
+          <div className="shrink-0 w-4 md:hidden" aria-hidden />
         </SliderContainer>
       </Carousel>
     </div>

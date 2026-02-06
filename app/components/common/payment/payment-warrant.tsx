@@ -1,6 +1,5 @@
 import { Bell, CreditCard, ShoppingBag, BadgeCheck, PackageCheck, Truck } from "lucide-react";
 import { Carousel, SliderContainer, Slider, SliderDotButton } from "~/components/ui/carousel";
-import { useViewportStore } from "~/hooks/store/use-viewport-store";
 
 const warrantItems = [
   { icon: Bell, label: "Lifetime Customer Support" },
@@ -28,7 +27,7 @@ interface WarrantItemProps {
 
 function WarrantItem({ icon: Icon, label }: WarrantItemProps) {
   return (
-    <div className={"flex flex-col items-center text-center gap-2 "}>
+    <div className="flex flex-col items-center text-center gap-2">
       <Icon className="w-6 h-6" />
       <span className="text-sm">{label}</span>
     </div>
@@ -36,12 +35,11 @@ function WarrantItem({ icon: Icon, label }: WarrantItemProps) {
 }
 
 export function PaymentWarrant() {
-  const isMobile = useViewportStore((state) => state.isMobile);
-  if (isMobile)
-    return (
-      <div>
+  return (
+    <>
+      <div className="md:hidden">
         <Carousel
-          className="bg-muted"
+          className="bg-muted pb-5"
           options={{
             align: "start",
             loop: true,
@@ -58,21 +56,20 @@ export function PaymentWarrant() {
               </Slider>
             ))}
           </SliderContainer>
-          <div className="flex justify-center pb-5">
+          <div className="flex justify-center h-2">
             <SliderDotButton variant="dot" />
           </div>
         </Carousel>
       </div>
-    );
 
-  return (
-    <div className="xl:grid-cols-2 md:grid md:grid-cols-6 md:bg-muted xl:bg-transparent md:p-5 xl:p-0 md:text-muted-foreground xl:text-foreground md:gap-4">
-      {warrantItems.map((item) => (
-        <div key={item.label} className="flex items-center gap-1 xl:gap-2 flex-col xl:flex-row ">
-          <item.icon className="h-6 w-6 " />
-          <span className="text-sm xl:text-base text-center">{item.label}</span>
-        </div>
-      ))}
-    </div>
+      <div className="hidden md:grid xl:grid-cols-2 md:grid-cols-6 md:bg-muted xl:bg-transparent md:p-5 xl:p-0 md:text-muted-foreground xl:text-foreground md:gap-4">
+        {warrantItems.map((item) => (
+          <div key={item.label} className="flex items-center gap-1 xl:gap-2 flex-col xl:flex-row">
+            <item.icon className="h-6 w-6" />
+            <span className="text-sm xl:text-base text-center">{item.label}</span>
+          </div>
+        ))}
+      </div>
+    </>
   );
 }

@@ -125,7 +125,7 @@ export function ProductList({ products, title, type, onSelect }: ProductListProp
             ))}
           </SliderContainer>
 
-          <div className="flex justify-center pt-4">
+          <div className="flex justify-center mt-4 h-2">
             <SliderDotButton variant="dot" />
           </div>
         </Carousel>

@@ -94,14 +94,14 @@ export function ProductDetails() {
 
       <div className="p-4 md:p-10 xl:w-300 xl:p-0 xl:pt-10 m-auto w-full">
         <StoryCarousel />
-        <FactsCarousel />
-        <Button
+      </div>
+      <FactsCarousel />
+      {/* <Button
           onClick={scrollToTop}
           className="hidden xl:flex text-lg font-medium transition-colors h-11 mt-6 mb-10  justify-center items-center rounded-full w-47.5"
         >
           Buy Now
-        </Button>
-      </div>
+        </Button> */}
 
       <div>
         <ProductIntelligence />

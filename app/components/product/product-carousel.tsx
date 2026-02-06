@@ -81,7 +81,7 @@ export function ProductCarousel({
   return (
     <Carousel
       options={OPTIONS}
-      className="relative flex h-58 md:h-88 xl:h-141.5 w-full justify-between"
+      className="relative flex h-58 md:h-88 xl:h-141.5 w-full"
       plugins={[Autoplay({ delay: 5000 })]}
       onApi={setEmblaApi}
     >
@@ -95,14 +95,16 @@ export function ProductCarousel({
         {slides.map((image, index) => (
           <Slider
             key={index}
-            className={cn("max-w-11/12 xl:max-w-full h-full")}
+            className={cn(
+              "w-90 md:w-172 xl:w-122 h-full pl-2 first:pl-0 last:pr-4 last:md:pr-10 last:xl:pr-0",
+            )}
             thumbnailSrc={image.url}
           >
             <Image
               data={image}
               alt=""
               sizes="(min-width: 45em) 400px, 100vw"
-              className={cn("h-full w-full xl:max-w-122 object-cover")}
+              className={cn("h-full w-full object-cover")}
             />
           </Slider>
         ))}

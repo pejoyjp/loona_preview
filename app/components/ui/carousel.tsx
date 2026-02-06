@@ -516,7 +516,7 @@ interface SliderDotButtonProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: "dot" | "bar";
 }
 
-const DOT_SIZE = "w-2.5 h-2.5";
+const DOT_SIZE = "w-2 h-2";
 const BAR_SIZE = "w-6 h-1";
 
 export const SliderDotButton = forwardRef<HTMLDivElement, SliderDotButtonProps>(
@@ -537,7 +537,7 @@ export const SliderDotButton = forwardRef<HTMLDivElement, SliderDotButtonProps>(
               onClick={() => onDotButtonClick(index)}
               className={cn(
                 "relative flex items-center justify-center",
-                isDot ? "w-3 h-3" : "w-6 h-1.5",
+                isDot ? "w-2 h-2" : "w-6 h-2",
               )}
               aria-label={`Go to slide ${index + 1}`}
             >
@@ -556,7 +556,7 @@ export const SliderDotButton = forwardRef<HTMLDivElement, SliderDotButtonProps>(
                     layoutId={`indicator-${carouselId}`}
                     className={cn(
                       "absolute bg-primary dark:bg-white rounded-full",
-                      isDot ? "w-3 h-3" : BAR_SIZE,
+                      isDot ? DOT_SIZE : BAR_SIZE,
                       activeClass,
                     )}
                     transition={{
