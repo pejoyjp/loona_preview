@@ -161,7 +161,7 @@ export default function Product() {
   return (
     <div className="">
       <div className="grid grid-cols-1 xl:grid-cols-2 w-full gap-4 md:gap-6 xl:gap-5 xl:max-w-300 xl:mx-auto xl:items-start">
-        <div className="pl-4 md:pl-10 xl:pl-0 xl:sticky xl:top-14 xl:self-start">
+        <div className="pl-4 md:pl-10 xl:pl-0 xl:sticky xl:top-14 xl:self-start ">
           <ProductCarousel
             galleriesByOption={galleriesByOption}
             selectedVariant={selectedVariant}

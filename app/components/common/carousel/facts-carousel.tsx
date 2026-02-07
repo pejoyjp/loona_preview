@@ -63,7 +63,7 @@ export function FactsCarousel() {
           align: "start",
           loop: false,
           dragFree: false,
-          slidesToScroll: "auto",
+          slidesToScroll: 1,
           containScroll: "trimSnaps",
         }}
       >
@@ -80,7 +80,7 @@ export function FactsCarousel() {
           </div>
         </div>
 
-        <SliderContainer className="gap-4 xl:gap-5 select-none items-stretch">
+        <SliderContainer className="gap-4 xl:gap-5 select-none items-stretch xl:max-w-300 xl:m-auto">
           {factsData.map((fact) => {
             const IconComponent = fact.icon;
             return (

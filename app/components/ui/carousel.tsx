@@ -314,7 +314,7 @@ export const SliderContainer = forwardRef<HTMLDivElement, React.HTMLAttributes<H
     const { emblaRef, orientation } = useCarousel();
 
     return (
-      <div ref={emblaRef} className="overflow-hidden" {...props}>
+      <div ref={emblaRef} className="overflow-hidden h-full" {...props}>
         <div
           ref={ref}
           className={cn("flex", orientation === "vertical" ? "flex-col" : "flex-row", className)}
