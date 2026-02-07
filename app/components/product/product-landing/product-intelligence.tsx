@@ -46,13 +46,13 @@ function StackedShowcaseCards({ items }: { items: FeatureItem[] }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end end"],
+    offset: ["start 70%", "end 30%"],
   });
 
   return (
     <div ref={containerRef}>
       {items.map((item, index) => {
-        const targetScale = 1 - (items.length - index) * 0.05;
+        const targetScale = 1 - (items.length - index) * 0.02;
         return (
           <StackedShowcaseCard
             key={item.title}
@@ -87,26 +87,27 @@ function StackedShowcaseCard({
     offset: ["start end", "start start"],
   });
 
-  const scale = useTransform(progress, range, [1, targetScale]);
+  const scaleY = useTransform(progress, range, [0.92, 1]);
 
   const contentScale = useTransform(scrollYProgress, [0, 1], [0.98, 1]);
 
   const IconComponent = item.icon;
 
   return (
-    <div ref={cardRef} className="h-70 flex items-center justify-center sticky top-80 w-full">
+    <div ref={cardRef} className="flex items-center justify-center sticky top-50 w-full h-48">
       <motion.div
         style={{
-          scale,
-          top: `${index * 20}px`,
+          scaleX: 1,
+          scaleY,
+          top: `${index * 4}px`,
         }}
-        className="relative w-full h-43"
+        className="relative w-full h-full"
       >
         <motion.div
-          style={{ scale: contentScale }}
-          className="rounded-sm border  p-4 flex flex-col gap-3 items-center justify-center  backdrop-blur"
+          style={{ scale: contentScale, backgroundColor: "#26262633" }}
+          className="rounded-sm border  p-4 flex flex-col gap-3 items-center justify-center h-full backdrop-blur-[10.67px]"
         >
-          <IconComponent className={`w-8 h-8  ${item.color} `} />
+          <IconComponent className={`w-8 h-8 ${item.color}`} />
           <h4 className="text-card-title">{item.title}</h4>
           <p className="text-center text-base text-auxiliary">{item.description}</p>
         </motion.div>
@@ -134,7 +135,7 @@ export function ProductIntelligence() {
         <div className="h-full px-4 md:px-10 xl:px-0 relative space-y-10 md:space-y-11.5 xl:space-y-20 xl:max-w-300">
           <h2 className="text-headline font-bold text-center">Intelligence Made Alive</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 ">
+          <div className="grid grid-cols-1 md:grid-cols-3 md::gap-4 ">
             {statsData.map((stat) => (
               <div key={stat.value} className="flex flex-col items-center text-center gap-3">
                 <p className="text-lg leading-7 md:text-3xl xl:text-4xl font-semibold">
@@ -150,11 +151,9 @@ export function ProductIntelligence() {
               Interactive Nature Powered by GPT
             </h3>
             <div className="sticky top-40">
-              <ReactLenis root>
-                <div className="relative w-full md:hidden">
-                  <StackedShowcaseCards items={featuresData} />
-                </div>
-              </ReactLenis>
+              <div className="relative w-full md:hidden">
+                <StackedShowcaseCards items={featuresData} />
+              </div>
             </div>
 
             <div className="hidden md:grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 xl:max-w-198.5">
