@@ -997,7 +997,7 @@ export type ProductFragment = Pick<
   okendoReviewsSnippet?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, "value">>;
 };
 
-export type CollectionQueryVariables = StorefrontAPI.Exact<{
+export type CollectionDetailQueryVariables = StorefrontAPI.Exact<{
   handle: StorefrontAPI.Scalars["String"]["input"];
   country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
   language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
@@ -1005,7 +1005,7 @@ export type CollectionQueryVariables = StorefrontAPI.Exact<{
   sortKey?: StorefrontAPI.InputMaybe<StorefrontAPI.ProductCollectionSortKeys>;
 }>;
 
-export type CollectionQuery = {
+export type CollectionDetailQuery = {
   collection?: StorefrontAPI.Maybe<
     Pick<StorefrontAPI.Collection, "id" | "handle" | "title" | "description"> & {
       seo: Pick<StorefrontAPI.Seo, "description" | "title">;
@@ -1608,11 +1608,11 @@ export type ApiAllProductsQuery = {
   };
 };
 
-export type PredictiveSearchQueryVariables = StorefrontAPI.Exact<{
+export type SimplePredictiveSearchQueryVariables = StorefrontAPI.Exact<{
   query: StorefrontAPI.Scalars["String"]["input"];
 }>;
 
-export type PredictiveSearchQuery = {
+export type SimplePredictiveSearchQuery = {
   predictiveSearch?: StorefrontAPI.Maybe<{
     queries: Array<Pick<StorefrontAPI.SearchQuerySuggestion, "text">>;
     products: Array<
@@ -2143,9 +2143,9 @@ interface GeneratedQueryTypes {
     return: OrderQuery;
     variables: OrderQueryVariables;
   };
-  '#graphql\n  query collection(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n    $first: Int\n    $sortKey: ProductCollectionSortKeys\n  ) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      id\n      handle\n      title\n      description\n      seo {\n        description\n        title\n      }\n      image {\n        id\n        url\n        width\n        height\n        altText\n      }\n      products(first: $first, sortKey: $sortKey) {\n        nodes {\n          ...ProductCard\n        }\n      }\n    }\n  }\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    tags\n    images(first: 50) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n    options {\n      ...ProductOption\n    }\n    badges: metafields(identifiers: [\n      { namespace: "custom", key: "best_seller" }\n    ]) {\n      key\n      namespace\n      value\n    }\n    priceRange {\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    selectedOrFirstAvailableVariant(\n      selectedOptions: []\n      ignoreUnknownOptions: true\n      caseInsensitiveMatch: true\n    ) {\n      ...ProductVariantForProductPage\n    }\n\n  }\n  #graphql\n  fragment ProductOption on ProductOption {\n    name\n    optionValues {\n      name\n      firstSelectableVariant {\n        ...ProductVariantForProductPage\n      }\n      swatch {\n        color\n        image {\n          previewImage {\n            url\n            altText\n          }\n        }\n      }\n    }\n  }\n  #graphql\n  fragment ProductVariantForProductPage on ProductVariant {\n    availableForSale\n    showInProduct: metafield(\n      namespace: "custom"\n      key: "show_in_product"\n    ) {\n      value\n      type\n    }\n    gallery: metafield(namespace: "custom", key: "variant_gallery") {\n      reference {\n        ... on Metaobject {\n          media: field(key: "gallery_media") {\n            references(first: 20) {\n              nodes {\n                __typename\n                ... on MediaImage {\n                  image {\n                    url\n                    altText\n                    width\n                    height\n                  }\n                }\n                ... on Video {\n                  previewImage { url }\n                  sources { url mimeType }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n\n    compareAtPrice {\n      amount\n      currencyCode\n    }\n    id\n    image {\n      __typename\n      id\n      url\n      altText\n      width\n      height\n    }\n    price {\n      amount\n      currencyCode\n    }\n    product {\n      title\n      handle\n    }\n    selectedOptions {\n      name\n      value\n    }\n    sku\n    title\n    unitPrice {\n      amount\n      currencyCode\n    }\n  }\n\n\n\n': {
-    return: CollectionQuery;
-    variables: CollectionQueryVariables;
+  '#graphql\n  query CollectionDetail(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n    $first: Int\n    $sortKey: ProductCollectionSortKeys\n  ) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      id\n      handle\n      title\n      description\n      seo {\n        description\n        title\n      }\n      image {\n        id\n        url\n        width\n        height\n        altText\n      }\n      products(first: $first, sortKey: $sortKey) {\n        nodes {\n          ...ProductCard\n        }\n      }\n    }\n  }\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    tags\n    images(first: 50) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n    options {\n      ...ProductOption\n    }\n    badges: metafields(identifiers: [\n      { namespace: "custom", key: "best_seller" }\n    ]) {\n      key\n      namespace\n      value\n    }\n    priceRange {\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    selectedOrFirstAvailableVariant(\n      selectedOptions: []\n      ignoreUnknownOptions: true\n      caseInsensitiveMatch: true\n    ) {\n      ...ProductVariantForProductPage\n    }\n\n  }\n  #graphql\n  fragment ProductOption on ProductOption {\n    name\n    optionValues {\n      name\n      firstSelectableVariant {\n        ...ProductVariantForProductPage\n      }\n      swatch {\n        color\n        image {\n          previewImage {\n            url\n            altText\n          }\n        }\n      }\n    }\n  }\n  #graphql\n  fragment ProductVariantForProductPage on ProductVariant {\n    availableForSale\n    showInProduct: metafield(\n      namespace: "custom"\n      key: "show_in_product"\n    ) {\n      value\n      type\n    }\n    gallery: metafield(namespace: "custom", key: "variant_gallery") {\n      reference {\n        ... on Metaobject {\n          media: field(key: "gallery_media") {\n            references(first: 20) {\n              nodes {\n                __typename\n                ... on MediaImage {\n                  image {\n                    url\n                    altText\n                    width\n                    height\n                  }\n                }\n                ... on Video {\n                  previewImage { url }\n                  sources { url mimeType }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n\n    compareAtPrice {\n      amount\n      currencyCode\n    }\n    id\n    image {\n      __typename\n      id\n      url\n      altText\n      width\n      height\n    }\n    price {\n      amount\n      currencyCode\n    }\n    product {\n      title\n      handle\n    }\n    selectedOptions {\n      name\n      value\n    }\n    sku\n    title\n    unitPrice {\n      amount\n      currencyCode\n    }\n  }\n\n\n\n': {
+    return: CollectionDetailQuery;
+    variables: CollectionDetailQueryVariables;
   };
   "#graphql\n  fragment FeaturedCollection on Collection {\n    id\n    title\n    image {\n      id\n      url\n      altText\n      width\n      height\n    }\n    handle\n  }\n  query FeaturedCollection($country: CountryCode, $language: LanguageCode)\n    @inContext(country: $country, language: $language) {\n    collections(first: 1, sortKey: UPDATED_AT, reverse: true) {\n      nodes {\n        ...FeaturedCollection\n      }\n    }\n  }\n": {
     return: FeaturedCollectionQuery;
@@ -2171,9 +2171,9 @@ interface GeneratedQueryTypes {
     return: ApiAllProductsQuery;
     variables: ApiAllProductsQueryVariables;
   };
-  "#graphql\n  query predictiveSearch($query: String!) {\n    predictiveSearch(query: $query, limit: 5) {\n      queries { text }\n      products {\n        id\n        title\n        handle\n        trackingParameters\n        variants(first: 1) { nodes { image { url } } }\n      }\n    }\n  }\n": {
-    return: PredictiveSearchQuery;
-    variables: PredictiveSearchQueryVariables;
+  "#graphql\n  query SimplePredictiveSearch($query: String!) {\n    predictiveSearch(query: $query, limit: 5) {\n      queries { text }\n      products {\n        id\n        title\n        handle\n        trackingParameters\n        variants(first: 1) { nodes { image { url } } }\n      }\n    }\n  }\n": {
+    return: SimplePredictiveSearchQuery;
+    variables: SimplePredictiveSearchQueryVariables;
   };
   "#graphql\n  query Article(\n    $articleHandle: String!\n    $blogHandle: String!\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(language: $language, country: $country) {\n    blog(handle: $blogHandle) {\n      handle\n      articleByHandle(handle: $articleHandle) {\n        handle\n        title\n        contentHtml\n        publishedAt\n        author: authorV2 {\n          name\n        }\n        image {\n          id\n          altText\n          url\n          width\n          height\n        }\n        seo {\n          description\n          title\n        }\n      }\n    }\n  }\n": {
     return: ArticleQuery;

@@ -1,7 +1,7 @@
 import { PRODUCT_CARD_FRAGMENT, PRODUCT_VARIANT_FRAGMENT } from "../fragments";
 
 export const COLLECTION_QUERY = `#graphql
-  query collection(
+  query CollectionDetail(
     $handle: String!
     $country: CountryCode
     $language: LanguageCode

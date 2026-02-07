@@ -15,7 +15,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 }
 
 const PREDICTIVE_SEARCH_QUERY = `#graphql
-  query predictiveSearch($query: String!) {
+  query SimplePredictiveSearch($query: String!) {
     predictiveSearch(query: $query, limit: 5) {
       queries { text }
       products {
